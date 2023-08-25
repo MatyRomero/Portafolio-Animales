@@ -1,0 +1,10 @@
+Django>=3.0,<4.0
+gunicorn==20.0.4
+mysqlclient
+requests
+Pillow
+djangorestframework
+django-cors-headers
+sendgrid
+webdriver_manager
+packaging

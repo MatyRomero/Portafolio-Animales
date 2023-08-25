@@ -1,0 +1,355 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+<body >
+    <section id="app">
+        
+        <div class="site-wrapper overflow-hidden ">
+            <!-- Header start  -->
+            <!-- Header Area -->
+            <header
+                class="site-header site-header--menu-right dynamic-sticky-bg py-7 py-lg-0 site-header--absolute site-header--sticky">
+                <div class="container">
+                    <nav class="navbar site-navbar offcanvas-active navbar-expand-lg  px-0 py-0">
+                        <!-- Brand Logo-->
+            
+            
+            
+                        <!-- Mobile Menu Hamburger-->
+                        <button class="navbar-toggler btn-close-off-canvas  hamburger-icon border-0" type="button"
+                            data-toggle="collapse" data-target="#mobile-menu" aria-controls="mobile-menu" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <!-- <i class="icon icon-simple-remove icon-close"></i> -->
+                            <span class="hamburger hamburger--squeeze js-hamburger">
+                                <span class="hamburger-box">
+                                    <span class="hamburger-inner"></span>
+                                </span>
+                            </span>
+                        </button>
+                        <!--/.Mobile Menu Hamburger Ends-->
+                    </nav>
+                </div>
+            </header> 
+            
+           
+            <div class="pt-11 pt-lg-20 pb-7 pb-lg-18" style="padding-top: 1rem;">
+                <section class="pb-lg-24 pb-13">
+                    <div class="container">
+                        <h2>Mayo</h3>
+                            <div class="row justify-content-center">
+                                <div id="slider"
+                                    style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                                    <div class="dates" style="display: flex;justify-content: space-between;width: 100%;">
+                                        <button class="btn btn-green btn-h-60 text-white rounded-5 btn-block text-uppercase"
+                                            @click="moveSliders(1)"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                                fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                                            </svg></button>
+                                        <table>
+                                            <tbody style="display: flex; flex-direction: row;align-items: center;">
+                                                <tr v-for="date in dates.slice(0,5)">
+                                                    <td style="padding:0 8px;"> <button
+                                                            class="btn btn-green btn-h-60 text-white rounded-5 btn-block text-uppercase">[[date]]</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <button class="btn btn-green btn-h-60 text-white rounded-5 btn-block text-uppercase"
+                                            @click="moveSliders(-1)"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                                fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                                            </svg></button>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-5 col-xl-6 col-lg-6 col-md-8 col-sm-10 order-2 order-lg-1" data-aos="fade-right"
+                                    data-aos-duration="800" data-aos-once="true">
+                                </div>
+                            </div>
+                    </div>
+                </section>
+            
+                <section class="">
+                    <div class="container card-horario">
+                        <div class="row">
+                            <div class="col-md-4" v-for="horarios in horario">
+                                <div class="">
+                                    <div class="card-body">
+                                        <button
+                                            class="btn btn-green btn-h-40 text-white rounded-5 btn-block text-uppercase text-truncate">
+                                            [[horarios]]
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            
+            
+            
+                <div class="pt-11 pt-lg-20 pb-7 pb-lg-18" style="padding-top: 1rem;">
+                    <section class="pb-lg-24 pb-13">
+                        <div class="row justify-content-center">
+                            <button class="btn btn-green btn-h-60 text-white rounded-5 text-uppercase">
+                                Siguiente!
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            
+            
+            
+            
+            </div>
+
+            <!-- <div class="pt-11 pt-lg-20 pb-7 pb-lg-18" style="padding-top: 1rem;">
+                <section class="pb-lg-24 pb-13">
+                    <div class="container">
+                    </div>
+                </section>
+                <section class="d-none">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3" v-for="horarios in horario">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <button
+                                            class="btn btn-green btn-h-40 text-white rounded-5 btn-block text-uppercase text-truncate">
+                                            [[horarios]]
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div> -->
+           
+           
+            
+            <footer class="footer bg-ebony-clay dark-mode-texts">
+                <div class="container">
+                    <!-- Cta section -->
+                    <div class="pt-11 pt-lg-20 pb-13 pb-lg-20 border-bottom border-width-1 border-default-color-2">
+                        <div class="row justify-content-center ">
+                            <div class="col-xl-7 col-lg-12" data-aos="fade-right" data-aos-duration="800"
+                                data-aos-once="true">
+                                <!-- cta-content start -->
+                                <div class="pb-xl-0 pb-9 text-xl-left text-center">
+                                    <h2 class="text-white font-size-8 mb-4">Most comprehensive job portal</h2>
+                                    <p class="text-hit-gray font-size-5 mb-0">We must explain to you how all this mistaken
+                                        idea of denouncing</p>
+                                </div>
+                                <!-- cta-content end -->
+                            </div>
+                            <div class="col-xl-5 col-lg-12" data-aos="fade-left" data-aos-duration="800"
+                                data-aos-once="true">
+                                <!-- cta-btns start -->
+    
+                                <!-- cta-btns end -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container  pt-12 pt-lg-19 pb-10 pb-lg-19">
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-6 mb-lg-0 mb-9">
+                            <!-- footer logo start -->
+                            <img src="{% static 'image/logo-main-white.png' %}" alt="" class="footer-logo mb-14">
+                            <!-- footer logo End -->
+                            <!-- media start -->
+                            <div class="media mb-11">
+                                <img src="{% static 'image/l1/png/message.png' %}" class="align-self-center mr-3" alt="">
+                                <div class="media-body pl-5">
+                                    <p class="mb-0 font-size-4 text-white">Contact us at</p>
+                                    <a class="mb-0 font-size-4 font-weight-bold"
+                                        href="mailto:support@uxtheme.net">support@uxtheme.net</a>
+                                </div>
+                            </div>
+                            <!-- media start -->
+                            <!-- widget social icon start -->
+                            <div class="social-icons">
+                                <ul class="pl-0 list-unstyled d-flex align-items-end ">
+                                    <li
+                                        class="d-flex flex-column justify-content-center px-3 mr-3 font-size-4 heading-default-color">
+                                        Follow us on:</li>
+                                    <li class="d-flex flex-column justify-content-center px-3 mr-3"><a href="#"
+                                            class="hover-color-primary heading-default-color"><i
+                                                class="fab fa-facebook-f font-size-3 pt-2"></i></a></li>
+                                    <li class="d-flex flex-column justify-content-center px-3 mr-3"><a href="#"
+                                            class="hover-color-primary heading-default-color"><i
+                                                class="fab fa-twitter font-size-3 pt-2"></i></a></li>
+                                    <li class="d-flex flex-column justify-content-center px-3 mr-3"><a href="#"
+                                            class="hover-color-primary heading-default-color"><i
+                                                class="fab fa-linkedin-in font-size-3 pt-2"></i></a></li>
+                                </ul>
+                            </div>
+                            <!-- widget social icon end -->
+                        </div>
+                        <div class="col-lg-8 col-md-6">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
+                                    <div class="footer-widget widget2 mb-md-0 mb-13">
+                                        <!-- footer widget title start -->
+                                        <p class="widget-title font-size-4 text-gray mb-md-8 mb-7">Company</p>
+                                        <!-- footer widget title end -->
+                                        <!-- widget social menu start -->
+                                        <ul class="widget-links pl-0 list-unstyled list-hover-primary">
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">About us</a></li>
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">Contact us</a></li>
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">Careers</a></li>
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">Press</a></li>
+                                        </ul>
+                                        <!-- widget social menu end -->
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
+                                    <div class="footer-widget widget3 mb-sm-0 mb-13">
+                                        <!-- footer widget title start -->
+                                        <p class="widget-title font-size-4 text-gray mb-md-8 mb-7">Product</p>
+                                        <!-- footer widget title end -->
+                                        <!-- widget social menu start -->
+                                        <ul class="widget-links pl-0 list-unstyled list-hover-primary">
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">Features </a></li>
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">Pricing</a></li>
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">News</a></li>
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">Help desk</a></li>
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">Support</a></li>
+                                        </ul>
+                                        <!-- widget social menu end -->
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
+                                    <div class="footer-widget widget4 mb-sm-0 mb-13">
+                                        <!-- footer widget title start -->
+                                        <p class="widget-title font-size-4 text-gray mb-md-8 mb-7">Services</p>
+                                        <!-- footer widget title end -->
+                                        <!-- widget social menu start -->
+                                        <ul class="widget-links pl-0 list-unstyled list-hover-primary">
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">Digital Marketing</a></li>
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">SEO for Business</a></li>
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">Avasta Dash</a></li>
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">UI Design</a></li>
+                                        </ul>
+                                        <!-- widget social menu end -->
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
+                                    <div class="footer-widget widget4">
+                                        <!-- footer widget title start -->
+                                        <p class="widget-title font-size-4 text-gray mb-md-8 mb-7">Legal</p>
+                                        <!-- footer widget title end -->
+                                        <ul class="widget-links pl-0 list-unstyled list-hover-primary">
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">Privacy Policy</a></li>
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">Terms & Conditions</a></li>
+                                            <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                                                    href="">Return Policy</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- footer area function end -->
+        </div>
+        <!-- Vendor Scripts -->
+        
+    </section>
+    <!-- <script src="{% static 'js/vendor.min.js' %}"></script>
+    <script src="{% static 'plugins/fancybox/jquery.fancybox.min.js' %}"></script>
+    <script src="{% static 'plugins/nice-select/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'plugins/aos/aos.min.js' %}"></script>
+    <script src="{% static 'plugins/slick/slick.min.js' %}"></script>
+    <script src="{% static 'plugins/counter-up/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'plugins/counter-up/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'plugins/ui-range-slider/jquery-ui.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script> -->
+
+</body>
+{% endblock content %}
+
+{% block css%}
+
+<style>
+
+    .card{
+        background-color: none !important;
+        border: none !important;
+    }
+
+    .card-horario{
+        background-color: #5f5a5a30;
+        border: none;
+        color: black;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 16px;
+    }
+   
+
+</style>
+
+{%endblock%}
+
+
+
+{% block js%}
+<script>
+
+
+    new Vue({
+  
+          el: "#app",
+          delimiters: ['[[', ']]'],
+          data: {
+            dates:['Lunes 08', 'Martes 09', 'Miercoles 10', 'Jueves 11', 'Viernes 12','Sabado 13','Domingo 14'],
+            horario:['13:33', '13:33', '13:33', '13:33', '13:33', '13:33', '13:33', '13:33', '13:33', '13:33', '13:33', '13:33', '13:33', '13:33', '13:33', '13:33',]
+              
+          },
+          mounted(){
+            this.method_prueba()
+          },
+          methods: {
+            moveSliders:function(direction){
+                if(direction === -1){
+                    console.log(this.dates.push(this.dates.shift()))
+                    
+                }else if(direction === 1){
+                    console.log(this.dates.unshift(this.dates.pop()))
+                    
+                }
+            },
+              method_prueba() {
+                  console.log("Hola")
+                  
+            },
+          }
+    });
+    </script>
+
+{% endblock js %}
+

@@ -1,0 +1,852 @@
+{% extends './partials/baseLanding.html' %}
+
+{% load static %}
+
+{% block content %}
+
+{% block css%}
+<style>
+  .slider {
+    width: 600px;
+    height: 600px;
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .slide {
+    width: 450px;
+    flex-shrink: 0;
+    height: 100%;
+  }
+</style>
+
+{%endblock%}
+<div id="app">
+
+  <body>
+    <div class="site-wrapper overflow-hidden ">
+      <!-- Header start  -->
+      <!-- Header Area -->
+      <header
+        class="site-header site-header--menu-right dynamic-sticky-bg py-7 py-lg-0 site-header--absolute site-header--sticky">
+        <div class="container">
+          <nav class="navbar site-navbar offcanvas-active navbar-expand-lg  px-0 py-0">
+            <!-- Brand Logo-->
+
+
+
+            <!-- Mobile Menu Hamburger-->
+
+            <!--/.Mobile Menu Hamburger Ends-->
+          </nav>
+        </div>
+      </header>
+      <!-- navbar- -->
+      <!-- Login Modal -->
+
+      <!-- Sign Up Modal -->
+
+      <!-- Header start end -->
+      <!-- Hero Area -->
+
+      <div class="position-relative z-index-1  mt-25 mt-md-15 mt-lg-0 mt-xl-22">
+        <div class="container">
+          <div class="row position-relative align-items-center">
+            <div class="col-xxl-7 col-xl-8 col-lg-9 pt-lg-26 pb-lg-26 pt-md-20" data-aos="fade-right"
+              data-aos-duration="800" data-aos-once="true">
+              <div class="row">
+                <div class="col-md-8 col-sm-10">
+                  <h1 class="font-size-9 mb-12">{{index_data.text}}</h1>
+                  <p class="font-size-6">{{index_data.subtext}}</p>
+                </div>
+                <!-- ¡Juega al pádel y diviértete como nunca antes!
+                Descubre cómo disfrutar del pádel mientras socializas y te pones en forma. -->
+              </div>
+              <div class="pt-12 d-none d-sm-block">
+                <form action="/" class="search-form" data-aos="fade-right" data-aos-duration="800" data-aos-delay="300"
+                  data-aos-once="true">
+                  <div class="filter-search-form-2 bg-white rounded-sm shadow-4 pr-8 py-8 pl-6">
+                    <div class="filter-inputs">
+                      <div class="form-group position-relative">
+                        <form action="/action_page.php">
+                          <label for="">Elige el día:</label>
+                          <input type="date" id="" name="" style="border: none;color: #6b6e6f;">
+
+                        </form>
+                        <!-- <span class="h-100 w-px-50 pos-abs-tl d-flex align-items-center justify-content-center font-size-6"><i class="icon icon-zoom-2 text-primary font-weight-bold"></i></span> -->
+                      </div>
+                      <!-- .select-city starts -->
+                      <div class="form-group position-relative">
+                        <select name="country" id="country" class="nice-select pl-13 h-100 arrow-3">
+                          <option data-display="Elige Sucursal">Sucursales</option>
+                          <option value="">Sucursal 1</option>
+                          <option value="">Sucursal 2</option>
+                          <option value="">Sucursal 3</option>
+                          <option value="">Sucursal 4</option>
+                        </select>
+                        <span
+                          class="h-100 w-px-50 pos-abs-tl d-flex align-items-center justify-content-center font-size-6"><i
+                            class="icon icon-pin-3 text-primary font-weight-bold"></i></span>
+                      </div>
+                      <!-- ./select-city ends -->
+                    </div>
+                    <div class="button-block">
+                      <button href="{% url 'reserva'%}"
+                        class="btn btn-primary line-height-reset h-100  w-100 text-uppercase">Search</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+
+            <div
+              class="col-12 d-none d-sm-block pos-abs-tr z-index-n1 position-static position-lg-absolute ml-auto hero-image-positioning-2">
+              <div class="image-group row justify-content-center">
+                <div class="col-sm-6 col-10 mt-10 mt-lg-0">
+                  <div class="single-image" data-aos="fade-left" data-aos-duration="800" data-aos-once="true">
+
+                    <img src="{{ index_data.imagen.url }}" alt="Imagen del índice">
+
+
+                    <!-- <img src="{% static 'image/padel2.png' %}" alt="hero-image"> -->
+                  </div>
+                </div>
+                <div class="col-sm-6 col-10 mt-10 mt-lg-0">
+                  <div class="single-image" data-aos="fade-left" data-aos-duration="800" data-aos-delay="300"
+                    data-aos-once="true">
+                    <img src="{{ index_data.imagen2.url }}" alt="Imagen del índice">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Area -->
+      <!-- 3stepsSection1 Area -->
+      <!-- Section Services Area -->
+
+
+      <div class="pt-11 pt-lg-20 pb-7 pb-lg-18 ">
+        <section class="pb-lg-24 pb-13">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-lg-6 col-md-8 order-2 order-lg-1" data-aos="fade-left" data-aos-duration="800"
+                data-aos-once="true">
+                <!-- content-2 start -->
+                <div class="pl-lg-10 pl-0">
+                  <!-- content img start -->
+                  <div class="slider d-xs-flex  mx-sm-n3">
+                    <img src="{{banner_data.imagen}}" alt="" class="slide">
+                    <img src="{{banner_data.imagen2}}" alt="" class="slide ">
+                    <!-- <div class="d-flex flex-column px-3 px-sm-6 w-lg-auto w-100">
+                                    
+                                    <img src="{{banner_data.imagen2}}" alt="" data-aos="zoom-in" data-aos-duration="500"
+                                      data-aos-delay="700" data-aos-once="true" class="w-100 pb-6 pb-sm-9 rounded-4 aos-init aos-animate">
+                                  </div>
+                                  <div class="d-flex flex-column pt-xs-11 px-3 px-sm-6 w-lg-auto w-100">
+                                    <img src="{{banner_data.imagen3}}" alt="" data-aos="zoom-in" data-aos-duration="500"
+                                      data-aos-delay="400" data-aos-once="true" class="w-100 pb-6 pb-sm-9 rounded-4 aos-init aos-animate">
+                                  </div> -->
+                  </div>
+                  <!-- abs-content end -->
+                </div>
+                <!-- content-2 end -->
+              </div>
+              <div class="col-xxl-5 col-xl-6 col-lg-6 col-md-8 col-sm-10 order-1 order-lg-2" data-aos="fade-right"
+                data-aos-duration="800" data-aos-once="true">
+                <div
+                  class="position-relative d-flex flex-column justify-content-center h-100 pr-xl-8 pr-0 mt-5 mt-lg-0">
+                  <!-- content-2 section title start -->
+                  <h2 class="font-size-8 mb-7 pr-xs-13  pr-md-0 pr-sm-8">
+                    {{banner_data.text}}
+                  </h2>
+
+                  <!-- content-2 section title end -->
+                  <!-- content-2 btn start -->
+                  <a href="{% url 'servicios'%}"
+                    class="btn btn-primary btn-h-60 text-white rounded-5 btn-block text-uppercase">{{banner_data.boton}}</a>
+                  <!-- content-2 btn end -->
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section>
+        <div class="bg-default-1 pt-26 pt-lg-28 pb-13 pb-lg-25">
+          <div class="container">
+            <div class="row">
+
+              <div class="col-12 col-md-12 col-xs-12 ">
+                <div class="pt-12 ml-lg-0 ml-md-15">
+                  <!-- Elige sucursal -->
+                  <div v-show="!showElement" class="pt-6">
+                    <h2 class="row justify-content-center">Características Principales</h2>
+                    <div class="row justify-content-center">
+                      <div class="col-12 col-lg-6 ">
+                        <!-- Start Feature One -->
+                        <div class="bg-white px-8 pt-9 pb-7 rounded-4 mb-9 ">
+                          <div class=" text-center d-block  mb-7">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                              width="150px" height="150px" viewBox="0 0 64 64" version="1.1">
+
+                              <title>db-table</title>
+                              <desc>Created with Sketch.</desc>
+                              <defs>
+
+                              </defs>
+                              <g id="General" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="SLICES-64px" transform="translate(-180.000000, -400.000000)">
+
+                                </g>
+                                <g id="ICONS" transform="translate(-175.000000, -395.000000)">
+                                  <g id="db-table" transform="translate(182.000000, 404.000000)">
+                                    <path d="M0,45 C0,46.656 1.343,48 3,48 L12,48 L12,36 L0,36 L0,45 Z" id="Fill-630"
+                                      fill="#E9EFFA">
+
+                                    </path>
+                                    <polygon id="Fill-631" fill="#E9EFFA" points="0 36 12 36 12 24 0 24">
+
+                                    </polygon>
+                                    <polygon id="Fill-632" fill="#E9EFFA" points="12 48 24 48 24 36 12 36">
+
+                                    </polygon>
+                                    <polygon id="Fill-633" fill="#E9EFFA" points="24 48 36 48 36 36 24 36">
+
+                                    </polygon>
+                                    <polygon id="Fill-634" fill="#E9EFFA" points="12 36 24 36 24 24 12 24">
+
+                                    </polygon>
+                                    <polygon id="Fill-635" fill="#E9EFFA" points="24 36 36 36 36 24 24 24">
+
+                                    </polygon>
+                                    <polygon id="Fill-636" fill="#E9EFFA" points="36 36 48 36 48 24 36 24">
+
+                                    </polygon>
+                                    <polygon id="Fill-637" fill="#E9EFFA" points="0 24 12 24 12 12 0 12">
+
+                                    </polygon>
+                                    <polygon id="Fill-638" fill="#E9EFFA" points="12 24 24 24 24 12 12 12">
+
+                                    </polygon>
+                                    <polygon id="Fill-639" fill="#E9EFFA" points="24 24 36 24 36 12 24 12">
+
+                                    </polygon>
+                                    <polygon id="Fill-640" fill="#E9EFFA" points="36 24 48 24 48 12 36 12">
+
+                                    </polygon>
+                                    <path d="M45,0 L3,0 C1.343,0 0,1.344 0,3 L0,12 L48,12 L48,3 C48,1.344 46.657,0 45,0"
+                                      id="Fill-641" fill="#CC9EC9">
+
+                                    </path>
+                                    <path d="M36,36 L36,48 L45,48 C46.657,48 48,46.656 48,45 L48,36 L36,36 Z"
+                                      id="Fill-642" fill="#E9EFFA">
+
+                                    </path>
+                                    <path d="M0,24 L48,24" id="Stroke-643" stroke="#414547" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round">
+
+                                    </path>
+                                    <path d="M0,36 L48,36" id="Stroke-644" stroke="#414547" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round">
+
+                                    </path>
+                                    <path d="M24,12 L24,48" id="Stroke-645" stroke="#414547" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round">
+
+                                    </path>
+                                    <path d="M36,12 L36,48" id="Stroke-646" stroke="#414547" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round">
+
+                                    </path>
+                                    <path d="M12,12 L12,48" id="Stroke-647" stroke="#414547" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round">
+
+                                    </path>
+                                    <path
+                                      d="M0,12.002 L0,45 C0,46.657 1.343,48 3,48 L45,48 C46.657,48 48,46.657 48,45 L48,12.002"
+                                      id="Stroke-648" stroke="#414547" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round">
+
+                                    </path>
+                                    <path d="M0,12 L48,12" id="Stroke-649" stroke="#414547" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round">
+
+                                    </path>
+                                    <path
+                                      d="M48,12.002 L48,3 C48,1.343 46.657,0 45,0 L3,0 C1.343,0 0,1.343 0,3 L0,12.002"
+                                      id="Stroke-650" stroke="#414547" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round">
+
+                                    </path>
+                                  </g>
+                                </g>
+                              </g>
+                            </svg>
+                          </div>
+                          <h2 class="mt-n4"><a class="font-size-7 text-black-2 font-weight-bold mb-4" href="">Agendar
+                              citas nunca fue tan sencillo como con nuestro sistema</a>
+                          </h2>
+                          <p class="mb-7 font-size-4 text-gray">Con nuestra plataforma, agendar una cita nunca fue tan
+                            fácil: solo un mensaje y listo.</p>
+
+                        </div>
+                        <!-- End Feature One -->
+                      </div>
+                      <div class="col-12 col-lg-6 ">
+                        <!-- Start Feature One -->
+                        <div class="bg-white px-8 pt-9 pb-7 rounded-4 mb-9 ">
+                          <div class=" text-center d-block  mb-7">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                              width="150px" height="150px" viewBox="0 0 64 64" version="1.1">
+
+                              <title>cld-cloud-phone</title>
+                              <desc>Created with Sketch.</desc>
+                              <defs>
+
+                              </defs>
+                              <g id="General" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="SLICES-64px" transform="translate(-540.000000, -200.000000)">
+
+                                </g>
+                                <g id="ICONS" transform="translate(-535.000000, -195.000000)">
+                                  <g id="cld-cloud-phone" transform="translate(540.000000, 200.000000)">
+                                    <path
+                                      d="M48.1006,11.6768 C48.1806,11.1658 48.2226,10.6438 48.2226,10.1118 C48.2226,4.5268 43.6956,-0.0002 38.1116,-0.0002 C33.5336,-0.0002 29.6666,3.0408 28.4206,7.2138 C27.4556,6.3238 26.1666,5.7778 24.7496,5.7778 C21.7576,5.7778 19.3326,8.2028 19.3326,11.1948 C19.3326,11.5118 19.3616,11.8228 19.4136,12.1238 C17.6736,12.8598 16.2816,14.2558 15.5546,15.9998 L18.9996,15.9998 C20.6576,15.9998 21.9996,17.3428 21.9996,18.9998 L21.9996,23.9998 L21.9996,25.9958 C22.0746,25.9988 22.1476,25.9998 22.2226,25.9998 L46.7776,25.9998 C50.7666,25.9998 53.9996,22.7668 53.9996,18.7778 C53.9996,15.2398 51.4566,12.2968 48.1006,11.6768"
+                                      id="Fill-600" fill="#87D6CD">
+
+                                    </path>
+                                    <polygon id="Fill-601" fill="#99A5B7" points="0 46 22 46 22 24 0 24">
+
+                                    </polygon>
+                                    <path
+                                      d="M19,16 L3,16 C1.343,16 0,17.343 0,19 L0,24 L22,24 L22,19 C22,17.343 20.657,16 19,16"
+                                      id="Fill-602" fill="#E9EFFA">
+
+                                    </path>
+                                    <path
+                                      d="M0,46 L0,51 C0,52.657 1.343,54 3,54 L19,54 C20.657,54 22,52.657 22,51 L22,46 L0,46 Z"
+                                      id="Fill-603" fill="#E9EFFA">
+
+                                    </path>
+                                    <path
+                                      d="M22,25.9971 C22.073,25.9991 22.147,26.0001 22.223,26.0001 L46.777,26.0001 C50.767,26.0001 54,22.7671 54,18.7771 C54,15.2401 51.457,12.2981 48.101,11.6771 C48.181,11.1661 48.223,10.6431 48.223,10.1111 C48.223,4.5261 43.695,0.0001 38.111,0.0001 C33.534,0.0001 29.667,3.0411 28.421,7.2141 C27.456,6.3231 26.167,5.7771 24.75,5.7771 C21.758,5.7771 19.333,8.2021 19.333,11.1941 C19.333,11.5121 19.361,11.8221 19.413,12.1241 C17.674,12.8591 16.282,14.2561 15.554,16.0001"
+                                      id="Stroke-604" stroke="#414547" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round">
+
+                                    </path>
+                                    <path d="M16,20 L10,20" id="Stroke-605" stroke="#414547" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round">
+
+                                    </path>
+                                    <path d="M6,20 L6,20" id="Path" stroke="#414547" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round">
+
+                                    </path>
+                                    <path d="M10,50 L12,50" id="Stroke-607" stroke="#414547" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round">
+
+                                    </path>
+                                    <path
+                                      d="M22,24 L22,19 C22,17.343 20.657,16 19,16 L3,16 C1.343,16 0,17.343 0,19 L0,24"
+                                      id="Stroke-608" stroke="#414547" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round">
+
+                                    </path>
+                                    <path
+                                      d="M0,46.001 L0,51 C0,52.657 1.343,54 3,54 L19,54 C20.657,54 22,52.657 22,51 L22,46.001"
+                                      id="Stroke-609" stroke="#414547" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round">
+
+                                    </path>
+                                    <path d="M22,46 L0,46" id="Stroke-610" stroke="#414547" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round">
+
+                                    </path>
+                                    <path d="M22,24 L0,24" id="Stroke-611" stroke="#414547" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round">
+
+                                    </path>
+                                    <path d="M22,46.001 L22,24" id="Stroke-612" stroke="#414547" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round">
+
+                                    </path>
+                                    <path d="M0,24 L0,46.001" id="Stroke-613" stroke="#414547" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round">
+
+                                    </path>
+                                  </g>
+                                </g>
+                              </g>
+                            </svg>
+                          </div>
+                          <h2 class="mt-n4"><a class="font-size-7 text-black-2 font-weight-bold mb-4" href="">Ahorra
+                              tiempo y agenda citas fácilmente por WhatsApp</a>
+                          </h2>
+                          <p class="mb-7 font-size-4 text-gray d-none">Agenda tus horas por WhatsApp y ahorra tiempo en
+                            llamadas y esperas.</p>
+
+                        </div>
+                        <!-- End Feature One -->
+                      </div>
+                      <div class="col-12 col-lg-6 ">
+                        <!-- Start Feature One -->
+                        <div class="bg-white px-8 pt-9 pb-7 rounded-4 mb-9 ">
+                          <div class=" text-center d-block  mb-7">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                              width="150px" height="150px" viewBox="0 0 64 64" version="1.1">
+
+                              <title>cld-cloud-wifi</title>
+                              <desc>Created with Sketch.</desc>
+                              <defs>
+
+                              </defs>
+                              <g id="General" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="SLICES-64px" transform="translate(-450.000000, -200.000000)">
+
+                                </g>
+                                <g id="ICONS" transform="translate(-445.000000, -195.000000)">
+                                  <g id="cld-cloud-wifi" transform="translate(454.000000, 202.000000)">
+                                    <path
+                                      d="M39.9912,12.5088 C43.4912,13.7408 46.0002,17.0778 46.0002,20.9998 C46.0002,25.9708 41.9702,29.9998 37.0002,29.9998 L8.0002,29.9998 C3.5822,29.9998 0.0002,26.4178 0.0002,21.9998 C0.0002,18.1298 2.7492,14.9018 6.4002,14.1598 L6.4022,14.1658 C6.1422,13.4938 6.0002,12.7638 6.0002,11.9998 C6.0002,8.6868 8.6862,5.9998 12.0002,5.9998 C13.8602,5.9998 15.5232,6.8478 16.6242,8.1768 L16.6222,8.1758 C18.2192,3.4238 22.7102,-0.0002 28.0002,-0.0002 C34.6272,-0.0002 40.0002,5.3728 40.0002,11.9998 C40.0002,12.1698 39.9962,12.3398 39.9892,12.5088 L39.9912,12.5088 Z"
+                                      id="Fill-621" fill="#87D6CD">
+
+                                    </path>
+                                    <path
+                                      d="M39.9912,12.5088 C43.4912,13.7408 46.0002,17.0778 46.0002,20.9998 C46.0002,25.9708 41.9702,29.9998 37.0002,29.9998 L8.0002,29.9998 C3.5822,29.9998 0.0002,26.4178 0.0002,21.9998 C0.0002,18.1298 2.7492,14.9018 6.4002,14.1598 L6.4022,14.1658 C6.1422,13.4938 6.0002,12.7638 6.0002,11.9998 C6.0002,8.6868 8.6862,5.9998 12.0002,5.9998 C13.8602,5.9998 15.5232,6.8478 16.6242,8.1768 L16.6222,8.1758 C18.2192,3.4238 22.7102,-0.0002 28.0002,-0.0002 C34.6272,-0.0002 40.0002,5.3728 40.0002,11.9998 C40.0002,12.1698 39.9962,12.3398 39.9892,12.5088 L39.9912,12.5088 Z"
+                                      id="Stroke-622" stroke="#414547" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round">
+
+                                    </path>
+                                    <path
+                                      d="M35.8184,38.6367 C32.5534,41.9477 28.0164,43.9997 23.0004,43.9997 C18.0304,43.9997 13.5304,41.9857 10.2734,38.7277"
+                                      id="Stroke-623" stroke="#414547" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round">
+
+                                    </path>
+                                    <path d="M31.4854,34.4854 C26.7984,39.1724 19.2014,39.1724 14.5144,34.4854"
+                                      id="Stroke-624" stroke="#414547" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round">
+
+                                    </path>
+                                    <path d="M6.7363,43.2637 C15.7183,52.2447 30.2813,52.2447 39.2633,43.2637"
+                                      id="Stroke-625" stroke="#414547" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round">
+
+                                    </path>
+                                  </g>
+                                </g>
+                              </g>
+                            </svg>
+                          </div>
+                          <h2 class="mt-n4"><a class="font-size-7 text-black-2 font-weight-bold mb-4"
+                              href="">Información útil al alcance de tu mano: descubre nuestros datos relevantes</a>
+                          </h2>
+                          <p class="mb-7 font-size-4 text-gray">Obtén información útil sobre nuestros servicios
+                            directamente en tu pantalla con solo pedirlo."</p>
+
+                        </div>
+                        <!-- End Feature One -->
+                      </div>
+                      <div class="col-12 col-lg-6 ">
+                        <!-- Start Feature One -->
+                        <div class="bg-white px-8 pt-9 pb-7 rounded-4 mb-9 ">
+                          <div class=" text-center d-block  mb-7">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                              height="150px" width="150px" version="1.1" id="Layer_1" viewBox="0 0 512 512"
+                              xml:space="preserve">
+                              <path style="fill:#36495E;"
+                                d="M323.74,111.802H205.097c-12.328,0-20.03-13.377-13.875-24.034l46.046-79.754  c4.424-7.662,14.223-10.291,21.886-5.864l73.635,42.512c7.663,4.424,10.289,14.223,5.864,21.886  c-3.912,6.776-4.138,15.007-0.604,22.02C343.408,99.206,335.668,111.802,323.74,111.802z" />
+                              <path style="fill:#2C3E50;"
+                                d="M338.653,66.55c4.425-7.663,1.799-17.462-5.864-21.886L259.154,2.15  c-0.917-0.53-1.866-0.953-2.832-1.284c0.324,25.991,0.468,65.121,0.491,110.935h66.927c11.928,0,19.668-12.596,14.309-23.232  C334.515,81.556,334.741,73.326,338.653,66.55z" />
+                              <path style="fill:#36495E;"
+                                d="M252.845,509.853l-138.138-79.754c-14.144-8.166-8.321-29.898,8.011-29.898h184.183  c12.327,0,20.03,13.376,13.875,24.034l-46.046,79.754C270.291,511.678,260.476,514.259,252.845,509.853z" />
+                              <path style="fill:#2C3E50;"
+                                d="M306.902,400.202h-50.835c-0.193,42.969-0.391,81.469-0.551,110.871  c7.119,2.523,15.28-0.265,19.217-7.083l46.046-79.754C326.931,413.578,319.228,400.202,306.902,400.202z" />
+                              <path style="fill:#6A82A1;"
+                                d="M485.651,174.523H26.348c-8.849,0-16.022-7.173-16.022-16.022v-41.358  c0-20.614,16.771-37.385,37.385-37.385h416.579c20.614,0,37.385,16.772,37.385,37.385v41.358  C501.674,167.35,494.5,174.523,485.651,174.523z" />
+                              <path style="fill:#36495E;"
+                                d="M464.288,79.757H256.775c0.057,28.491,0.054,60.742,0.007,94.766h228.869  c8.849,0,16.022-7.173,16.022-16.022v-41.358C501.674,96.529,484.903,79.757,464.288,79.757z" />
+                              <path style="fill:#6A82A1;"
+                                d="M464.288,432.246H47.71c-20.615,0-37.385-16.772-37.385-37.385V236.176  c0-8.849,7.173-16.022,16.022-16.022h459.305c8.849,0,16.022,7.173,16.022,16.022v158.684  C501.674,415.475,484.903,432.246,464.288,432.246z" />
+                              <path style="fill:#36495E;"
+                                d="M485.651,220.154H256.697c-0.166,72.704-0.481,149.239-0.781,212.092h208.371  c20.614,0,37.385-16.772,37.385-37.385V236.176C501.674,227.328,494.5,220.154,485.651,220.154z" />
+                              <path style="fill:#EEEEEE;"
+                                d="M501.674,252.199H10.325V142.478h491.349L501.674,252.199L501.674,252.199z" />
+                              <g>
+                                <path style="fill:#36495E;"
+                                  d="M397.784,316.839h-283.57c-8.849,0-16.022-7.173-16.022-16.022c0-8.849,7.173-16.022,16.022-16.022   h283.57c8.849,0,16.022,7.173,16.022,16.022S406.633,316.839,397.784,316.839z" />
+                                <path style="fill:#36495E;"
+                                  d="M204.242,367.604h-90.028c-8.849,0-16.022-7.173-16.022-16.022c0-8.849,7.173-16.022,16.022-16.022   h90.028c8.849,0,16.022,7.173,16.022,16.022C220.265,360.431,213.092,367.604,204.242,367.604z" />
+                              </g>
+                              <path style="fill:#BDBDBD;"
+                                d="M501.674,142.478h-244.86c-0.018,34.658-0.091,72.017-0.197,109.721h245.058V142.478z" />
+                              <path style="fill:#2C3E50;"
+                                d="M397.784,284.795H256.517c-0.036,10.729-0.072,21.427-0.111,32.045h141.378  c8.849,0,16.022-7.173,16.022-16.022C413.806,291.969,406.633,284.795,397.784,284.795z" />
+                            </svg>
+                          </div>
+                          <h2 class="mt-n4"><a class="font-size-7 text-black-2 font-weight-bold mb-4" href="">Pago
+                              rápido y seguro: la facilidad que necesitas</a>
+                          </h2>
+                          <p class="mb-7 font-size-4 text-gray d-none">Paga tus servicios de forma rápida y segura con
+                            nuestras opciones de pago en línea.</p>
+                        </div>
+                        <!-- End Feature One -->
+                      </div>
+
+
+                    </div>
+                  </div>
+                  <!-- Elige cancha -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="pricing-area">
+        <div class="container pt-12 pt-lg-24 pb-13 pb-lg-25">
+          <div class="row justify-content-center">
+            <div class="col-xxl-6 col-lg-7 col-md-9" data-aos="fade-in" data-aos-duration="1000" data-aos-once="true">
+              <!-- section-title start -->
+              <div class="section-title text-center mb-12 mb-lg-18 mb-lg-15 pb-lg-15 pb-0">
+                <h2 class="mb-9">Check our amazing plans, choose the best one for you.</h2>
+                <p class="text-default-color font-size-4 px-5 px-md-10 px-lg-15 px-xl-24 px-xxl-22">Complete Design
+                  Toolkit – huge collection of elements, rich customization options, flexible layouts.</p>
+              </div>
+              <!-- section-title end -->
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-xxl-10 col-xl-11">
+              <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 col-xs-9" data-aos="fade-right" data-aos-duration="1000"
+                  data-aos-once="true">
+                  <!-- card start -->
+                  <div
+                    class="card border-mercury rounded-8 mb-lg-3 mb-9 px-xl-12 px-lg-8 px-12 pb-12 hover-shadow-hitgray">
+                    <!-- card-header start -->
+                    <div class="card-header bg-transparent border-hit-gray-opacity-5 text-center pt-11 pb-8">
+                      <div class="pricing-title text-center">
+                        <h5 class="font-weight-semibold font-size-6 text-black-2">Basic Plan</h5>
+                        <h6 class="font-size-4 text-gray font-weight-normal">For single person only</h6>
+                      </div>
+                      <h2 class="mt-11 text-dodger">$199<span
+                          class="font-size-4 text-smoke font-weight-normal">/month</span> </h2>
+                    </div>
+                    <!-- card-header end -->
+                    <!-- card-body start -->
+                    <div class="card-body px-0 pt-11 pb-15">
+                      <ul class="list-unstyled">
+                        <li class="mb-6 text-black-2 d-flex font-size-4"><i
+                            class="fas fa-check font-size-3 text-black-2 mr-3"></i> 5 Job Postings</li>
+                        <li class="mb-6 text-black-2 d-flex font-size-4"><i
+                            class="fas fa-check font-size-3 text-black-2 mr-3"></i> 90 Days Duration
+                          Each</li>
+                        <li class="mb-6 text-black-2 d-flex font-size-4"><i
+                            class="fas fa-check font-size-3 text-black-2 mr-3"></i> Job Alert Emails
+                        </li>
+                      </ul>
+                    </div>
+                    <!-- card-body end -->
+                    <!-- card-footer end -->
+                    <div class="card-footer bg-transparent border-0 px-0 py-0">
+                      <a href="" class="btn btn-green btn-h-60 text-white rounded-5 btn-block text-uppercase">Start
+                        with Basic</a>
+                    </div>
+                    <!-- card-footer end -->
+                  </div>
+                  <!-- card end -->
+                </div>
+                <div class="col-lg-4 col-md-6 col-xs-9" data-aos="fade-up" data-aos-duration="1000"
+                  data-aos-once="true">
+                  <!-- card start -->
+                  <div
+                    class="card border-mercury recomended-pricing rounded-8 mb-lg-3 mb-9 px-xl-12 px-lg-8 px-12 pb-12 mt-lg-n13 hover-shadow-hitgray">
+                    <!-- card-header start -->
+                    <div class="card-header bg-transparent border-hit-gray-opacity-5 text-center pt-10 pb-8">
+                      <div class="pricing-title text-center">
+                        <span
+                          class="font-size-3 font-weight-bold text-uppercase text-dodger mb-9 d-inline-block">RECOMMENDED
+                        </span>
+                        <h5 class="font-weight-semibold font-size-6 text-black-2">Business Plan</h5>
+                        <h6 class="font-size-4 text-gray font-weight-normal">For small companies</h6>
+                      </div>
+                      <h2 class="mt-11 text-dodger">$499<span
+                          class="font-size-4 text-smoke font-weight-normal">/month</span> </h2>
+                    </div>
+                    <!-- card-header end -->
+                    <!-- card-body start -->
+                    <div class="card-body px-0 pt-11 pb-6">
+                      <ul class="list-unstyled">
+                        <li class="mb-6 text-black-2 d-flex font-size-4"><i
+                            class="fas fa-check font-size-3 text-black-2 mr-3"></i> 5 Job Postings</li>
+                        <li class="mb-6 text-black-2 d-flex font-size-4"><i
+                            class="fas fa-check font-size-3 text-black-2 mr-3"></i> 90 Days Duration
+                          Each</li>
+                        <li class="mb-6 text-black-2 d-flex font-size-4"><i
+                            class="fas fa-check font-size-3 text-black-2 mr-3"></i> Job Alert Emails
+                        </li>
+                        <li class="mb-6 text-black-2 d-flex font-size-4"><i
+                            class="fas fa-check font-size-3 text-black-2 mr-3"></i> Candidates Database
+                        </li>
+                      </ul>
+                    </div>
+                    <!-- card-body end -->
+                    <!-- card-footer end -->
+                    <div class="card-footer bg-transparent border-0 px-0 py-0">
+                      <a href="" class="btn btn-green btn-h-60 text-white rounded-5 btn-block text-uppercase">Start
+                        with Business</a>
+                    </div>
+                    <!-- card-footer end -->
+                  </div>
+                  <!-- card end -->
+                </div>
+                <div class="col-lg-4 col-md-6 col-xs-9" data-aos="fade-left" data-aos-duration="1000"
+                  data-aos-once="true">
+                  <!-- card start -->
+                  <div class="card border-mercury rounded-8 mb-3 px-xl-12 px-lg-8 px-12 pb-12 hover-shadow-hitgray">
+                    <!-- card-header start -->
+                    <div class="card-header bg-transparent border-hit-gray-opacity-5 text-center pt-11 pb-8">
+                      <div class="pricing-title text-center">
+                        <h5 class="font-weight-semibold font-size-6 text-black-2">Premium Plan</h5>
+                        <h6 class="font-size-4 text-gray font-weight-normal">For bigger companies</h6>
+                      </div>
+                      <h2 class="mt-11 text-dodger">$999 <span
+                          class="font-size-4 text-smoke font-weight-normal">/month</span> </h2>
+                    </div>
+                    <!-- card-header end -->
+                    <!-- card-body start -->
+                    <div class="card-body px-0 pt-11 pb-6">
+                      <ul class="list-unstyled">
+                        <li class="mb-6 text-black-2 d-flex font-size-4"><i
+                            class="fas fa-check font-size-3 text-black-2 mr-3"></i> 5 Job Postings</li>
+                        <li class="mb-6 text-black-2 d-flex font-size-4"><i
+                            class="fas fa-check font-size-3 text-black-2 mr-3"></i> 90 Days Duration
+                          Each</li>
+                        <li class="mb-6 text-black-2 d-flex font-size-4"><i
+                            class="fas fa-check font-size-3 text-black-2 mr-3"></i> Job Alert Emails
+                        </li>
+                        <li class="mb-6 text-black-2 d-flex font-size-4"><i
+                            class="fas fa-check font-size-3 text-black-2 mr-3"></i> Candidates Database
+                        </li>
+                      </ul>
+                    </div>
+                    <!-- card-body end -->
+                    <!-- card-footer end -->
+                    <div class="card-footer bg-transparent border-0 px-0 py-0">
+                      <a href="" class="btn btn-green btn-h-60 text-white rounded-5 btn-block text-uppercase">Start
+                        with Premium </a>
+                    </div>
+                    <!-- card-footer end -->
+                  </div>
+                  <!-- card end -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- pricing area function end -->
+      <!-- footer area function start -->
+      <!-- cta section -->
+      <footer class="footer bg-ebony-clay dark-mode-texts">
+        <div class="container">
+          <!-- Cta section -->
+          <div class="pt-11 pt-lg-20 pb-13 pb-lg-20 border-bottom border-width-1 border-default-color-2">
+            <div class="row justify-content-center ">
+              <div class="col-xl-7 col-lg-12" data-aos="fade-right" data-aos-duration="800" data-aos-once="true">
+                <!-- cta-content start -->
+                <div class="pb-xl-0 pb-9 text-xl-left text-center">
+                  <h2 class="text-white font-size-8 mb-4">Most comprehensive job portal</h2>
+                  <p class="text-hit-gray font-size-5 mb-0">We must explain to you how all this mistaken idea of
+                    denouncing</p>
+                </div>
+                <!-- cta-content end -->
+              </div>
+              <div class="col-xl-5 col-lg-12" data-aos="fade-left" data-aos-duration="800" data-aos-once="true">
+                <!-- cta-btns start -->
+
+                <!-- cta-btns end -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container  pt-12 pt-lg-19 pb-10 pb-lg-19">
+          <div class="row">
+            <div class="col-lg-4 col-sm-6 mb-lg-0 mb-9">
+              <!-- footer logo start -->
+              <img src="{% static 'image/logo-main-white.png' %}" alt="" class="footer-logo mb-14">
+              <!-- footer logo End -->
+              <!-- media start -->
+              <div class="media mb-11">
+                <img src="{% static 'image/l1/png/message.png' %}" class="align-self-center mr-3" alt="">
+                <div class="media-body pl-5">
+                  <p class="mb-0 font-size-4 text-white">Contact us at</p>
+                  <a class="mb-0 font-size-4 font-weight-bold" href="mailto:support@uxtheme.net">support@uxtheme.net</a>
+                </div>
+              </div>
+              <!-- media start -->
+              <!-- widget social icon start -->
+              <div class="social-icons">
+                <ul class="pl-0 list-unstyled d-flex align-items-end ">
+                  <li class="d-flex flex-column justify-content-center px-3 mr-3 font-size-4 heading-default-color">
+                    Follow us on:</li>
+                  <li class="d-flex flex-column justify-content-center px-3 mr-3"><a href="#"
+                      class="hover-color-primary heading-default-color"><i
+                        class="fab fa-facebook-f font-size-3 pt-2"></i></a></li>
+                  <li class="d-flex flex-column justify-content-center px-3 mr-3"><a href="#"
+                      class="hover-color-primary heading-default-color"><i
+                        class="fab fa-twitter font-size-3 pt-2"></i></a></li>
+                  <li class="d-flex flex-column justify-content-center px-3 mr-3"><a href="#"
+                      class="hover-color-primary heading-default-color"><i
+                        class="fab fa-linkedin-in font-size-3 pt-2"></i></a></li>
+                </ul>
+              </div>
+              <!-- widget social icon end -->
+            </div>
+            <div class="col-lg-8 col-md-6">
+              <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
+                  <div class="footer-widget widget2 mb-md-0 mb-13">
+                    <!-- footer widget title start -->
+                    <p class="widget-title font-size-4 text-gray mb-md-8 mb-7">Company</p>
+                    <!-- footer widget title end -->
+                    <!-- widget social menu start -->
+                    <ul class="widget-links pl-0 list-unstyled list-hover-primary">
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">About
+                          us</a></li>
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Contact
+                          us</a></li>
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                          href="">Careers</a></li>
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Press</a>
+                      </li>
+                    </ul>
+                    <!-- widget social menu end -->
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
+                  <div class="footer-widget widget3 mb-sm-0 mb-13">
+                    <!-- footer widget title start -->
+                    <p class="widget-title font-size-4 text-gray mb-md-8 mb-7">Product</p>
+                    <!-- footer widget title end -->
+                    <!-- widget social menu start -->
+                    <ul class="widget-links pl-0 list-unstyled list-hover-primary">
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Features
+                        </a></li>
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                          href="">Pricing</a></li>
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">News</a>
+                      </li>
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Help
+                          desk</a></li>
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal"
+                          href="">Support</a></li>
+                    </ul>
+                    <!-- widget social menu end -->
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
+                  <div class="footer-widget widget4 mb-sm-0 mb-13">
+                    <!-- footer widget title start -->
+                    <p class="widget-title font-size-4 text-gray mb-md-8 mb-7">Services</p>
+                    <!-- footer widget title end -->
+                    <!-- widget social menu start -->
+                    <ul class="widget-links pl-0 list-unstyled list-hover-primary">
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Digital
+                          Marketing</a></li>
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">SEO for
+                          Business</a></li>
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Avasta
+                          Dash</a></li>
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">UI
+                          Design</a></li>
+                    </ul>
+                    <!-- widget social menu end -->
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
+                  <div class="footer-widget widget4">
+                    <!-- footer widget title start -->
+                    <p class="widget-title font-size-4 text-gray mb-md-8 mb-7">Legal</p>
+                    <!-- footer widget title end -->
+                    <ul class="widget-links pl-0 list-unstyled list-hover-primary">
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Privacy
+                          Policy</a></li>
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Terms &
+                          Conditions</a></li>
+                      <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Return
+                          Policy</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <!-- footer area function end -->
+    </div>
+    <!-- Vendor Scripts -->
+
+
+  </body>
+</div>
+{% endblock content %}
+
+
+
+
+{% block js %}
+<script>
+  var slideIndex = 0;
+  showSlides();
+
+  function showSlides() {
+    var slides = document.getElementsByClassName("slide");
+    for (var i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    slideIndex++;
+    if (slideIndex > slides.length) {
+      slideIndex = 1;
+    }
+    slides[slideIndex - 1].style.display = "block";
+    setTimeout(showSlides, 2000); // Cambia de diapositiva cada 2 segundos (2000 milisegundos)
+  }
+  new Vue({
+
+    el: "#app",
+    delimiters: ['[[', ']]'],
+    data: {
+      showElement: false
+    },
+    mounted() {
+      this.method_prueba()
+    },
+    methods: {
+      method_prueba() {
+        console.log("Hola")
+      },
+      changeRed() {
+        document.documentElement.style.setProperty('--#6db0e5', '#f71e3f')
+      },
+      changeBlue() {
+        document.documentElement.style.setProperty('--blue', '#4743db')
+      },
+      changeGreen() {
+        document.documentElement.style.setProperty('--primary', 'var(--easy)')
+      }
+    }
+  });
+</script>
+
+{% endblock js %}

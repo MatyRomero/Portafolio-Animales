@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Landing Page Template</title>
+  <link rel="shortcut icon" href="static/image/favicon.png" type="image/x-icon" />
+  <!-- Bootstrap , fonts & icons  -->
+  <link rel="stylesheet" href="{% static 'staticLanding/css/boostrap.css'%}" />
+  <link rel="stylesheet" href="{% static 'staticLanding/fonts/icon-font/css/style.css'%}" />
+  <link rel="stylesheet" href="{% static 'staticLanding/fonts/typography-font/typo.css' %}" />
+  <link rel="stylesheet" href="{% static 'staticLanding/fonts/fontawesome-5/css/all.css' %}" />
+  <!-- Pluginstylesheets  -->
+  <link rel="stylesheet" href="{% static 'staticLanding/plugins/aos/aos.min.css' %}static" />
+  <link rel="stylesheet" href="{% static 'staticLanding/plugins/fancybox/jquery.fancybox.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'staticLanding/plugins/nice-select/nice-select.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'staticLanding/plugins/slick/slick.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'staticLanding/plugins/ui-range-slider/jquery-ui.css' %}" />
+  <!-- Vendor stylesheets  -->
+  <link rel="stylesheet" href="{% static 'staticLanding/css/main.css' %} " />
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+
+  <header
+    class="site-header site-header--menu-right dynamic-sticky-bg py-7 py-lg-0 site-header--absolute site-header--sticky">
+    <div class="container">
+      <nav class="navbar site-navbar offcanvas-active navbar-expand-lg  px-0 py-0">
+        <!-- Brand Logo-->
+
+        <div class=" brand-logo">
+          <a href="{% url 'index'%}">
+            <!-- light version logo (logo must be black)-->
+            <!-- <img src="{% static 'index_images/logoconecta.png' %}" alt="" class="light-version-logo default-logo"> -->
+            <!-- Dark version logo (logo must be White)-->
+            <!-- <img src="{% static 'index_images/logoconecta.png' %}" alt="" class="dark-version-logo"> -->
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="mobile-menu">
+          <div class="navbar-nav-wrapper">
+            <ul class="navbar-nav main-menu">
+              <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle gr-toggle-arrow" id="navbarDropdown" href="#features" role="button"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Inicio<i
+                    class="icon icon-small-down"></i></a>
+                <ul class="gr-menu-dropdown dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li class="drop-menu-item">
+                    <a href="{% url 'index'%}">
+                      Inicio
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle gr-toggle-arrow" id="navbarDropdown2" href="#features" role="button"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages <i
+                    class="icon icon-small-down"></i></a>
+                <ul class="gr-menu-dropdown dropdown-menu" aria-labelledby="navbarDropdown2">
+                  <li class="drop-menu-item dropdown">
+                    <a class="dropdown-toggle gr-toggle-arrow" id="navbarDropdown242" href="#" role="button"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Canchassssss
+                      <i class="icon icon-small-down"></i>
+                    </a>
+                    <ul class="gr-menu-dropdown dropdown-menu dropdown-left" aria-labelledby="navbarDropdown242">
+                      <li class="drop-menu-item">
+                        <a href="{% url 'servicios' %}">
+                          Servicios
+                        </a>
+                      </li>
+
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Ayuda</a>
+              </li>
+            </ul>
+          </div>
+          <button class="d-block d-lg-none offcanvas-btn-close focus-reset" type="button" data-toggle="collapse"
+            data-target="#mobile-menu" aria-controls="mobile-menu" aria-expanded="true" aria-label="Toggle navigation">
+            <i class="gr-cross-icon"></i>
+          </button>
+        </div>
+
+        <!-- Mobile Menu Hamburger-->
+        <!-- <button class="navbar-toggler btn-close-off-canvas  hamburger-icon border-0" type="button" data-toggle="collapse"
+          data-target="#mobile-menu" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="hamburger hamburger--squeeze js-hamburger">
+            <span class="hamburger-box">
+              <span class="hamburger-inner"></span>
+            </span>
+          </span>
+        </button> -->
+        <!--/.Mobile Menu Hamburger Ends-->
+      </nav>
+    </div>
+  </header>
+
+  {% block css %}
+  <style>
+
+  </style>
+
+  {% endblock css %}
+  <!-- Custom stylesheet -->
+</head>
+
+
+<body>
+  {% block content %}
+
+
+  {% endblock content %}
+
+  <!-- Vendor Scripts -->
+  <!-- <script src="{% static 'js/vendor.min.js' %}"></script>
+  <script src="{% static 'plugins/fancybox/jquery.fancybox.min.js' %}"></script>
+  <script src="{% static 'plugins/nice-select/jquery.nice-select.min.js' %}"></script>
+  <script src="{% static 'plugins/aos/aos.min.js' %}"></script>
+  <script src="{% static 'plugins/slick/slick.min.js' %}"></script>
+  <script src="{% static 'plugins/counter-up/jquery.counterup.min.js' %}"></script>
+  <script src="{% static 'plugins/counter-up/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'plugins/ui-range-slider/jquery-ui.js' %}"></script>
+  <script src="{% static 'js/custom.js' %}"></script> -->
+
+  {% block js %}
+
+  <script>
+    new Vue({
+
+      el: "#app",
+      delimiters: ['[[', ']]'],
+      data: {
+        showElement: false
+      },
+      mounted() {
+        this.method_prueba()
+      },
+      methods: {
+        method_prueba() {
+          console.log("Hola")
+        },
+        changeRed() {
+          document.documentElement.style.setProperty('--#6db0e5', '#f71e3f')
+          console.log("RED")
+        },
+        changeBlue() {
+          document.documentElement.style.setProperty('--blue', '#4743db')
+        },
+        changeGreen() {
+          document.documentElement.style.setProperty('--primary', 'var(--easy)')
+        }
+      }
+    });
+  </script>
+
+  {% endblock js %}
+</body>
+
+</html>

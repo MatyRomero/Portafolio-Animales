@@ -1,0 +1,36 @@
+version: "3"
+services:
+  web:
+    build: .
+    platform: linux/amd64
+    image: safeware/templates:latest
+    command: python3 manage.py runserver 0.0.0.0:8090
+    volumes:
+      - ./:/code
+    ports:
+      - "8090:8090"
+    expose:
+      - "8090"
+    depends_on:
+      - db
+    env_file:
+      - ./conf/.env
+    networks:
+      - django-templates-dev
+
+  db:
+    image: mysql/mysql-server:5.7
+    env_file:
+      - ./conf/.env
+    ports:
+      - "3307:3307"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    networks:
+      - django-templates-dev
+
+networks:
+  django-templates-dev:
+
+volumes:
+  dbdata:
