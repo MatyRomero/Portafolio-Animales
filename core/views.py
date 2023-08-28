@@ -39,3 +39,9 @@ def index(request):
     template_name = "index.html"
     context = {}
     return render(request, template_name, context)
+
+def registro(request):
+    template_name = "registro.html"
+    context = {}
+    context ["usuarios"] = User.objects.all()
+    return render(request, template_name, context)

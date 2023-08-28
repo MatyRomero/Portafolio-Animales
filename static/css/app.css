@@ -56,7 +56,7 @@ body {
 
 a {
 	text-decoration: none;
-	color: #01489f;
+	color: #229D98;
 }
 
 a:hover {
@@ -412,7 +412,7 @@ a:hover {
 
 	color: #fff;
 
-	background-color: #01489f;
+	background-color: #229D98;
 
 	display: flex;
 
@@ -470,7 +470,7 @@ a:hover {
 
 	height: 13px;
 
-	background: #01489f;
+	background: #229D98;
 
 	position: absolute;
 
@@ -480,9 +480,9 @@ a:hover {
 
 	transform: rotate(45deg);
 
-	border-top: 1px solid #01489f;
+	border-top: 1px solid #229D98;
 
-	border-left: 1px solid #01489f;
+	border-left: 1px solid #229D98;
 
 }
 
@@ -654,7 +654,7 @@ a:hover {
 
 	border-bottom: 0px solid #ededed;
 
-	background: #01489f;
+	background: #229D98;
 
 	text-align: center;
 
@@ -684,7 +684,7 @@ a:hover {
 
 	padding: .72rem 1.2rem;
 
-	color: #01489f;
+	color: #229D98;
 
 	border-top: 1px solid #ededed;
 
@@ -955,7 +955,7 @@ sup {
 
 .lis-bg-primary {
 
-	background-color: #01489f
+	background-color: #229D98
 }
 
 .price-table.active {
@@ -1143,7 +1143,7 @@ sup {
 
 .sidebar-wrapper .metismenu .mm-active>a {
 
-	color: #01489f;
+	color: #229D98;
 
 	text-decoration: none;
 
@@ -1360,8 +1360,8 @@ input::placeholder {
 
 
 .form-check-input:checked {
-	background-color: #01489f;
-	border-color: #01489f;
+	background-color: #229D98;
+	border-color: #229D98;
 }
 
 
@@ -1380,7 +1380,7 @@ input::placeholder {
 }
 
 .form-range::-moz-range-thumb {
-	background-color: #01489f;
+	background-color: #229D98;
 }
 
 .invalid-feedback {
@@ -1627,28 +1627,28 @@ input::placeholder {
 
 .btn-primary {
 	color: #fff;
-	background-color: #01489f;
-	border-color: #01489f;
+	background-color: #229D98;
+	border-color: #229D98;
 }
 
 
 .btn-primary {
 	color: #fff;
-	background-color: #01489f;
-	border-color: #01489f
+	background-color: #229D98;
+	border-color: #229D98
 }
 
 .btn-primary:hover {
 	color: #fff;
-	background-color: #01489f;
-	border-color: #01489f
+	background-color: #229D98;
+	border-color: #229D98
 }
 
 .btn-check:focus+.btn-primary,
 .btn-primary:focus {
 	color: #fff;
-	background-color: #01489f;
-	border-color: #01489f;
+	background-color: #229D98;
+	border-color: #229D98;
 	box-shadow: 0 0 0 .25rem rgba(89, 48, 161, 0.5)
 }
 
@@ -1658,8 +1658,8 @@ input::placeholder {
 .btn-primary:active,
 .show>.btn-primary.dropdown-toggle {
 	color: #fff;
-	background-color: #01489f;
-	border-color: #01489f
+	background-color: #229D98;
+	border-color: #229D98
 }
 
 .btn-check:active+.btn-primary:focus,
@@ -1673,8 +1673,8 @@ input::placeholder {
 .btn-primary.disabled,
 .btn-primary:disabled {
 	color: #fff;
-	background-color: #01489f;
-	border-color: #01489f
+	background-color: #229D98;
+	border-color: #229D98
 }
 
 
@@ -1864,14 +1864,14 @@ input::placeholder {
 
 
 .btn-outline-primary {
-	color: #01489f;
-	border-color: #01489f
+	color: #229D98;
+	border-color: #229D98
 }
 
 .btn-outline-primary:hover {
 	color: #fff;
-	background-color: #01489f;
-	border-color: #01489f
+	background-color: #229D98;
+	border-color: #229D98
 }
 
 .btn-check:focus+.btn-outline-primary,
@@ -1885,8 +1885,8 @@ input::placeholder {
 .btn-outline-primary.dropdown-toggle.show,
 .btn-outline-primary:active {
 	color: #fff;
-	background-color: #01489f;
-	border-color: #01489f
+	background-color: #229D98;
+	border-color: #229D98
 }
 
 .btn-check:active+.btn-outline-primary:focus,
@@ -1899,7 +1899,7 @@ input::placeholder {
 
 .btn-outline-primary.disabled,
 .btn-outline-primary:disabled {
-	color: #01489f;
+	color: #229D98;
 	background-color: transparent
 }
 
@@ -2029,51 +2029,51 @@ input::placeholder {
 
 
 .accordion-button:not(.collapsed) {
-	color: #01489f;
+	color: #229D98;
 	background-color: rgb(103 58 183 / 12%);
 	box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%);
 }
 
 
 .accordion-button:focus {
-	border-color: #01489f;
+	border-color: #229D98;
 	box-shadow: 0 0 0 0.25rem rgb(103 58 183 / 25%);
 }
 
 .list-group-item.active {
-	background-color: #01489f;
-	border-color: #01489f;
+	background-color: #229D98;
+	border-color: #229D98;
 }
 
 
 .nav-link {
-	color: #01489f;
+	color: #229D98;
 }
 
 .page-link {
-	color: #01489f;
+	color: #229D98;
 }
 
 .page-link:focus {
 	z-index: 3;
-	color: #01489f;
+	color: #229D98;
 	background-color: #e9ecef;
 	outline: 0;
 	box-shadow: 0 0 0 .25rem rgba(104, 58, 183, 0.5)
 }
 
 .page-item.active .page-link {
-	background-color: #01489f;
-	border-color: #01489f;
+	background-color: #229D98;
+	border-color: #229D98;
 }
 
 .progress-bar {
-	background-color: #01489f;
+	background-color: #229D98;
 }
 
 .nav-pills .nav-link.active,
 .nav-pills .show>.nav-link {
-	background-color: #01489f;
+	background-color: #229D98;
 }
 
 .btn i {
@@ -2100,7 +2100,7 @@ input::placeholder {
 
 .btn-light-primary {
 
-	color: #01489f;
+	color: #229D98;
 
 	background-color: rgb(103 58 183 / 30%);
 
@@ -2372,7 +2372,7 @@ input::placeholder {
 
 
 .bg-primary {
-	background-color: #01489f !important;
+	background-color: #229D98 !important;
 }
 
 .bg-secondary {
@@ -2404,7 +2404,7 @@ input::placeholder {
 }
 
 .bg-login-color {
-	background-color: #01489f !important;
+	background-color: #229D98 !important;
 }
 
 .bg-rose {
@@ -2604,7 +2604,7 @@ input::placeholder {
 /*Text Colors*/
 
 .text-primary {
-	color: #01489f !important;
+	color: #229D98 !important;
 }
 
 .text-danger {
@@ -2707,7 +2707,7 @@ input::placeholder {
 
 .border-lg-top-primary {
 
-	border-top: 4px solid #01489f;
+	border-top: 4px solid #229D98;
 
 }
 
@@ -2731,7 +2731,7 @@ input::placeholder {
 
 .icon-color-black {
 
-	color: #01489f;
+	color: #229D98;
 
 }
 
@@ -3041,7 +3041,7 @@ input::placeholder {
 
 .fm-menu .list-group a:hover {
 
-	background: #01489f;
+	background: #229D98;
 
 	color: #ffffff;
 
@@ -3170,7 +3170,7 @@ input::placeholder {
 
 	margin-bottom: 20px;
 
-	border-bottom: 1px solid #01489f
+	border-bottom: 1px solid #229D98
 }
 
 .invoice .company-details {
@@ -3211,7 +3211,7 @@ input::placeholder {
 
 	margin-top: 0;
 
-	color: #01489f
+	color: #229D98
 }
 
 .invoice main {
@@ -3232,7 +3232,7 @@ input::placeholder {
 
 	padding-left: 6px;
 
-	border-left: 6px solid #01489f;
+	border-left: 6px solid #229D98;
 
 	background: #e7f2ff;
 
@@ -3282,7 +3282,7 @@ input::placeholder {
 
 	font-weight: 400;
 
-	color: #01489f;
+	color: #229D98;
 
 	font-size: 1.2em
 }
@@ -3304,7 +3304,7 @@ input::placeholder {
 
 	font-size: 1.6em;
 
-	background: #01489f
+	background: #229D98
 }
 
 .invoice table .unit {
@@ -3314,7 +3314,7 @@ input::placeholder {
 
 .invoice table .total {
 
-	background: #01489f;
+	background: #229D98;
 
 	color: #fff
 }
@@ -3348,11 +3348,11 @@ input::placeholder {
 
 .invoice table tfoot tr:last-child td {
 
-	color: #01489f;
+	color: #229D98;
 
 	font-size: 1.4em;
 
-	border-top: 1px solid #01489f
+	border-top: 1px solid #229D98
 }
 
 .invoice table tfoot tr td:first-child {
@@ -3634,7 +3634,7 @@ input::placeholder {
 
 .chat-tab-menu .nav-pills .show>.nav-link {
 
-	color: #01489f;
+	color: #229D98;
 
 	background-color: rgb(0 123 255 / 0%);
 
@@ -3952,7 +3952,7 @@ input::placeholder {
 
 .email-navigation a.list-group-item.active {
 
-	color: #01489f;
+	color: #229D98;
 
 	font-weight: 600;
 
@@ -4352,7 +4352,7 @@ ul.icons li {
 
 ul.icons li i {
 
-	color: #01489f;
+	color: #229D98;
 
 	width: 30px;
 
@@ -4456,7 +4456,7 @@ ul.icons li span {
 
 .pByfF i {
 
-	color: #01489f;
+	color: #229D98;
 
 	font-size: 36px;
 
@@ -4584,7 +4584,7 @@ ul.icons li span {
 
 	font-size: 30px;
 
-	color: #01489f;
+	color: #229D98;
 
 }
 
@@ -4698,7 +4698,7 @@ ul.icons li span {
 
 	float: right;
 
-	color: #01489f;
+	color: #229D98;
 
 }
 
@@ -4864,7 +4864,7 @@ ul.icons li span {
 
 	right: 12px;
 
-	background-color: #01489f;
+	background-color: #229D98;
 
 	z-index: 10000;
 
