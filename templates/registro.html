@@ -60,6 +60,11 @@
                                                 <input v-model="nuevo_usuario.email" type="text" maxlength="99"
                                                     class="form-control" placeholder="Ingresar Email">
                                             </div>
+                                            <div class="form-group">
+                                                <label for="" class="control-label">Teléfono: </label>
+                                                <input v-model="nuevo_usuario.telefono" type="text" maxlength="99"
+                                                    class="form-control" placeholder="Ingresar teléfono">
+                                            </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="" class="control-label">Contraseña: </label>
@@ -116,6 +121,7 @@
                 last_name: "",
                 password: "",
                 email: "",
+                telefono: "",
             }
         },
         methods: {
@@ -125,6 +131,7 @@
                     'last_name': 'Apellido',
                     'email': 'Correo',
                     'password': 'Contraseña',
+                    'telefono': 'Teléfono'
                 };
 
                 for (const campo in camposValidar) {

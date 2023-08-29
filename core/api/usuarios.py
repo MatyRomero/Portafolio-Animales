@@ -81,5 +81,6 @@ class EditarUsuarios(APIView):
         )
         Usuario.objects.filter(pk = request.data["id_usuario"]).update(
             active = request.data["active"],
+            telefono = request.data["telefono"]
         )
         return Response(response)
