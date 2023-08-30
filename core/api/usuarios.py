@@ -13,7 +13,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate
 from django.contrib.auth.models import User
 from PIL import Image
-import requests
 from django.core.files import File
 from urllib.request import urlopen
 from tempfile import NamedTemporaryFile

@@ -5,7 +5,6 @@ from rest_framework.views import APIView
 from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
-import requests
 import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate

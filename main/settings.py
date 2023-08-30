@@ -75,6 +75,9 @@ DATABASES = {
         'PASSWORD': '11Uni019verso@',
         'HOST': 'localhost',  # O la dirección de tu servidor Oracle
         'PORT': '1521',     # El puerto de tu servidor Oracle
+        'OPTIONS': {
+            'threaded': True,  # Puede ayudar a mejorar el rendimiento
+        },
     }
 }
 
