@@ -10,6 +10,12 @@ urlpatterns = [
     path("", core_views.login, name="login"),
     path('index/', core_views.index, name='index'),
     path('registro/', core_views.registro, name='registro'),
+    path('publicaciones/', core_views.publicaciones, name='publicaciones'),
+    path('veterinarias/', core_views.veterinarias, name='veterinarias'),
+    path('peluquerias/', core_views.peluquerias, name='peluquerias'),
+    path('shops/', core_views.shops, name='shops'),
+    path('perfil/', core_views.perfil, name='perfil'),
+    path('dashboard/', core_views.dashboard, name='dashboard'),
     ## API Usuarios
     path("api/create/usuarios", CreateUsuarios.as_view()),
     path("api/edit/usuarios", EditarUsuarios.as_view()),

@@ -2122,7 +2122,7 @@ input::placeholder {
 
 	color: #f02769;
 
-	background-color: rgb(240 39 105 / 30%);
+	background-color: rgb(255, 255, 255) !important;
 
 	border-color: rgb(240 39 105 / 30%);
 

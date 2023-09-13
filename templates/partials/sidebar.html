@@ -6,4 +6,58 @@
             <div class="menu-title">Inicio</div>
         </a>
     </li>
+    <li>
+        <a>
+            <div class=" parent-icon icon-color-black"><i class='bx bx-add-to-queue'></i>
+            </div>
+            <div class="menu-title">Publicar</div>
+        </a>
+    </li>
+    <li>
+        <a class="has-arrow" href="javascript:;">
+            <div class=" parent-icon icon-color-black"><i class='bx bx-store-alt'></i>
+            </div>
+            <div class="menu-title">Locales</div>
+        </a>
+        <ul class="mm-collapse">
+            <li>
+                <a href="{% url 'veterinarias' %}">
+                    <div class=" parent-icon icon-color-black"><i
+                            class='bx bx-plus-medical                        '></i>
+                    </div>
+                    <div class="menu-title">Veterinaria</div>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'peluquerias' %}">
+                    <div class=" parent-icon icon-color-black"><i class='bx bx-cutting'></i>
+                    </div>
+                    <div class="menu-title">Peluquerías</div>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'shops' %}">
+                    <div class=" parent-icon icon-color-black"><i class='bx bxs-dollar-circle'></i>
+                    </div>
+                    <div class="menu-title">Pet Shops</div>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="{% url 'perfil' %}">
+            <div class=" parent-icon icon-color-black"><i class='bx bxs-user'></i>
+            </div>
+            <div class="menu-title">Perfil</div>
+        </a>
+    </li>
+    {% if request.user.is_superuser %}
+    <li>
+        <a href="{% url 'dashboard' %}">
+            <div class=" parent-icon icon-color-black"><i class='bx bx-bar-chart-alt-2'></i>
+            </div>
+            <div class="menu-title">Dashboard</div>
+        </a>
+    </li>
+    {% endif %}
 </ul>

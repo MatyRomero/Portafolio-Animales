@@ -67,19 +67,28 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'portafolio',
-        'USER': 'admin',
-        'PASSWORD': '11Uni019verso@',
-        'HOST': 'localhost',  # O la dirección de tu servidor Oracle
-        'PORT': '1521',     # El puerto de tu servidor Oracle
-        'OPTIONS': {
-            'threaded': True,  # Puede ayudar a mejorar el rendimiento
-        },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.oracle',
+#         'NAME': 'portafolio',
+#         'USER': 'admin',
+#         'PASSWORD': '11UNI019verso10@',
+#         'HOST': 'localhost',  # O la dirección de tu servidor Oracle
+#         'PORT': '1521',     # El puerto de tu servidor Oracle
+#         'OPTIONS': {
+#             'threaded': True,  # Puede ayudar a mejorar el rendimiento
+#         },
+#     }
+# }
 
 CORS_ALLOW_ALL_ORIGINS = True
 

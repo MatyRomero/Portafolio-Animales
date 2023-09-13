@@ -44,3 +44,39 @@ def registro(request):
     context = {}
     context ["usuarios"] = User.objects.all()
     return render(request, template_name, context)
+
+@login_required(login_url='login')
+def publicaciones(request):
+    template_name = "publicaciones.html"
+    context = {}
+    return render(request, template_name, context)
+
+@login_required(login_url='login')
+def veterinarias(request):
+    template_name = "veterinarias.html"
+    context = {}
+    return render(request, template_name, context)
+
+@login_required(login_url='login')
+def peluquerias(request):
+    template_name = "peluquerias.html"
+    context = {}
+    return render(request, template_name, context)
+
+@login_required(login_url='login')
+def shops(request):
+    template_name = "shops.html"
+    context = {}
+    return render(request, template_name, context)
+
+@login_required(login_url='login')
+def perfil(request):
+    template_name = "perfil.html"
+    context = {}
+    return render(request, template_name, context)
+
+@login_required(login_url='login')
+def dashboard(request):
+    template_name = "dashboard.html"
+    context = {}
+    return render(request, template_name, context)

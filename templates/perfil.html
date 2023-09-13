@@ -1,0 +1,72 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+
+{% block css %}
+
+<link href="{% static 'plugins/datatable/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'plugins/datatable/css/buttons.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
+
+
+{% endblock css %}
+{% block content %}
+
+<div id="app">
+    <div class="card w-100 position-relative overflow-hidden">
+        <div class="card-body p-4">
+            <h5 class="card-title fw-semibold">Configuración de Perfil</h5>
+            <p class="card-subtitle mb-4">Cambia tu foto de perfil</p>
+            <div class="text-center"><img src="/static/images/icons/user.png" alt="" width="120" height="120"
+                    class="img-fluid rounded-circle">
+                <div class="d-flex align-items-center justify-content-center my-4 gap-3"><button
+                        class="btn btn-primary">Subir</button> <button class="btn btn-outline-danger">Eliminar</button>
+                </div>
+                <p class="mb-0">Formatos Permitidos JPG, GIF o PNG. Max 2MB</p>
+            </div>
+        </div>
+    </div>
+    <div class="card w-100 position-relative overflow-hidden mb-0">
+        <div class="card-body p-4">
+            <h5 class="card-title fw-semibold">Información Personal</h5>
+            <p class="card-subtitle mb-4">Para cambiar tu información personal, rellena el formulario y guarda los
+                cambios</p>
+            <form>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="mb-4"><label for="exampleInputPassword1"
+                                class="form-label fw-semibold">Nombre</label> <input type="text" id="exampleInputtext"
+                                class="form-control"></div>
+                        <div class="mb-4"><label for="exampleInputPassword1"
+                                class="form-label fw-semibold">Email</label> <input type="email" id="exampleInputtext"
+                                class="form-control"></div>
+                        <div class="mb-4"><label for="exampleInputPassword1"
+                                class="form-label fw-semibold">Dirección</label> <input type="text"
+                                id="exampleInputtext" class="form-control"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="mb-4"><label for="exampleInputPassword1"
+                                class="form-label fw-semibold">Comuna</label> <input type="text" id="exampleInputtext"
+                                class="form-control"></div>
+                        <div class="mb-4"><label for="exampleInputPassword1" class="form-label fw-semibold">Telefono de
+                                contacto</label> <input type="text" id="exampleInputtext" class="form-control"></div>
+                        <div class="mb-4"><label for="exampleInputPassword1" class="form-label fw-semibold">...</label>
+                            <input type="text" id="exampleInputtext" class="form-control"></div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex align-items-center justify-content-end mt-4 gap-3"><button type="button"
+                                class="btn btn-primary">Guardar</button> <button
+                                class="btn btn-light-danger text-danger">Cancelar</button></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+
+{% block js %}
+
+{% endblock js %}

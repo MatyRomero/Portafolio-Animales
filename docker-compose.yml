@@ -19,20 +19,63 @@ services:
       - django-templates-dev
 
   db:
-    image: container-registry.oracle.com/database/enterprise:latest
+    image: mysql/mysql-server:5.7
+    env_file:
+      - ./conf/.env
     ports:
-      - "1521:1521"
-    environment:
-      - ORACLE_PWD=system
-      - ORACLE_CHARACTERSET=AL32UTF8
+      - "3307:3307"
     volumes:
-      - oracle-data:/opt/oracle/oradata
+      - ./mysql-data:/var/lib/mysql
     networks:
       - django-templates-dev
 
 networks:
   django-templates-dev:
-    driver: bridge
 
 volumes:
-  oracle-data:
+  dbdata:
+
+# version: "3"
+# services:
+#   web:
+#     build: .
+#     platform: linux/amd64
+#     image: safeware/templates:latest
+#     command: python3 manage.py runserver 0.0.0.0:8090
+#     volumes:
+#       - ./:/code
+#     ports:
+#       - "8090:8090"
+#     expose:
+#       - "8090"
+#     depends_on:
+#       - db
+#     env_file:
+#       - ./conf/.env
+#     networks:
+#       - django-templates-dev
+
+#   db:
+#     image: container-registry.oracle.com/database/express:latest
+#     ports:
+#       - "1521:1521"
+#     environment:
+#       - ORACLE_PWD=11UNI019verso10@
+#       - ORACLE_CHARACTERSET=AL32UTF8
+#     volumes:
+#       - oracle-data:/opt/oracle/oradata
+#     networks:
+#       - django-templates-dev
+      
+#   instantclient:
+#     image: container-registry.oracle.com/database/instantclient:latest
+#     networks:
+#       - django-templates-dev
+
+
+# networks:
+#   django-templates-dev:
+#     driver: bridge
+
+# volumes:
+#   oracle-data:
