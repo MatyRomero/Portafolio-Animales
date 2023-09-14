@@ -6,6 +6,8 @@
 
 <link href="{% static 'plugins/datatable/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'plugins/datatable/css/buttons.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 <style>
     /* Estilo para la publicación */
@@ -30,8 +32,17 @@
         max-width: 100%;
         height: auto;
         display: block;
-        margin: 0 auto 10px;
+        margin: 0 auto;
+        max-height: auto;
+
+        /* Añade estilos para asegurarte de que la imagen no se desborde del contenedor */
+        object-fit: cover;
+        width: auto;
+        height: 100%;
+        background-color: transparent;
+        /* Fondo transparente */
     }
+
 
     /* Estilo para los comentarios */
     .comments {
@@ -50,6 +61,40 @@
         top: 20px;
         /* Ajusta la distancia desde la parte superior según tu preferencia */
     }
+
+    .comment-input-container {
+        display: flex;
+        /* Hace que los elementos internos se coloquen en línea */
+        align-items: center;
+        /* Centra verticalmente los elementos */
+    }
+
+    .comment-input {
+        flex: 1;
+        /* Hace que el input ocupe todo el espacio disponible */
+        margin-right: 15px;
+        /* Agrega un pequeño espacio entre el input y el botón */
+        padding-right: 10rem;
+    }
+
+    .btn-sm {
+        /* Puedes ajustar el tamaño del botón según tus preferencias */
+        padding: 5px 10px;
+        font-size: 14px;
+        height: 32px !important;
+    }
+
+    .form-control {
+        padding: 0;
+    }
+
+    .full-content {
+        display: none;
+    }
+
+    .show-less {
+        display: none;
+    }
 </style>
 {% endblock css %}
 {% block content %}
@@ -59,18 +104,47 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="post">
-                    <img src="{% static 'images/Imagotipo 2.png' %}" alt="Imagen de la publicación">
-                    <div class="description">
-                        <strong>Usuario1:</strong> Descripción de la publicación.
+                    <img src="{% static 'images/abby.jpeg' %}" alt="Imagen de la publicación">
+                    <div class="description mt-2">
+                        <div class="full-content">
+                            Estamos desesperados por encontrar a nuestro querido gato, que responde al nombre de "Milo".
+                            Milo desapareció el [fecha de desaparición] y no ha regresado desde entonces. Es un miembro
+                            muy
+                            querido de nuestra familia y estamos muy preocupados por su seguridad y bienestar.
+
+                            Información del Gato:
+
+                            Nombre: Milo
+                            Edad: 3 años
+                            Raza: Gato doméstico de pelo largo
+                            Color: Mayoritariamente blanco con manchas atigradas en gris y naranja
+                            Características Especiales: Tiene un pequeño lunar en la oreja izquierda y un collar azul
+                            con
+                            una etiqueta de identificación con nuestro número de teléfono.
+                        </div>
+                        <div class="short-content">
+                            Estamos desesperados por encontrar a nuestro querido gato, que responde al nombre de "Milo".
+                        </div>
+                        <a class="show-more">Ver más</a>
+                        <a class="show-less">Ver menos</a>
                     </div>
                     <div class="comments">
                         <div class="comment">
-                            <strong>Usuario1:</strong> ¡Qué foto increíble!
-                        </div>
-                        <div class="comment">
-                            <strong>Usuario2:</strong> Me encanta este lugar.
+                            <a href=""><strong>Ver todos los comentarios</strong></a>
                         </div>
                         <!-- Puedes agregar más comentarios aquí -->
+
+                        <!-- Formulario para agregar un comentario -->
+                        <form class="comment-form">
+                            {% csrf_token %}
+                            <div class="comment-input-container">
+                                <input class="form-control" type="text" class="comment-input" name="comentario"
+                                    placeholder="Agrega un comentario..." required>
+                                <div>
+                                    <button class="btn btn-primary btn-sm" type="submit">Comentar</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <br>
@@ -134,6 +208,23 @@
 <script>
     const suggestions = document.getElementById('suggestions');
     suggestions.classList.add('sticky-suggestions');
+</script>
+<script>
+    $(document).ready(function () {
+        $('.show-more').click(function () {
+            $('.short-content').hide();
+            $('.full-content').show();
+            $('.show-more').hide();
+            $('.show-less').show();
+        });
+
+        $('.show-less').click(function () {
+            $('.full-content').hide();
+            $('.short-content').show();
+            $('.show-less').hide();
+            $('.show-more').show();
+        });
+    });
 </script>
 
 {% endblock js %}
