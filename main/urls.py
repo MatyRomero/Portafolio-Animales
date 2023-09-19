@@ -20,4 +20,7 @@ urlpatterns = [
     path("api/create/usuarios", CreateUsuarios.as_view()),
     path("api/edit/usuarios", EditarUsuarios.as_view()),
     path("api/delete/usuarios", DeleteUsuarios.as_view()),
+    ## API Publicaciones
+    path("api/create/publicaciones", CreatePublicaciones.as_view()),
+    path('api/get_allpublicaciones', GetAllPublicaciones.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

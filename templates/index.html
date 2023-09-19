@@ -15,7 +15,6 @@
         border: 1px solid #ccc;
         max-width: 450px;
         margin: 0 auto;
-        padding: 20px;
         background-color: #fff;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         margin-bottom: 10px;
@@ -24,7 +23,8 @@
 
     /* Estilo para la descripción */
     .description {
-        margin-bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     /* Estilo para la imagen */
@@ -34,13 +34,6 @@
         display: block;
         margin: 0 auto;
         max-height: auto;
-
-        /* Añade estilos para asegurarte de que la imagen no se desborde del contenedor */
-        object-fit: cover;
-        width: auto;
-        height: 100%;
-        background-color: transparent;
-        /* Fondo transparente */
     }
 
 
@@ -48,7 +41,10 @@
     .comments {
         border-top: 1px solid #ccc;
         margin-top: 10px;
-        padding-top: 10px;
+        padding-top: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
     }
 
     /* Estilo para cada comentario */
@@ -102,28 +98,15 @@
 <div id="app">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-8" v-for="publicacion in datapublicaciones" :key="publicacion.id">
                 <div class="post">
-                    <img src="{% static 'images/abby.jpeg' %}" alt="Imagen de la publicación">
+                    <img :src="publicacion.foto_mascota" class="card-img-top" alt="Imagen de la publicación">
                     <div class="description mt-2">
                         <div class="full-content">
-                            Estamos desesperados por encontrar a nuestro querido gato, que responde al nombre de "Milo".
-                            Milo desapareció el [fecha de desaparición] y no ha regresado desde entonces. Es un miembro
-                            muy
-                            querido de nuestra familia y estamos muy preocupados por su seguridad y bienestar.
-
-                            Información del Gato:
-
-                            Nombre: Milo
-                            Edad: 3 años
-                            Raza: Gato doméstico de pelo largo
-                            Color: Mayoritariamente blanco con manchas atigradas en gris y naranja
-                            Características Especiales: Tiene un pequeño lunar en la oreja izquierda y un collar azul
-                            con
-                            una etiqueta de identificación con nuestro número de teléfono.
+                            [[publicacion.descripcion]]
                         </div>
                         <div class="short-content">
-                            Estamos desesperados por encontrar a nuestro querido gato, que responde al nombre de "Milo".
+                            [[ publicacion.descripcion ]]
                         </div>
                         <a class="show-more">Ver más</a>
                         <a class="show-less">Ver menos</a>
@@ -148,40 +131,8 @@
                     </div>
                 </div>
                 <br>
-                <div class="post">
-                    <img src="{% static 'images/Imagotipo 2.png' %}" alt="Imagen de la publicación">
-                    <div class="description">
-                        <strong>Usuario1:</strong> Descripción de la publicación.
-                    </div>
-                    <div class="comments">
-                        <div class="comment">
-                            <strong>Usuario1:</strong> ¡Qué foto increíble!
-                        </div>
-                        <div class="comment">
-                            <strong>Usuario2:</strong> Me encanta este lugar.
-                        </div>
-                        <!-- Puedes agregar más comentarios aquí -->
-                    </div>
-                </div>
-                <br>
-                <div class="post">
-                    <img src="{% static 'images/Imagotipo 2.png' %}" alt="Imagen de la publicación">
-                    <div class="description">
-                        <strong>Usuario1:</strong> Descripción de la publicación.
-                    </div>
-                    <div class="comments">
-                        <div class="comment">
-                            <strong>Usuario1:</strong> ¡Qué foto increíble!
-                        </div>
-                        <div class="comment">
-                            <strong>Usuario2:</strong> Me encanta este lugar.
-                        </div>
-                        <!-- Puedes agregar más comentarios aquí -->
-                    </div>
-                </div>
             </div>
             <div class="col-md-4" id="suggestions">
-                <!-- Lista de sugerencias -->
                 <h5>Sugerencias para ti </h5>
                 <ul>
                     <li>
@@ -192,8 +143,56 @@
                         <img src="{% static 'images/avatar2.jpg' %}" alt="Avatar de usuario">
                         <span>Usuario2</span>
                     </li>
-                    <!-- Agrega más sugerencias aquí -->
                 </ul>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="nueva_publicacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Crea una nueva publicación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div v-show="alert" class="alert alert-danger" role="alert">
+                            [[mensaje]]
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group">
+                                <label for="" class="control-label">Tipo de publicación </label>
+                                <input type="text" maxlength="99" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group">
+                                <label for="" class="control-label">Color: </label>
+                                <input type="text" maxlength="99" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group">
+                                <label for="" class="control-label">Tipo de animal: </label>
+                                <input type="password" maxlength="99" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="" class="control-label">Imagen referencia: </label>
+                                        <input type="file" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" data-bs-target="#nuevo_usuario" class="btn btn-primary">Crear</button>
+                </div>
             </div>
         </div>
     </div>
@@ -205,10 +204,10 @@
 
 
 {% block js %}
-<script>
+<!-- <script>
     const suggestions = document.getElementById('suggestions');
     suggestions.classList.add('sticky-suggestions');
-</script>
+</script> -->
 <script>
     $(document).ready(function () {
         $('.show-more').click(function () {
@@ -225,6 +224,31 @@
             $('.show-more').show();
         });
     });
+</script>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {
+            mensaje: "Por favor completa el campo",
+            alert: false,
+            datapublicaciones: [],
+            publicacion_id: "",
+        },
+        mounted() {
+            this.Getpublicacionesall();
+        },
+        methods: {
+            Getpublicacionesall() {
+                axios.get("/api/get_allpublicaciones").then((response) => {
+                    this.datapublicaciones = response.data
+                    console.log(response.data)
+                    console.log(this.datapublicaciones)
+                })
+            }
+        },
+    })
 </script>
 
 {% endblock js %}

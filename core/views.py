@@ -37,6 +37,7 @@ def login(request):
 def index(request):
     template_name = "index.html"
     context = {}
+    context["publicaciones"] = Publicaciones.objects.all()
     return render(request, template_name, context)
 
 def registro(request):

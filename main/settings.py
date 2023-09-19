@@ -144,6 +144,9 @@ TOKEN_MP = "TEST-8650299875796182-030816-4f98fee06924eb066aff9902f354a830-132626
 BASE_URL_FRONT = "http://127.0.0.1:8090"
 
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
