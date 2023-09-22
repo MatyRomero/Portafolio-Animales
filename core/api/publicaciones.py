@@ -55,9 +55,17 @@ class GetAllPublicaciones(APIView):
             "tipo_publicacion": publicacion.tipo_publicacion,
             "comentarios": publicacion.comentarios,
             "foto_mascota": publicacion.foto_mascota.url if publicacion.foto_mascota else None,
+            "usuario": {
+                "id": publicacion.usuario.user.id if publicacion.usuario else None,
+                "username": publicacion.usuario.user.username if publicacion.usuario else None,
+                "first_name": publicacion.usuario.user.first_name if publicacion.usuario else None,
+                "last_name": publicacion.usuario.user.last_name if publicacion.usuario else None,
+                "comuna" : publicacion.usuario.comuna if publicacion.usuario else None,
+            },
             "id": publicacion.pk,
         } for publicacion in publicaciones]
         return Response(serialized_publicaciones)
+
     
 class GetPublicaciones(APIView):
     authentication_classes = []

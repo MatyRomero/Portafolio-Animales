@@ -12,6 +12,7 @@ TipoUsuarios = (
 class Usuario(models.Model):
     tipo_usuario = models.CharField(max_length=1, choices=TipoUsuarios, default=1)
     telefono = models.CharField(max_length=255, null=True, blank=True)
+    comuna = models.CharField(max_length=255, null=True, blank=True)
     user = models.OneToOneField(User, max_length=50, on_delete=models.CASCADE, default='UserPrueba')
     active = models.BooleanField(default=True)
 
@@ -37,3 +38,4 @@ class Publicaciones(models.Model):
     foto_mascota = models.ImageField(null=True, blank=True, upload_to="media/")
     tipo_publicacion = models.CharField(max_length=255, choices=tipo_publicaciones, default=Busqueda_mascota)
     comentarios = models.CharField(max_length=255, null=True, blank=True)
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, null=True, blank=True)
