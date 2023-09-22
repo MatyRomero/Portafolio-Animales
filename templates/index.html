@@ -31,11 +31,6 @@
         margin-bottom: 10px;
     }
 
-    .sticky-suggestions {
-        position: sticky;
-        top: 20px;
-        /* Ajusta la distancia desde la parte superior según tu preferencia */
-    }
 
     .comment-input-container {
         display: flex;
@@ -70,67 +65,77 @@
     .show-less {
         display: none;
     }
+
+    #cambiarColorDiv {
+        cursor: pointer;
+        /* Cambia el cursor al puntero cuando pasas el mouse sobre el div */
+    }
 </style>
 {% endblock css %}
 {% block content %}
 
 <div id="app">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="card shadow-sm rounded-3 border-0 mb-3" v-for="publicacion in datapublicaciones"
-                :key="publicacion.id" style="max-width: 400px;">
-                <div class="card-body p-3">
-                    <div class="d-flex align-items-center">
-                        <img src="{% static 'images/icons/user.png' %}" alt="image" class="rounded-circle me-3"
-                            style="width: 40px;">
-                        <div>
-                            <h6 class="fw-bold mb-0">[[publicacion.usuario.first_name]]
-                                [[publicacion.usuario.last_name]]</h6>
-                            <p class="text-muted mb-0">[[publicacion.usuario.comuna]]</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="mb-3">
-                        <a>
-                            <img :src="publicacion.foto_mascota" class="card-img-top" alt="Imagen de la publicación">
-                        </a>
-                    </div>
-                    <p class="text-muted mb-0">2 hours ago</p>
-                    <p class="fw-normal text-muted mb-2">[[publicacion.descripcion]]<a
-                            class="fw-bold text-primary ms-2">ver mas</a></p>
-                    <div class="comments">
-                        <div class="comment">
-                            <a href=""><strong>Ver todos los comentarios</strong></a>
-                        </div>
-                        <!-- Puedes agregar más comentarios aquí -->
-
-                        <!-- Formulario para agregar un comentario -->
-                        <form class="comment-form">
-                            {% csrf_token %}
-                            <div class="comment-input-container">
-                                <input class="form-control" type="text" class="comment-input" name="comentario"
-                                    placeholder="Agrega un comentario..." required>
-                                <div>
-                                    <button class="btn btn-primary btn-sm" type="submit">Comentar</button>
-                                </div>
+        <div class="row">
+            <div class="col-lg-8  d-flex justify-content-center">
+                <div class="card shadow-sm  border rounded-3 mb-3" v-for="publicacion in datapublicaciones"
+                    :key="publicacion.id" style="max-width: 600px;">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center">
+                            <img src="{% static 'images/icons/user.png' %}" alt="image" class="rounded-circle me-3"
+                                style="width: 40px;">
+                            <div>
+                                <h6 class="fw-bold mb-0">[[publicacion.usuario.first_name]]
+                                    [[publicacion.usuario.last_name]]</h6>
+                                <p class="text-muted mb-0">[[publicacion.usuario.comuna]]</p>
                             </div>
-                        </form>
+                        </div>
+                        <hr>
+                        <div class="mb-3">
+                            <a>
+                                <img :src="publicacion.foto_mascota" class="card-img-top"
+                                    alt="Imagen de la publicación">
+                            </a>
+                        </div>
+                        <p class="text-muted mb-0">2 hours ago</p>
+                        <p class="fw-normal text-muted mb-2">[[publicacion.descripcion]]<a
+                                class="fw-bold text-primary ms-2">ver mas</a></p>
+                        <div class="comments">
+                            <div class="comment">
+                                <a href=""><strong>Ver todos los comentarios</strong></a>
+                            </div>
+                            <!-- Puedes agregar más comentarios aquí -->
+
+                            <!-- Formulario para agregar un comentario -->
+                            <form class="comment-form">
+                                {% csrf_token %}
+                                <div class="comment-input-container">
+                                    <input class="form-control" type="text" class="comment-input" name="comentario"
+                                        placeholder="Agrega un comentario..." required>
+                                    <div>
+                                        <button class="btn btn-primary btn-sm" type="submit">Comentar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-4" id="suggestions">
-                <h5>Sugerencias para ti </h5>
-                <ul>
-                    <li>
-                        <img src="{% static 'images/avatar1.jpg' %}" alt="Avatar de usuario">
-                        <span>Usuario1</span>
-                    </li>
-                    <li>
-                        <img src="{% static 'images/avatar2.jpg' %}" alt="Avatar de usuario">
-                        <span>Usuario2</span>
-                    </li>
-                </ul>
+            <div class="col-lg-4 d-none d-lg-block">
+                <div id="suggestions">
+                    <!-- Contenido de sugerencias -->
+                    <h5>Sugerencias para ti</h5>
+                    <ul>
+                        <li>
+                            <img src="{% static 'images/avatar1.jpg' %}" alt="Avatar de usuario">
+                            <span>Usuario1</span>
+                        </li>
+                        <li>
+                            <img src="{% static 'images/avatar2.jpg' %}" alt="Avatar de usuario">
+                            <span>Usuario2</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -148,14 +153,57 @@
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-group">
-                                <label for="" class="control-label">Tipo de publicación </label>
-                                <input type="text" maxlength="99" class="form-control">
+                                <label for="" class="control-label">¿Perdida o Busqueda de mascota?</label>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card radius-15 mb-0 shadow-none border">
+                                            <div class="card-body text-center">
+                                                <div
+                                                    class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
+                                                    ⁉️
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card radius-15 mb-0 shadow-none border">
+                                            <div class="card-body text-center">
+                                                <div
+                                                    class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
+                                                    🔎
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-group">
-                                <label for="" class="control-label">Color: </label>
-                                <input type="text" maxlength="99" class="form-control">
+                                <label for="" class="control-label">¿Perro o Gato?</label>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card radius-15 mb-0 shadow-none border">
+                                            <div class="card-body text-center">
+                                                <div
+                                                    class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
+                                                    🐶
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card radius-15 mb-0 shadow-none border" id="cambiarColorDiv">
+                                            <div class="card-body text-center">
+                                                <div
+                                                    class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
+                                                    🐱
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
@@ -191,10 +239,15 @@
 
 
 {% block js %}
-<!-- <script>
-    const suggestions = document.getElementById('suggestions');
-    suggestions.classList.add('sticky-suggestions');
-</script> -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    const divCambiarColor = document.getElementById('cambiarColorDiv');
+
+    divCambiarColor.addEventListener('click', function () {
+        divCambiarColor.style.borderColor = '#229D98'; // Cambia el color del borde al hacer clic
+    });
+</script>
+
 <script>
     $(document).ready(function () {
         $('.show-more').click(function () {
