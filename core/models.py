@@ -32,10 +32,9 @@ class Publicaciones(models.Model):
         (Busqueda_mascota, 'Busqueda de mascota')
     )
 
-    color = models.CharField(max_length=255, blank=True, null=True)
     tipo_mascota = models.CharField(max_length=255, choices=tipo_mascotas, default=Perro)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     foto_mascota = models.ImageField(null=True, blank=True, upload_to="media/")
     tipo_publicacion = models.CharField(max_length=255, choices=tipo_publicaciones, default=Busqueda_mascota)
     comentarios = models.CharField(max_length=255, null=True, blank=True)
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, null=True, blank=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, blank=True)

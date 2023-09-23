@@ -19,37 +19,37 @@ from django.db import IntegrityError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-
-
 class CreatePublicaciones(APIView):
-    authentication_classes = []
-    permission_classes = []
-
     def post(self, request):
-        response={}
-        color = request.data.get("color")
+        response = {}
+
+        # Obtén el usuario autenticado
+        usuario = Usuario.objects.get(user=request.user)
+
+        # Recupera los datos de la solicitud
         tipo_mascota = request.data.get("tipo_mascota")
         descripcion = request.data.get("descripcion")
         foto_mascota = request.FILES.get("foto_mascota")
         tipo_publicacion = request.data.get("tipo_publicacion")
         comentarios = request.data.get("comentarios")
 
+        # Crea la publicación relacionando al usuario actual
         publicacion = Publicaciones.objects.create(
-            color=color,
             tipo_mascota=tipo_mascota,
             descripcion=descripcion,
             foto_mascota=foto_mascota,
             tipo_publicacion=tipo_publicacion,
             comentarios=comentarios,
+            usuario=usuario  # Relaciona la publicación con el usuario actual
         )
         publicacion.save()
-        return Response(response)
+        return Response(response, status=status.HTTP_201_CREATED)
+
     
 class GetAllPublicaciones(APIView):
     def get(self, request, format=None):
         publicaciones = Publicaciones.objects.all()
         serialized_publicaciones = [{
-            "color": publicacion.color,
             "tipo_mascota": publicacion.tipo_mascota,
             "descripcion": publicacion.descripcion,
             "tipo_publicacion": publicacion.tipo_publicacion,

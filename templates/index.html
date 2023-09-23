@@ -66,9 +66,19 @@
         display: none;
     }
 
-    #cambiarColorDiv {
+    .custom-border {
+        border: 1px solid #80808057;
+        /* Define un borde transparente inicialmente */
         cursor: pointer;
         /* Cambia el cursor al puntero cuando pasas el mouse sobre el div */
+    }
+
+    .selectedDivMascotas {
+        border-color: #229D98;
+    }
+
+    .selectedDiv {
+        border-color: #229D98;
     }
 </style>
 {% endblock css %}
@@ -78,50 +88,52 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8  d-flex justify-content-center">
-                <div class="card shadow-sm  border rounded-3 mb-3" v-for="publicacion in datapublicaciones"
-                    :key="publicacion.id" style="max-width: 600px;">
-                    <div class="card-body p-3">
-                        <div class="d-flex align-items-center">
-                            <img src="{% static 'images/icons/user.png' %}" alt="image" class="rounded-circle me-3"
-                                style="width: 40px;">
-                            <div>
-                                <h6 class="fw-bold mb-0">[[publicacion.usuario.first_name]]
-                                    [[publicacion.usuario.last_name]]</h6>
-                                <p class="text-muted mb-0">[[publicacion.usuario.comuna]]</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="mb-3">
-                            <a>
-                                <img :src="publicacion.foto_mascota" class="card-img-top"
-                                    alt="Imagen de la publicación">
-                            </a>
-                        </div>
-                        <p class="text-muted mb-0">2 hours ago</p>
-                        <p class="fw-normal text-muted mb-2">[[publicacion.descripcion]]<a
-                                class="fw-bold text-primary ms-2">ver mas</a></p>
-                        <div class="comments">
-                            <div class="comment">
-                                <a href=""><strong>Ver todos los comentarios</strong></a>
-                            </div>
-                            <!-- Puedes agregar más comentarios aquí -->
-
-                            <!-- Formulario para agregar un comentario -->
-                            <form class="comment-form">
-                                {% csrf_token %}
-                                <div class="comment-input-container">
-                                    <input class="form-control" type="text" class="comment-input" name="comentario"
-                                        placeholder="Agrega un comentario..." required>
-                                    <div>
-                                        <button class="btn btn-primary btn-sm" type="submit">Comentar</button>
-                                    </div>
+                <div class="row">
+                    <div class="card shadow-sm  border rounded-3 mb-3" v-for="publicacion in datapublicaciones"
+                        :key="publicacion.id" style="max-width: 600px;">
+                        <div class="card-body p-3">
+                            <div class="d-flex align-items-center">
+                                <img src="{% static 'images/icons/user.png' %}" alt="image" class="rounded-circle me-3"
+                                    style="width: 40px;">
+                                <div>
+                                    <h6 class="fw-bold mb-0">[[publicacion.usuario.first_name]]
+                                        [[publicacion.usuario.last_name]]</h6>
+                                    <p class="text-muted mb-0">[[publicacion.usuario.comuna]]</p>
                                 </div>
-                            </form>
+                            </div>
+                            <hr>
+                            <div class="mb-3">
+                                <a>
+                                    <img :src="publicacion.foto_mascota" class="card-img-top"
+                                        alt="Imagen de la publicación">
+                                </a>
+                            </div>
+                            <p class="text-muted mb-0">2 hours ago</p>
+                            <p class="fw-normal text-muted mb-2">[[publicacion.descripcion]]<a
+                                    class="fw-bold text-primary ms-2">ver mas</a></p>
+                            <div class="comments">
+                                <div class="comment">
+                                    <a href=""><strong>Ver todos los comentarios</strong></a>
+                                </div>
+                                <!-- Puedes agregar más comentarios aquí -->
+
+                                <!-- Formulario para agregar un comentario -->
+                                <form class="comment-form">
+                                    {% csrf_token %}
+                                    <div class="comment-input-container">
+                                        <input class="form-control" type="text" class="comment-input" name="comentario"
+                                            placeholder="Agrega un comentario..." required>
+                                        <div>
+                                            <button class="btn btn-primary btn-sm" type="submit">Comentar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 d-none d-lg-block">
+            <div class="col-lg-3 d-none d-lg-block">
                 <div id="suggestions">
                     <!-- Contenido de sugerencias -->
                     <h5>Sugerencias para ti</h5>
@@ -153,10 +165,13 @@
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-group">
+                                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                                 <label for="" class="control-label">¿Perdida o Busqueda de mascota?</label>
                                 <div class="row">
-                                    <div class="col">
-                                        <div class="card radius-15 mb-0 shadow-none border">
+                                    <div class="col" id="Perdida de mascota">
+                                        <div class="card radius-15 mb-0 shadow-none custom-border"
+                                            @click="CambiarTipoPublicacion('Perdida de mascota')"
+                                            :class="{ 'selectedDiv': selectedDiv === 'Perdida de mascota' }">
                                             <div class="card-body text-center">
                                                 <div
                                                     class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
@@ -165,8 +180,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <div class="card radius-15 mb-0 shadow-none border">
+                                    <div class="col" id="Busqueda de mascota">
+                                        <div class="card radius-15 mb-0 shadow-none custom-border"
+                                            @click="CambiarTipoPublicacion('Busqueda de mascota')"
+                                            :class="{ 'selectedDiv': selectedDiv === 'Busqueda de mascota' }">
                                             <div class="card-body text-center">
                                                 <div
                                                     class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
@@ -182,8 +199,10 @@
                             <div class="form-group">
                                 <label for="" class="control-label">¿Perro o Gato?</label>
                                 <div class="row">
-                                    <div class="col">
-                                        <div class="card radius-15 mb-0 shadow-none border">
+                                    <div class="col" id="Perro">
+                                        <div class="card radius-15 mb-0 shadow-none custom-border"
+                                            @click="CambiarTipoMascota('Perro')"
+                                            :class="{ 'selectedDivMascotas': selectedDivMascotas === 'Perro' }">
                                             <div class="card-body text-center">
                                                 <div
                                                     class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
@@ -192,8 +211,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <div class="card radius-15 mb-0 shadow-none border" id="cambiarColorDiv">
+                                    <div class="col" id="Gato">
+                                        <div class="card radius-15 mb-0 shadow-none custom-border"
+                                            @click="CambiarTipoMascota('Gato')"
+                                            :class="{ 'selectedDivMascotas': selectedDivMascotas === 'Gato' }">
                                             <div class="card-body text-center">
                                                 <div
                                                     class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
@@ -202,22 +223,22 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-8 mb-2">
                             <div class="form-group">
-                                <label for="" class="control-label">Tipo de animal: </label>
-                                <input type="password" maxlength="99" class="form-control">
+                                <label for="" class="control-label">Descripción: </label>
+                                <textarea v-model="nueva_publicacion.descripcion" class="form-control"
+                                    id="exampleFormControlTextarea1" rows="3"></textarea>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-4 mb-2 mt-4">
                             <div class="form-group">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="" class="control-label">Imagen referencia: </label>
-                                        <input type="file" class="form-control">
+                                        <label for="" class="control-label">Imagen de referencia: </label>
+                                        <input v-on:change="PreviewPhotoCrear($event)" type="file" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -226,7 +247,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" data-bs-target="#nuevo_usuario" class="btn btn-primary">Crear</button>
+                    <button type="button" @click="CrearPublicaciones()" data-bs-target="#nuevo_usuario"
+                        class="btn btn-primary">Crear</button>
                 </div>
             </div>
         </div>
@@ -239,14 +261,6 @@
 
 
 {% block js %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    const divCambiarColor = document.getElementById('cambiarColorDiv');
-
-    divCambiarColor.addEventListener('click', function () {
-        divCambiarColor.style.borderColor = '#229D98'; // Cambia el color del borde al hacer clic
-    });
-</script>
 
 <script>
     $(document).ready(function () {
@@ -275,6 +289,15 @@
             alert: false,
             datapublicaciones: [],
             publicacion_id: "",
+            selectedDivMascotas: null,
+            selectedDiv: null,
+            url_preview: "",
+            nueva_publicacion: {
+                tipo_mascota: "",
+                descripcion: "",
+                foto_mascota: "", // Inicializado como nulo o como sea apropiado
+                tipo_publicacion: "",
+            },
         },
         mounted() {
             this.Getpublicacionesall();
@@ -286,7 +309,72 @@
                     console.log(response.data)
                     console.log(this.datapublicaciones)
                 })
-            }
+            },
+            CambiarTipoMascota(id) {
+                // Resetea la clase de la div previamente seleccionada
+                if (this.selectedDivMascotas) {
+                    const divAnterior = document.getElementById(this.selectedDivMascotas);
+                    divAnterior.classList.remove('selectedDivMascotas');
+                }
+
+                // Cambia la clase de la nueva div seleccionada
+                const divCambiarColor = document.getElementById(id);
+                divCambiarColor.classList.add('selectedDivMascotas');
+                this.selectedDivMascotas = id; // Actualiza la variable selectedDiv con el nuevo ID
+
+                // Además, actualiza la variable nueva_publicacion.tipo_mascota
+                this.nueva_publicacion.tipo_mascota = id;
+                console.log(this.nueva_publicacion.tipo_mascota)
+            },
+            CambiarTipoPublicacion(id) {
+                // Resetea la clase de la div previamente seleccionada
+                if (this.selectedDiv) {
+                    const divAnterior = document.getElementById(this.selectedDiv);
+                    divAnterior.classList.remove('selectedDiv');
+                }
+
+                // Cambia la clase de la nueva div seleccionada
+                const divCambiarColor = document.getElementById(id);
+                divCambiarColor.classList.add('selectedDiv');
+                this.selectedDiv = id; // Actualiza la variable selectedDiv con el nuevo ID
+
+                this.nueva_publicacion.tipo_publicacion = id;
+                console.log(this.nueva_publicacion.tipo_publicacion)
+            },
+            CrearPublicaciones() {
+                let data = new FormData();
+                const header_data = {
+                    'Content-Type': 'multipart/form-data'
+                };
+
+                // Obtener el token CSRF del formulario
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                data.append("csrfmiddlewaretoken", csrfToken);  // Incluir el token CSRF en la solicitud
+                data.append("tipo_mascota", this.nueva_publicacion.tipo_mascota);
+                data.append("descripcion", this.nueva_publicacion.descripcion);
+                data.append("foto_mascota", this.nueva_publicacion.foto_mascota);
+                data.append("tipo_publicacion", this.nueva_publicacion.tipo_publicacion);
+
+                axios.post("/api/create/publicaciones", data, { headers: header_data })
+                    .then((response) => {
+                        // Comprobar si se registró correctamente o si hubo un error
+                        if (response.data.success) {
+                            // Mostrar mensaje de éxito
+                            console.log(response.data.success);
+                            window.location.reload();
+                        } else if (response.data.error) {
+                            // Mostrar mensaje de error en el frontend
+                            this.errorMessage = response.data.error;
+                            this.alert2 = true;
+                        }
+                    });
+            },
+            PreviewPhotoCrear(event) {
+                this.url_preview = URL.createObjectURL(event.target.files[0])
+                this.nueva_publicacion.foto_mascota = event.target.files[0]
+            },
+
         },
     })
 </script>
