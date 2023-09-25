@@ -17,40 +17,33 @@ from django.core.files import File
 from urllib.request import urlopen
 from tempfile import NamedTemporaryFile
 import urllib
-
-
 from django.db import IntegrityError
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+
 
 class CreateUsuarios(APIView):
     authentication_classes = []
     permission_classes = []
 
-    def post(self, request):
-        response = {}
-        try:
-            user = User.objects.create(
-                first_name=request.data["first_name"],
-                last_name=request.data["last_name"],
-                email=request.data["email"],
-                username=request.data["email"],
-                password=request.data["password"],
-            )
-            user.set_password(request.data["password"])
-            user.save()
-            usuario = Usuario.objects.create(
-                user=user,
-            )
-            usuario.save()
-        except IntegrityError as e:
-            if "UNIQUE constraint failed: auth_user.username" in str(e):
-                response['error'] = "El correo ya está registrado."
-                return Response(response, status=400)
-            else:
-                response['error'] = "Ocurrió un error en el servidor."
-                return Response(response, status=500)
-
+    def post(self,request):
+        response={}
+        user = User.objects.create(
+            first_name=request.data["first_name"],
+            last_name=request.data["last_name"],
+            email=request.data["email"],
+            username=request.data["email"],
+            password=request.data["password"],
+        )
+        user.set_password(request.data["password"])
+        user.save()
+        usuario = Usuario.objects.create(
+            user=user,
+            comuna=request.data["comuna"],
+            telefono=request.data["telefono"]
+        )
+        usuario.save()
         return Response(response)
     
 class DeleteUsuarios(APIView):
