@@ -17,6 +17,8 @@ from tempfile import NamedTemporaryFile
 import urllib
 from django.db import IntegrityError
 from rest_framework.response import Response
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 class CreatePublicaciones(APIView):
@@ -31,7 +33,6 @@ class CreatePublicaciones(APIView):
         descripcion = request.data.get("descripcion")
         foto_mascota = request.FILES.get("foto_mascota")
         tipo_publicacion = request.data.get("tipo_publicacion")
-        comentarios = request.data.get("comentarios")
 
         # Crea la publicación relacionando al usuario actual
         publicacion = Publicaciones.objects.create(
@@ -39,7 +40,6 @@ class CreatePublicaciones(APIView):
             descripcion=descripcion,
             foto_mascota=foto_mascota,
             tipo_publicacion=tipo_publicacion,
-            comentarios=comentarios,
             usuario=usuario  # Relaciona la publicación con el usuario actual
         )
         publicacion.save()
@@ -48,23 +48,45 @@ class CreatePublicaciones(APIView):
     
 class GetAllPublicaciones(APIView):
     def get(self, request, format=None):
-        publicaciones = Publicaciones.objects.all()
-        serialized_publicaciones = [{
-            "tipo_mascota": publicacion.tipo_mascota,
-            "descripcion": publicacion.descripcion,
-            "tipo_publicacion": publicacion.tipo_publicacion,
-            "comentarios": publicacion.comentarios,
-            "foto_mascota": publicacion.foto_mascota.url if publicacion.foto_mascota else None,
-            "usuario": {
-                "id": publicacion.usuario.user.id if publicacion.usuario else None,
-                "username": publicacion.usuario.user.username if publicacion.usuario else None,
-                "first_name": publicacion.usuario.user.first_name if publicacion.usuario else None,
-                "last_name": publicacion.usuario.user.last_name if publicacion.usuario else None,
-                "comuna" : publicacion.usuario.comuna if publicacion.usuario else None,
-            },
-            "id": publicacion.pk,
-        } for publicacion in publicaciones]
+        publicaciones = Publicaciones.objects.all().order_by('-id')
+        serialized_publicaciones = []
+
+        for publicacion in publicaciones:
+            # Obtén todos los comentarios relacionados con esta publicación
+            comentarios = Comentarios.objects.filter(publicacion=publicacion)
+            # Serializa los comentarios
+            serialized_comentarios = [{
+                "comentario": comentario.comentario,
+                "usuario": {
+                    "id": comentario.usuario.user.id if comentario.usuario else None,
+                    "username": comentario.usuario.user.username if comentario.usuario else None,
+                    "first_name": comentario.usuario.user.first_name if comentario.usuario else None,
+                    "last_name": comentario.usuario.user.last_name if comentario.usuario else None,
+                    "comuna": comentario.usuario.comuna if comentario.usuario else None,
+                },
+                "id": comentario.pk,
+            } for comentario in comentarios]
+
+            # Serializa la publicación y agrega los comentarios serializados
+            serialized_publicacion = {
+                "tipo_mascota": publicacion.tipo_mascota,
+                "descripcion": publicacion.descripcion,
+                "tipo_publicacion": publicacion.tipo_publicacion,
+                "foto_mascota": publicacion.foto_mascota.url if publicacion.foto_mascota else None,
+                "usuario": {
+                    "id": publicacion.usuario.user.id if publicacion.usuario else None,
+                    "username": publicacion.usuario.user.username if publicacion.usuario else None,
+                    "first_name": publicacion.usuario.user.first_name if publicacion.usuario else None,
+                    "last_name": publicacion.usuario.user.last_name if publicacion.usuario else None,
+                    "comuna": publicacion.usuario.comuna if publicacion.usuario else None,
+                },
+                "id": publicacion.pk,
+                "comentarios": serialized_comentarios,  # Agregar comentarios serializados
+            }
+            serialized_publicaciones.append(serialized_publicacion)
+
         return Response(serialized_publicaciones)
+
 
     
 class GetPublicaciones(APIView):

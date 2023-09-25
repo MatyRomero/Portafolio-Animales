@@ -36,5 +36,9 @@ class Publicaciones(models.Model):
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     foto_mascota = models.ImageField(null=True, blank=True, upload_to="media/")
     tipo_publicacion = models.CharField(max_length=255, choices=tipo_publicaciones, default=Busqueda_mascota)
-    comentarios = models.CharField(max_length=255, null=True, blank=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, blank=True)
+
+class Comentarios(models.Model):
+    publicacion = models.ForeignKey(Publicaciones, on_delete=models.CASCADE)
+    comentario = models.CharField(max_length=255, blank=True, null=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, blank=True)

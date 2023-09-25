@@ -121,19 +121,19 @@
                             <p class="fw-normal text-muted mb-2">[[publicacion.descripcion]]<a
                                     class="fw-bold text-primary ms-2">ver mas</a></p>
                             <div class="comments">
-                                <div class="comment">
-                                    <a href=""><strong>Ver todos los comentarios</strong></a>
+                                <div class="comment" v-for="comentario in publicacion.comentarios" :key="comentario.id">
+                                    [[comentario.usuario.first_name]]
+                                    [[comentario.usuario.last_name]]: [[comentario.comentario]]
                                 </div>
-                                <!-- Puedes agregar más comentarios aquí -->
-
-                                <!-- Formulario para agregar un comentario -->
                                 <form class="comment-form">
                                     {% csrf_token %}
                                     <div class="comment-input-container">
-                                        <input class="form-control" type="text" class="comment-input" name="comentario"
+                                        <input v-model="nuevo_comentario.comentario" class="form-control" type="text"
+                                            class="comment-input" name="comentario"
                                             placeholder="Agrega un comentario..." required>
                                         <div>
-                                            <button class="btn btn-primary btn-sm" type="submit">Comentar</button>
+                                            <button @click="CrearComentario(publicacion.id)"
+                                                class="btn btn-primary btn-sm" type="submit">Comentar</button>
                                         </div>
                                     </div>
                                 </form>
@@ -256,7 +256,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" @click="CrearPublicaciones()" data-bs-target="#nuevo_usuario"
+                    <button type="button" @click="CrearPublicaciones($event)" data-bs-target="#nuevo_usuario"
                         class="btn btn-primary">Crear</button>
                 </div>
             </div>
@@ -297,7 +297,8 @@
             mensaje: "Por favor completa el campo",
             alert: false,
             datapublicaciones: [],
-            publicacion_id: "",
+            datacomentarios: [],
+            comentarios_id: "",
             selectedDivMascotas: null,
             selectedDiv: null,
             url_preview: "",
@@ -307,6 +308,9 @@
                 foto_mascota: "", // Inicializado como nulo o como sea apropiado
                 tipo_publicacion: "",
             },
+            nuevo_comentario: {
+                comentario: "",
+            }
         },
         mounted() {
             this.Getpublicacionesall();
@@ -314,10 +318,18 @@
         methods: {
             Getpublicacionesall() {
                 axios.get("/api/get_allpublicaciones").then((response) => {
-                    this.datapublicaciones = response.data
-                    console.log(response.data)
-                    console.log(this.datapublicaciones)
-                })
+                    this.datapublicaciones = response.data;
+                    console.log(response.data);
+                    console.log(this.datapublicaciones);
+
+                    // Luego, después de cargar las publicaciones, puedes obtener los comentarios
+                    this.GetComentariosall();
+                });
+            },
+            GetComentariosall() {
+                axios.get("/api/get_allcomentarios").then((response) => {
+                    this.datacomentarios = response.data;// Verifica los datos en la consola
+                });
             },
             CambiarTipoMascota(id) {
                 // Resetea la clase de la div previamente seleccionada
@@ -367,33 +379,39 @@
 
                 axios.post("/api/create/publicaciones", data, { headers: header_data })
                     .then((response) => {
-                        // Comprobar si se registró correctamente o si hubo un error
-                        if (response.data.success) {
-                            // Agregar la nueva publicación al principio de la lista
-                            const nuevaPublicacion = {
-                                id: response.data.publicacion_id,  // Supongamos que la API devuelve el ID de la nueva publicación
-                                usuario: {
-                                    first_name: "Nombre",  // Reemplaza con los datos reales del usuario
-                                    last_name: "Apellido",
-                                    comuna: "Comuna",
-                                },
-                                // Otras propiedades de la nueva publicación
-                            };
-                            this.datapublicaciones.unshift(nuevaPublicacion);
-                            window.location.reload();
-                        } else {
-                            console.error("Error en la respuesta:", response);
-                        }
+                        window.location.reload();
                     })
                     .catch((error) => {
                         console.error("Error en la solicitud:", error);
+                    });
+            },
+            CrearComentario(publicacion_id) {
+                let data = new FormData();
+                const header_data = {
+                    'Content-Type': 'multipart/form-data'
+                };
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                data.append("csrfmiddlewaretoken", csrfToken);
+                data.append("comentario", this.nuevo_comentario.comentario);
+
+                // Asegúrate de que publicacion_id se pase en la solicitud
+                data.append("publicacion_id", publicacion_id);
+
+                axios.post(`/api/create/comentarios/${publicacion_id}/`, data, { headers: header_data })
+                    .then((response) => {
+                        console.log(this.nuevo_comentario.comentario);
+                    })
+                    .catch((error) => {
+                        console.error("Error en la solicitud:", error);
+                        console.log(publicacion_id)
+                        console.log(this.nuevo_comentario.comentario);
                     });
             },
             PreviewPhotoCrear(event) {
                 this.url_preview = URL.createObjectURL(event.target.files[0])
                 this.nueva_publicacion.foto_mascota = event.target.files[0]
             },
-
         },
     })
 </script>
