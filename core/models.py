@@ -83,5 +83,5 @@ def post_save_mascota(sender, instance, created, **kwargs):
             messages=prompt_obj
         )
         message = response["choices"][0]["message"]
-        data = json.loads(message["content"])
+        data = json.loads(message["content"].replace("'", '"'))
         print(data, type(data))
