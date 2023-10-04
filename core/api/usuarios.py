@@ -20,6 +20,8 @@ import urllib
 from django.db import IntegrityError
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 
@@ -75,4 +77,24 @@ class EditarUsuarios(APIView):
             active = request.data["active"],
             telefono = request.data["telefono"]
         )
+        return Response(response)
+
+class SetProfileInformation(APIView):
+
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        response = {}
+        if " " in request.data["nombre"]:
+            request.user.first_name = request.data["nombre"].split(" ")[0]
+            request.user.last_name = request.data["nombre"].split(" ")[1]
+        else:
+            request.user.first_name = request.data["nombre"]
+        request.user.email = request.data["email"]
+        request.user.save()
+        request.user.usuario.telefono = request.data["telefono"]
+        request.user.usuario.direccion = request.data["direccion"]
+        request.user.usuario.comuna = request.data["comuna"]
+        request.user.usuario.save()
         return Response(response)

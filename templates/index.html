@@ -196,62 +196,33 @@
                         <div v-show="alert" class="alert alert-danger" role="alert">
                             [[mensaje]]
                         </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group">
-                                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-                                <label for="" class="control-label">¿Perdida o Busqueda de mascota?</label>
-                                <div class="row">
-                                    <div class="col" id="Perdida de mascota">
-                                        <div class="card radius-15 mb-0 shadow-none custom-border"
-                                            @click="CambiarTipoPublicacion('Perdida de mascota')"
-                                            :class="{ 'selectedDiv': selectedDiv === 'Perdida de mascota' }">
-                                            <div class="card-body text-center">
-                                                <div
-                                                    class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
-                                                    ⁉️
+                        <div v-if="currentStep === 1">
+                            <div class="col-md-12 mb-2">
+                                <div class="form-group">
+                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                    <label for="" class="control-label">¿Perdida o Busqueda de mascota?</label>
+                                    <div class="row">
+                                        <div class="col" id="Perdida de mascota">
+                                            <div class="card radius-15 mb-0 shadow-none custom-border"
+                                                @click="CambiarTipoPublicacion('Perdida de mascota')"
+                                                :class="{ 'selectedDiv': selectedDiv === 'Perdida de mascota' }">
+                                                <div class="card-body text-center">
+                                                    <div
+                                                        class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
+                                                        ⁉️
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col" id="Busqueda de mascota">
-                                        <div class="card radius-15 mb-0 shadow-none custom-border"
-                                            @click="CambiarTipoPublicacion('Busqueda de mascota')"
-                                            :class="{ 'selectedDiv': selectedDiv === 'Busqueda de mascota' }">
-                                            <div class="card-body text-center">
-                                                <div
-                                                    class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
-                                                    🔎
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group">
-                                <label for="" class="control-label">¿Perro o Gato?</label>
-                                <div class="row">
-                                    <div class="col" id="Perro">
-                                        <div class="card radius-15 mb-0 shadow-none custom-border"
-                                            @click="CambiarTipoMascota('Perro')"
-                                            :class="{ 'selectedDivMascotas': selectedDivMascotas === 'Perro' }">
-                                            <div class="card-body text-center">
-                                                <div
-                                                    class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
-                                                    🐶
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col" id="Gato">
-                                        <div class="card radius-15 mb-0 shadow-none custom-border"
-                                            @click="CambiarTipoMascota('Gato')"
-                                            :class="{ 'selectedDivMascotas': selectedDivMascotas === 'Gato' }">
-                                            <div class="card-body text-center">
-                                                <div
-                                                    class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
-                                                    🐱
+                                        <div class="col" id="Busqueda de mascota">
+                                            <div class="card radius-15 mb-0 shadow-none custom-border"
+                                                @click="CambiarTipoPublicacion('Busqueda de mascota')"
+                                                :class="{ 'selectedDiv': selectedDiv === 'Busqueda de mascota' }">
+                                                <div class="card-body text-center">
+                                                    <div
+                                                        class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
+                                                        🔎
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -259,19 +230,55 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-8 mb-2">
-                            <div class="form-group">
-                                <label for="" class="control-label">Descripción: </label>
-                                <textarea v-model="nueva_publicacion.descripcion" class="form-control"
-                                    id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <div v-if="currentStep === 2">
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group">
+                                    <label for="" class="control-label">¿Perro o Gato?</label>
+                                    <div class="row">
+                                        <div class="col" id="Perro">
+                                            <div class="card radius-15 mb-0 shadow-none custom-border"
+                                                @click="CambiarTipoMascota('Perro')"
+                                                :class="{ 'selectedDivMascotas': selectedDivMascotas === 'Perro' }">
+                                                <div class="card-body text-center">
+                                                    <div
+                                                        class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
+                                                        🐶
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col" id="Gato">
+                                            <div class="card radius-15 mb-0 shadow-none custom-border"
+                                                @click="CambiarTipoMascota('Gato')"
+                                                :class="{ 'selectedDivMascotas': selectedDivMascotas === 'Gato' }">
+                                                <div class="card-body text-center">
+                                                    <div
+                                                        class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
+                                                        🐱
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-2 mt-4">
-                            <div class="form-group">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="" class="control-label">Imagen de referencia: </label>
-                                        <input v-on:change="PreviewPhotoCrear($event)" type="file" class="form-control">
+                        <div v-if="currentStep === 3">
+                            <div class="col-md-12 mb-2">
+                                <div class="form-group">
+                                    <label for="" class="control-label">Descripción: </label>
+                                    <textarea v-model="nueva_publicacion.descripcion" class="form-control"
+                                        id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-8 mb-2 mt-4">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="" class="control-label">Imagen de referencia: </label>
+                                            <input v-on:change="PreviewPhotoCrear($event)" type="file"
+                                                class="form-control">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -280,9 +287,14 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" @click="CrearPublicaciones($event)" data-bs-target="#nuevo_usuario"
-                        class="btn btn-primary">Crear</button>
+                    <button type="button" class="btn btn-primary" @click="prevStep"
+                        v-if="currentStep > 1">Anterior</button>
+                    <button type="button" class="btn btn-primary" @click="nextStep"
+                        v-if="currentStep < 3">Siguiente</button>
+                    <button type="button" @click="CrearPublicaciones" data-bs-target="#nuevo_usuario"
+                        class="btn btn-primary" v-if="currentStep === 3">Crear</button>
                 </div>
+
             </div>
         </div>
     </div>
@@ -329,11 +341,18 @@
             nueva_publicacion: {
                 tipo_mascota: "",
                 descripcion: "",
-                foto_mascota: "", // Inicializado como nulo o como sea apropiado
+                foto_mascota: "",
                 tipo_publicacion: "",
             },
             nuevo_comentario: {
                 comentario: "",
+            },
+            currentStep: 1, // Pista de qué paso está activo
+            selectedPublicacion: null, // Aquí se almacenará 'Perdida de mascota' o 'Busqueda de mascota'
+            selectedMascota: null, // Aquí se almacenará 'Perro' o 'Gato'
+            nueva_publicacion: {
+                descripcion: '',
+                // Otros datos de la publicación
             }
         },
         mounted() {
@@ -435,6 +454,16 @@
             PreviewPhotoCrear(event) {
                 this.url_preview = URL.createObjectURL(event.target.files[0])
                 this.nueva_publicacion.foto_mascota = event.target.files[0]
+            },
+            nextStep() {
+                if (this.currentStep < 3) {
+                    this.currentStep += 1; // Avanza al siguiente paso
+                }
+            },
+            prevStep() {
+                if (this.currentStep > 1) {
+                    this.currentStep -= 1; // Retrocede al paso anterior
+                }
             },
         },
     })
