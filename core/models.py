@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 import openai
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+import json
 
 TipoUsuarios = (
     ("0",'Administrador'),
@@ -83,4 +83,5 @@ def post_save_mascota(sender, instance, created, **kwargs):
             messages=prompt_obj
         )
         message = response["choices"][0]["message"]
-        print(type(message["content"]))
+        data = json.loads(message["content"])
+        print(data, type(data))
