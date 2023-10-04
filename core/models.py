@@ -90,9 +90,14 @@ def post_save_mascota(sender, instance, created, **kwargs):
             instance.tipo_de_animal = data["Tipo_de_Animal"]
             instance.color = data["Color"]
             instance.save()
-            for tag in data["Tags"]:
-                obj, created = Tag.objects.create(name=tag)
-                obj.save()
-                instance.tags.add(obj)
-                instance.save()
+            tags_to_create = []
+            for tag_name in data["Tags"]:
+                tag, created = Tag.objects.get_or_create(name=tag_name)
+                if created:
+                    # Solo si el tag se creó, lo agregamos a la lista
+                    tags_to_create.append(tag)
+            # Agregamos los tags creados a la instancia
+            for tag in tags_to_create:
+                instance.tags.add(tag)
+                # Guardamos la instancia después de agregar los tags
             instance.save()
