@@ -100,8 +100,12 @@ def post_save_mascota(sender, instance, created, **kwargs):
                 if created:
                     # Solo si el tag se creó, lo agregamos a la lista
                     tags_to_create.append(tag)
-            # Agregamos los tags creados a la instancia
+            # Limpiar todas las etiquetas existentes asociadas a la mascota
+            instance.tags.clear()
+
+            # Luego, agregar las nuevas etiquetas
             for tag in tags_to_create:
                 instance.tags.add(tag)
-                # Guardamos la instancia después de agregar los tags
+
+            # Guardar la instancia después de configurar las etiquetas
             instance.save()
