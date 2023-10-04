@@ -84,6 +84,7 @@ def post_save_mascota(sender, instance, created, **kwargs):
         )
         message = response["choices"][0]["message"]
         data = json.loads(message["content"].replace("'", '"'))
+        print(data, "esta es la data")
         if len(data) != 0:
             instance.es_animal = data["Es_Animal"]
             instance.tipo_de_animal = data["Tipo_de_Animal"]
