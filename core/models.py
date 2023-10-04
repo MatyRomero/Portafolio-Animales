@@ -10,6 +10,8 @@ TipoUsuarios = (
     ("1",'Usuario Comun')
 )
 
+class Configuracion(models.Model):
+    token_gpt = models.TextField(null=True, blank=True)
 
 class Usuario(models.Model):
     tipo_usuario = models.CharField(max_length=1, choices=TipoUsuarios, default=1)
@@ -70,7 +72,7 @@ class Comentarios(models.Model):
 def post_save_mascota(sender, instance, created, **kwargs):
     if created and instance.foto:
         url = "http://68.183.54.183:8090" + instance.foto.url
-        openai.api_key = "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"
+        openai.api_key = Configuracion.objects.all()[0]
         content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu debes armar un archivo json con la siguiente estructura {'Es_Animal': True, 'Tipo_de_Animal': 'Gato', 'Color': 'Atigrado con tonos grises, blancos y negros', 'Tags': ['#gato', '#felino', '#mascota', '#atigrado', '#doméstico', '#relajado', '#pelaje_mixto']} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json vacio es importante que solo me respondas el json" """
         prompt_obj = [
             {"role": "system", "content": content},
