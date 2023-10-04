@@ -69,15 +69,16 @@ class Comentarios(models.Model):
 @receiver(post_save, sender=Mascota)
 def post_save_mascota(sender, instance, created, **kwargs):
     if created and instance.foto:
-        print("http://68.183.54.183:8090" + instance.foto.url)
-        # openai.api_key = "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"
-        # content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu debes armar un archivo json con la siguiente estructura {'Es_Animal': True, 'Tipo_de_Animal': 'Gato', 'Color': 'Atigrado con tonos grises, blancos y negros', 'Tags': ['#gato', '#felino', '#mascota', '#atigrado', '#doméstico', '#relajado', '#pelaje_mixto']} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json vacio" """
-        # prompt_obj = [
-        #     {"role": "system", "content": content},
-        #     {"role": "user", "content": "Esta es la foto"},
-        # ]
-        # response = openai.ChatCompletion.create(
-        #     model="gpt-3.5-turbo-16k-0613",
-        #     messages=prompt_obj
-        # )
-        # message = response["choices"][0]["message"]
+        url = "http://68.183.54.183:8090" + instance.foto.url
+        openai.api_key = "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"
+        content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu debes armar un archivo json con la siguiente estructura {'Es_Animal': True, 'Tipo_de_Animal': 'Gato', 'Color': 'Atigrado con tonos grises, blancos y negros', 'Tags': ['#gato', '#felino', '#mascota', '#atigrado', '#doméstico', '#relajado', '#pelaje_mixto']} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json vacio es importante que solo me respondas el json" """
+        prompt_obj = [
+            {"role": "system", "content": content},
+            {"role": "user", "content": "Esta es la foto " + url},
+        ]
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo-16k-0613",
+            messages=prompt_obj
+        )
+        message = response["choices"][0]["message"]
+        print(message)
