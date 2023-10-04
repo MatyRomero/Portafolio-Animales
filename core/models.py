@@ -83,29 +83,17 @@ def post_save_mascota(sender, instance, created, **kwargs):
             messages=prompt_obj
         )
         message = response["choices"][0]["message"]
-        try:
-            data = json.loads(message["content"].replace("'", '"'))
-        except json.JSONDecodeError as e:
-            # Manejar el error aquí, por ejemplo, registrando un mensaje de error
-            print(f"Error al analizar JSON: {e}")
+        data = json.loads(message["content"].replace("'", '"'))
         print(data, "esta es la data")
         if len(data) != 0:
+            instance = Mascota()
             instance.es_animal = data["Es_Animal"]
             instance.tipo_de_animal = data["Tipo_de_Animal"]
             instance.color = data["Color"]
             instance.save()
-            tags_to_create = []
+            
             for tag_name in data["Tags"]:
                 tag, created = Tag.objects.get_or_create(name=tag_name)
-                if created:
-                    # Solo si el tag se creó, lo agregamos a la lista
-                    tags_to_create.append(tag)
-            # Limpiar todas las etiquetas existentes asociadas a la mascota
-            instance.tags.clear()
-
-            # Luego, agregar las nuevas etiquetas
-            for tag in tags_to_create:
                 instance.tags.add(tag)
-
-            # Guardar la instancia después de configurar las etiquetas
+            
             instance.save()
