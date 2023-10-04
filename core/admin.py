@@ -9,3 +9,5 @@ from django.utils.translation import gettext_lazy as _
 admin.site.register(Usuario)
 admin.site.register(Publicaciones)
 admin.site.register(Comentarios)
+admin.site.register(Mascota)
+admin.site.register(Tag)

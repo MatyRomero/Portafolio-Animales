@@ -1,12 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
+import openai
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 TipoUsuarios = (
     ("0",'Administrador'),
     ("1",'Usuario Comun')
 )
-
-
 
 
 class Usuario(models.Model):
@@ -16,6 +18,24 @@ class Usuario(models.Model):
     direccion = models.CharField(max_length=255, null=True, blank=True)
     user = models.OneToOneField(User, max_length=50, on_delete=models.CASCADE, default='UserPrueba')
     active = models.BooleanField(default=True)
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    def __str__(self):
+        return self.name
+
+class Mascota(models.Model):
+    ES_ANIMAL_CHOICES = [
+        (True, 'Sí'),
+        (False, 'No'),
+    ]
+
+    es_animal = models.BooleanField(null=True, blank=True, choices=ES_ANIMAL_CHOICES, default=True)
+    tipo_de_animal = models.CharField(null=True, blank=True, max_length=255)
+    color = models.TextField(null=True, blank=True, )
+    tags = models.ManyToManyField(Tag, null=True, blank=True)
+    foto = models.ImageField(null=True, blank=True, upload_to="media/mascotas")
 
 
 class Publicaciones(models.Model):
@@ -43,3 +63,19 @@ class Comentarios(models.Model):
     publicacion = models.ForeignKey(Publicaciones, on_delete=models.CASCADE)
     comentario = models.CharField(max_length=255, blank=True, null=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, blank=True)
+
+@receiver(post_save, sender=Mascota)
+def post_save_mascota(sender, instance, created, **kwargs):
+    if created and instance.foto:
+        print(instance.foto.url)
+        # openai.api_key = "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"
+        # content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu debes armar un archivo json con la siguiente estructura {'Es_Animal': True, 'Tipo_de_Animal': 'Gato', 'Color': 'Atigrado con tonos grises, blancos y negros', 'Tags': ['#gato', '#felino', '#mascota', '#atigrado', '#doméstico', '#relajado', '#pelaje_mixto']} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json vacio" """
+        # prompt_obj = [
+        #     {"role": "system", "content": content},
+        #     {"role": "user", "content": "Esta es la foto"},
+        # ]
+        # response = openai.ChatCompletion.create(
+        #     model="gpt-3.5-turbo-16k-0613",
+        #     messages=prompt_obj
+        # )
+        # message = response["choices"][0]["message"]

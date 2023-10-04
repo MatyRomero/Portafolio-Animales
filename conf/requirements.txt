@@ -8,3 +8,4 @@ django-cors-headers
 sendgrid
 webdriver_manager
 packaging
+openai
