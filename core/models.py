@@ -83,17 +83,20 @@ def post_save_mascota(sender, instance, created, **kwargs):
             messages=prompt_obj
         )
         message = response["choices"][0]["message"]
-        data = json.loads(message["content"].replace("'", '"'))
-        print(data, "esta es la data")
-        if len(data) != 0:
-            instance = Mascota()
-            instance.es_animal = data["Es_Animal"]
-            instance.tipo_de_animal = data["Tipo_de_Animal"]
-            instance.color = data["Color"]
-            instance.save()
-            
-            for tag_name in data["Tags"]:
-                tag, created = Tag.objects.get_or_create(name=tag_name)
-                instance.tags.add(tag)
-            
-            instance.save()
+        try:
+            data = json.loads(message["content"].replace("'", '"'))
+            print(data, "esta es la data")
+            if len(data) != 0:
+                instance = Mascota()
+                instance.es_animal = data.get("Es_Animal", False)
+                instance.tipo_de_animal = data.get("Tipo_de_Animal", "")
+                instance.color = data.get("Color", "")
+                instance.save()
+                
+                for tag_name in data.get("Tags", []):
+                    tag, created = Tag.objects.get_or_create(name=tag_name)
+                    instance.tags.add(tag)
+                
+                instance.save()
+        except json.JSONDecodeError as e:
+            print(f"Error al decodificar JSON: {e}")
