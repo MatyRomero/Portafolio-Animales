@@ -43,6 +43,7 @@ class Publicaciones(models.Model):
     Perro = 'Perro'
     Perdida_mascota = 'Perdida de mascota'
     Busqueda_mascota = 'Busqueda de mascota'
+    Presentacion = 'Presentacion de mascota'
     tipo_mascotas = (
         (Gato, 'Gato'),
         (Perro, 'Perro')
@@ -50,7 +51,8 @@ class Publicaciones(models.Model):
 
     tipo_publicaciones = (
         (Perdida_mascota, 'Perdida de mascota'),
-        (Busqueda_mascota, 'Busqueda de mascota')
+        (Busqueda_mascota, 'Busqueda de mascota'),
+        (Presentacion, 'Presentacion de mascota'),
     )
 
     tipo_mascota = models.CharField(max_length=255, choices=tipo_mascotas, default=Perro)
@@ -67,7 +69,7 @@ class Comentarios(models.Model):
 @receiver(post_save, sender=Mascota)
 def post_save_mascota(sender, instance, created, **kwargs):
     if created and instance.foto:
-        print(instance.foto.url)
+        print("http://68.183.54.183:8090" + instance.foto.url)
         # openai.api_key = "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"
         # content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu debes armar un archivo json con la siguiente estructura {'Es_Animal': True, 'Tipo_de_Animal': 'Gato', 'Color': 'Atigrado con tonos grises, blancos y negros', 'Tags': ['#gato', '#felino', '#mascota', '#atigrado', '#doméstico', '#relajado', '#pelaje_mixto']} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json vacio" """
         # prompt_obj = [
