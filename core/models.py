@@ -83,7 +83,11 @@ def post_save_mascota(sender, instance, created, **kwargs):
             messages=prompt_obj
         )
         message = response["choices"][0]["message"]
-        data = json.loads(message["content"].replace("'", '"'))
+        try:
+            data = json.loads(message["content"].replace("'", '"'))
+        except json.JSONDecodeError as e:
+            # Manejar el error aquí, por ejemplo, registrando un mensaje de error
+            print(f"Error al analizar JSON: {e}")
         print(data, "esta es la data")
         if len(data) != 0:
             instance.es_animal = data["Es_Animal"]
