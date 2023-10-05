@@ -97,9 +97,11 @@ def post_save_mascota(sender, instance, created, **kwargs):
             instance.color = data["Color"]
             instance.save()
             print(data["Tags"])
-            for tag in data["Tags"]:
-                obj, created = Tag.objects.get_or_create(name=tag)
-                obj.save()
-                instance.tags.add(obj)
-                instance.save()
+            for tag_name in data["Tags"]:
+        
+                tag, created = Tag.objects.get_or_create(name=tag_name)
+                # Agregar la etiqueta a la instancia de Mascota
+                instance.tags.add(tag)
+
+            # Guardar la instancia de Mascota una vez que se han agregado todas las etiquetas
             instance.save()
