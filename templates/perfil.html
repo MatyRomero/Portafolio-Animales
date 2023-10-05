@@ -6,113 +6,997 @@
 
 <link href="{% static 'plugins/datatable/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'plugins/datatable/css/buttons.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
+<style>
+    @charset "UTF-8";
+    @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap");
+
+    .nav {
+        --bs-nav-link-padding-x: 1rem;
+        --bs-nav-link-padding-y: 0.5rem;
+        --bs-nav-link-font-size: 1rem;
+        --bs-nav-link-font-weight: 400;
+        --bs-nav-link-color: #2A3547;
+        --bs-nav-link-hover-color: #2A3547;
+        --bs-nav-link-disabled-color: var(--bs-secondary-color);
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+    }
+
+    .nav-link {
+        display: block;
+        padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+        font-size: var(--bs-nav-link-font-size);
+        font-weight: var(--bs-nav-link-font-weight);
+        color: var(--bs-nav-link-color);
+        text-decoration: none;
+        background: none;
+        border: 0;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .nav-link {
+            transition: none;
+        }
+    }
+
+    .nav-link:hover,
+    .nav-link:focus {
+        color: var(--bs-nav-link-hover-color);
+    }
+
+    .nav-link:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(93, 135, 255, 0.25);
+    }
+
+    .nav-link.disabled {
+        color: var(--bs-nav-link-disabled-color);
+        pointer-events: none;
+        cursor: default;
+    }
+
+    .nav-tabs {
+        --bs-nav-tabs-border-width: 0;
+        --bs-nav-tabs-border-color: var(--bs-border-color);
+        --bs-nav-tabs-border-radius: 10px;
+        --bs-nav-tabs-link-hover-border-color: var(--bs-secondary-bg) var(--bs-secondary-bg) var(--bs-border-color);
+        --bs-nav-tabs-link-active-color: #fff;
+        --bs-nav-tabs-link-active-bg: #09b99e;
+        --bs-nav-tabs-link-active-border-color: var(--bs-border-color) var(--bs-border-color) #09b99e;
+        border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
+    }
+
+    .nav-tabs .nav-link {
+        margin-bottom: calc(-1 * var(--bs-nav-tabs-border-width));
+        border: var(--bs-nav-tabs-border-width) solid transparent;
+        border-top-left-radius: var(--bs-nav-tabs-border-radius);
+        border-top-right-radius: var(--bs-nav-tabs-border-radius);
+    }
+
+    .nav-tabs .nav-link:hover,
+    .nav-tabs .nav-link:focus {
+        isolation: isolate;
+        border-color: var(--bs-nav-tabs-link-hover-border-color);
+    }
+
+    .nav-tabs .nav-link.disabled,
+    .nav-tabs .nav-link:disabled {
+        color: var(--bs-nav-link-disabled-color);
+        background-color: transparent;
+        border-color: transparent;
+    }
+
+    .nav-tabs .nav-link.active,
+    .nav-tabs .nav-item.show .nav-link {
+        color: var(--bs-nav-tabs-link-active-color);
+        background-color: var(--bs-nav-tabs-link-active-bg);
+        border-color: var(--bs-nav-tabs-link-active-border-color);
+    }
+
+    .nav-tabs .dropdown-menu {
+        margin-top: calc(-1 * var(--bs-nav-tabs-border-width));
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    .nav-pills {
+        --bs-nav-pills-border-radius: var(--bs-border-radius);
+        --bs-nav-pills-link-active-color: #fff;
+        --bs-nav-pills-link-active-bg: #09b99e;
+    }
+
+    .nav-pills .nav-link {
+        border-radius: var(--bs-nav-pills-border-radius);
+    }
+
+    .nav-pills .nav-link:disabled {
+        color: var(--bs-nav-link-disabled-color);
+        background-color: transparent;
+        border-color: transparent;
+    }
+
+    .nav-pills .nav-link.active,
+    .nav-pills .show>.nav-link {
+        color: var(--bs-nav-pills-link-active-color);
+        background-color: var(--bs-nav-pills-link-active-bg);
+    }
+
+    .card {
+        --bs-card-spacer-y: 30px;
+        --bs-card-spacer-x: 30px;
+        --bs-card-title-spacer-y: 0.5rem;
+        --bs-card-title-color: #2A3547;
+        --bs-card-subtitle-color: #2A3547;
+        --bs-card-border-width: 0px;
+        --bs-card-border-color: #ebf1f6;
+        --bs-card-border-radius: 7px;
+        --bs-card-box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
+        --bs-card-inner-border-radius: 7px;
+        --bs-card-cap-padding-y: 15px;
+        --bs-card-cap-padding-x: 30px;
+        --bs-card-cap-bg: rgba(var(--bs-body-color-rgb), 0.03);
+        --bs-card-cap-color: ;
+        --bs-card-height: ;
+        --bs-card-color: ;
+        --bs-card-bg: var(--bs-body-bg);
+        --bs-card-img-overlay-padding: 1rem;
+        --bs-card-group-margin: 12px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        height: var(--bs-card-height);
+        color: var(--bs-body-color);
+        word-wrap: break-word;
+        background-color: var(--bs-card-bg);
+        background-clip: border-box;
+        border: var(--bs-card-border-width) solid var(--bs-card-border-color);
+        border-radius: var(--bs-card-border-radius);
+        box-shadow: var(--bs-card-box-shadow);
+    }
+
+    .card>hr {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .card>.list-group {
+        border-top: inherit;
+        border-bottom: inherit;
+    }
+
+    .card>.list-group:first-child {
+        border-top-width: 0;
+        border-top-left-radius: var(--bs-card-inner-border-radius);
+        border-top-right-radius: var(--bs-card-inner-border-radius);
+    }
+
+    .card>.list-group:last-child {
+        border-bottom-width: 0;
+        border-bottom-right-radius: var(--bs-card-inner-border-radius);
+        border-bottom-left-radius: var(--bs-card-inner-border-radius);
+    }
+
+    .card>.card-header+.list-group,
+    .card>.list-group+.card-footer {
+        border-top: 0;
+    }
+
+    .card-body {
+        flex: 1 1 auto;
+        padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+        color: var(--bs-card-color);
+    }
+
+    .card-title {
+        margin-bottom: var(--bs-card-title-spacer-y);
+        color: var(--bs-card-title-color);
+    }
+
+    .card-subtitle {
+        margin-top: calc(-.5 * var(--bs-card-title-spacer-y));
+        margin-bottom: 0;
+        color: var(--bs-card-subtitle-color);
+    }
+
+    .card-text:last-child {
+        margin-bottom: 0;
+    }
+
+    .card-link+.card-link {
+        margin-left: var(--bs-card-spacer-x);
+    }
+
+    .card-header {
+        padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+        margin-bottom: 0;
+        color: var(--bs-card-cap-color);
+        background-color: var(--bs-card-cap-bg);
+        border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
+    }
+
+    .card-header:first-child {
+        border-radius: var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius) 0 0;
+    }
+
+    .card-footer {
+        padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+        color: var(--bs-card-cap-color);
+        background-color: var(--bs-card-cap-bg);
+        border-top: var(--bs-card-border-width) solid var(--bs-card-border-color);
+    }
+
+    .card-footer:last-child {
+        border-radius: 0 0 var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius);
+    }
+
+    .card-header-tabs {
+        margin-right: calc(-.5 * var(--bs-card-cap-padding-x));
+        margin-bottom: calc(-1 * var(--bs-card-cap-padding-y));
+        margin-left: calc(-.5 * var(--bs-card-cap-padding-x));
+        border-bottom: 0;
+    }
+
+    .card-header-tabs .nav-link.active {
+        background-color: var(--bs-card-bg);
+        border-bottom-color: var(--bs-card-bg);
+    }
+
+    .user-profile-tab .nav-item .nav-link.active {
+        color: #09b99e;
+        border-bottom: 2px solid #09b99e;
+    }
+
+    .card-header-pills {
+        margin-right: calc(-.5 * var(--bs-card-cap-padding-x));
+        margin-left: calc(-.5 * var(--bs-card-cap-padding-x));
+    }
+
+    .card-img-overlay {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: var(--bs-card-img-overlay-padding);
+        border-radius: var(--bs-card-inner-border-radius);
+    }
+
+    .card-img,
+    .card-img-top,
+    .card-img-bottom {
+        width: 100%;
+    }
+
+    .card-img,
+    .card-img-top {
+        border-top-left-radius: var(--bs-card-inner-border-radius);
+        border-top-right-radius: var(--bs-card-inner-border-radius);
+    }
+
+    .card-img,
+    .card-img-bottom {
+        border-bottom-right-radius: var(--bs-card-inner-border-radius);
+        border-bottom-left-radius: var(--bs-card-inner-border-radius);
+    }
+
+    .card-group>.card {
+        margin-bottom: var(--bs-card-group-margin);
+    }
+
+    @media (min-width: 576px) {
+        .card-group {
+            display: flex;
+            flex-flow: row wrap;
+        }
+
+        .card-group>.card {
+            flex: 1 0 0%;
+            margin-bottom: 0;
+        }
+
+        .card-group>.card+.card {
+            margin-left: 0;
+            border-left: 0;
+        }
+
+        .card-group>.card:not(:last-child) {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .card-group>.card:not(:last-child) .card-img-top,
+        .card-group>.card:not(:last-child) .card-header {
+            border-top-right-radius: 0;
+        }
+
+        .card-group>.card:not(:last-child) .card-img-bottom,
+        .card-group>.card:not(:last-child) .card-footer {
+            border-bottom-right-radius: 0;
+        }
+
+        .card-group>.card:not(:first-child) {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .card-group>.card:not(:first-child) .card-img-top,
+        .card-group>.card:not(:first-child) .card-header {
+            border-top-left-radius: 0;
+        }
+
+        .card-group>.card:not(:first-child) .card-img-bottom,
+        .card-group>.card:not(:first-child) .card-footer {
+            border-bottom-left-radius: 0;
+        }
+    }
+
+    .font-monospace {
+        font-family: var(--bs-font-monospace) !important;
+    }
+
+    .fs-1 {
+        font-size: 0.625rem !important;
+    }
+
+    .fs-2 {
+        font-size: 0.75rem !important;
+    }
+
+    .fs-3 {
+        font-size: 0.875rem !important;
+    }
+
+    .fs-4 {
+        font-size: 1rem !important;
+    }
+
+    .fs-5 {
+        font-size: 1.125rem !important;
+    }
+
+    .fs-6 {
+        font-size: 1.25rem !important;
+    }
+
+    .fs-7 {
+        font-size: calc(1.275rem + 0.3vw) !important;
+    }
+
+    .fs-8 {
+        font-size: calc(1.3125rem + 0.75vw) !important;
+    }
+
+    .fs-9 {
+        font-size: calc(1.35rem + 1.2vw) !important;
+    }
+
+    .fs-10 {
+        font-size: calc(1.375rem + 1.5vw) !important;
+    }
+
+    .fs-11 {
+        font-size: calc(1.40625rem + 1.875vw) !important;
+    }
+
+    .fs-12 {
+        font-size: calc(1.425rem + 2.1vw) !important;
+    }
+
+    .fs-13 {
+        font-size: calc(1.46875rem + 2.625vw) !important;
+    }
+
+    .fst-italic {
+        font-style: italic !important;
+    }
+
+    .fst-normal {
+        font-style: normal !important;
+    }
+
+    .fw-lighter {
+        font-weight: 300 !important;
+    }
+
+    .fw-light {
+        font-weight: 300 !important;
+    }
+
+    .fw-normal {
+        font-weight: 400 !important;
+    }
+
+    .fw-medium {
+        font-weight: 500 !important;
+    }
+
+    .fw-semibold {
+        font-weight: 600 !important;
+    }
+
+    .fw-bold {
+        font-weight: 500 !important;
+    }
+
+    .fw-bolder {
+        font-weight: 700 !important;
+    }
+
+    .lh-1 {
+        line-height: 1 !important;
+    }
+
+    .lh-sm {
+        line-height: 1.25 !important;
+    }
+
+    .lh-base {
+        line-height: 1.5 !important;
+    }
+
+    .lh-lg {
+        line-height: 2 !important;
+    }
+
+    .text-start {
+        text-align: left !important;
+    }
+
+    .text-end {
+        text-align: right !important;
+    }
+
+    .text-center {
+        text-align: center !important;
+    }
+
+    .text-decoration-none {
+        text-decoration: none !important;
+    }
+
+    .text-decoration-underline {
+        text-decoration: underline !important;
+    }
+
+    .text-decoration-line-through {
+        text-decoration: line-through !important;
+    }
+
+    .text-lowercase {
+        text-transform: lowercase !important;
+    }
+
+    .text-uppercase {
+        text-transform: uppercase !important;
+    }
+
+    .text-capitalize {
+        text-transform: capitalize !important;
+    }
+
+    .text-wrap {
+        white-space: normal !important;
+    }
+
+    .text-nowrap {
+        white-space: nowrap !important;
+    }
+
+    /* rtl:begin:remove */
+    .text-break {
+        word-wrap: break-word !important;
+        word-break: break-word !important;
+    }
+
+    /* rtl:end:remove */
+    .text-primary {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-secondary {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-secondary-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-success {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-success-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-info {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-info-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-warning {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-warning-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-danger {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-light {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-light-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-dark {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-dark-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-muted {
+        --bs-text-opacity: 1;
+        color: var(--bs-secondary-color) !important;
+    }
+
+    .text-indigo {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-indigo-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-light-primary {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-light-primary-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-light-secondary {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-light-secondary-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-light-info {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-light-info-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-light-success {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-light-success-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-light-warning {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-light-warning-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-light-danger {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-light-danger-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-light-indigo {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-light-indigo-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-dark-light {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-dark-light-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-light-gray {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-light-gray-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-black {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-black-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-white {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-body {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-body-color-rgb), var(--bs-text-opacity)) !important;
+    }
+
+    .text-black-50 {
+        --bs-text-opacity: 1;
+        color: rgba(0, 0, 0, 0.5) !important;
+    }
+
+    .text-white-50 {
+        --bs-text-opacity: 1;
+        color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .text-body-secondary {
+        --bs-text-opacity: 1;
+        color: var(--bs-secondary-color) !important;
+    }
+
+    .text-body-tertiary {
+        --bs-text-opacity: 1;
+        color: var(--bs-tertiary-color) !important;
+    }
+
+    .text-body-emphasis {
+        --bs-text-opacity: 1;
+        color: var(--bs-emphasis-color) !important;
+    }
+
+    .text-reset {
+        --bs-text-opacity: 1;
+        color: inherit !important;
+    }
+
+    .text-opacity-25 {
+        --bs-text-opacity: 0.25;
+    }
+
+    .text-opacity-50 {
+        --bs-text-opacity: 0.5;
+    }
+
+    .text-opacity-75 {
+        --bs-text-opacity: 0.75;
+    }
+
+    .text-opacity-100 {
+        --bs-text-opacity: 1;
+    }
+
+    .text-primary-emphasis {
+        color: var(--bs-primary-text-emphasis) !important;
+    }
+
+    .text-secondary-emphasis {
+        color: var(--bs-secondary-text-emphasis) !important;
+    }
+
+    .text-success-emphasis {
+        color: var(--bs-success-text-emphasis) !important;
+    }
+
+    .text-info-emphasis {
+        color: var(--bs-info-text-emphasis) !important;
+    }
+
+    .text-warning-emphasis {
+        color: var(--bs-warning-text-emphasis) !important;
+    }
+
+    .text-danger-emphasis {
+        color: var(--bs-danger-text-emphasis) !important;
+    }
+
+    .text-light-emphasis {
+        color: var(--bs-light-text-emphasis) !important;
+    }
+
+    .text-dark-emphasis {
+        color: var(--bs-dark-text-emphasis) !important;
+    }
+
+    .user-select-all {
+        user-select: all !important;
+    }
+
+    .user-select-auto {
+        user-select: auto !important;
+    }
+
+    .user-select-none {
+        user-select: none !important;
+    }
+
+    .nav-small-cap {
+        margin-top: 24px;
+        color: #2A3547;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 3px 12px;
+        line-height: 26px;
+        text-transform: uppercase;
+    }
+
+    .nav-small-cap .nav-small-cap-icon {
+        display: none;
+    }
+
+    .sidebar-nav ul .sidebar-item .sidebar-link {
+        color: #2A3547;
+        display: flex;
+        font-size: 14px;
+        white-space: nowrap;
+        align-items: center;
+        line-height: 25px;
+        position: relative;
+        margin: 0px 0px 2px;
+        padding: 10px;
+        border-radius: 7px;
+        gap: 15px;
+        text-decoration: none;
+        font-weight: 400;
+    }
+
+    .sidebar-nav ul .sidebar-item .sidebar-link span:first-child {
+        display: flex;
+    }
+
+    .sidebar-nav ul .sidebar-item .sidebar-link .ti {
+        flex-shrink: 0;
+        font-size: 21px;
+    }
+
+    .sidebar-nav ul .sidebar-item .sidebar-link:hover {
+        background-color: rgba(93, 135, 255, 0.1);
+        color: #09b99e;
+    }
+
+    .sidebar-nav ul .sidebar-item .sidebar-link:hover.has-arrow::after {
+        border-color: #09b99e;
+    }
+
+    .sidebar-nav ul .sidebar-item .sidebar-link.active:hover.has-arrow::after {
+        border-color: #fff;
+    }
+
+    .sidebar-nav ul .sidebar-item .link-disabled {
+        opacity: 0.38;
+    }
+
+    .sidebar-nav ul .sidebar-item .first-level .sidebar-item {
+        transition: all 0.4s ease-in-out;
+        border-bottom: 0;
+    }
+
+    .sidebar-nav ul .sidebar-item .first-level .sidebar-item .sidebar-link:hover {
+        background-color: transparent;
+        color: #09b99e;
+    }
+
+    .sidebar-nav ul .sidebar-item .first-level .sidebar-item .sidebar-link.active.has-arrow::after {
+        border-color: #09b99e;
+    }
+
+    .sidebar-nav ul .sidebar-item .first-level .sidebar-item>.sidebar-link {
+        padding: 8px 10px;
+        border-radius: 7px;
+        font-size: 14px;
+        gap: 23px;
+    }
+
+    .sidebar-nav ul .sidebar-item .first-level .sidebar-item>.sidebar-link .sidebar-icon {
+        flex-shrink: 0;
+        margin-left: 12px;
+        margin-right: 35px;
+        width: 14px;
+        height: 14px;
+    }
+
+    .sidebar-nav ul .sidebar-item .first-level .sidebar-item:last-child {
+        margin-bottom: 16px;
+    }
+
+    .sidebar-nav ul .sidebar-item .first-level .sidebar-link .ti {
+        font-size: 7px;
+    }
+
+    .sidebar-nav ul .sidebar-item .first-level .sidebar-item .sidebar-link.active {
+        background-color: transparent !important;
+        color: #09b99e !important;
+    }
+
+    .sidebar-nav ul .sidebar-item .two-level .sidebar-item .sidebar-link {
+        padding: 8px 10px 8px 45px;
+    }
+
+    .sidebar-nav ul .sidebar-item .three-level .sidebar-item .sidebar-link {
+        padding: 8px 10px 8px 60px;
+    }
+
+    .sidebar-nav ul .sidebar-item.selected>.sidebar-link.active,
+    .sidebar-nav ul .sidebar-item.selected>.sidebar-link,
+    .sidebar-nav ul .sidebar-item>.sidebar-link.active {
+        background-color: #09b99e;
+        color: #fff;
+    }
+
+    .sidebar-nav .sidebar-list .sidebar-list-item {
+        padding: 8px 0;
+    }
+
+    .collapse.in {
+        display: block;
+    }
+
+    .sidebar-nav .has-arrow {
+        position: relative;
+    }
+
+    .sidebar-nav .has-arrow::after {
+        position: absolute;
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-width: 1px 0 0 1px;
+        border-style: solid;
+        border-color: #2A3547;
+        margin-left: 10px;
+        -webkit-transform: rotate(135deg) translate(0, -50%);
+        -ms-transform: rotate(135deg) translate(0, -50%);
+        -o-transform: rotate(135deg) translate(0, -50%);
+        transform: rotate(135deg) translate(0, -50%);
+        -webkit-transform-origin: top;
+        -ms-transform-origin: top;
+        -o-transform-origin: top;
+        transform-origin: top;
+        top: 22px;
+        right: 15px;
+        -webkit-transition: all 0.3s ease-out;
+        -o-transition: all 0.3s ease-out;
+        transition: all 0.3s ease-out;
+    }
+
+    .sidebar-nav li.active>.has-arrow::after,
+    .sidebar-nav li>.has-arrow.active::after,
+    .sidebar-nav .has-arrow[aria-expanded=true]::after {
+        top: 18px;
+        margin-top: 1px;
+        border-color: #fff;
+        -webkit-transform: rotate(-135deg) translate(0, -50%);
+        -ms-transform: rotate(-135deg) translate(0, -50%);
+        -o-transform: rotate(-135deg) translate(0, -50%);
+        transform: rotate(-135deg) translate(0, -50%);
+    }
+</style>
 
 
 {% endblock css %}
 {% block content %}
 
 <div id="app">
-    <div class="card w-100 position-relative overflow-hidden">
-        <div class="card-body p-4">
-            <h5 class="card-title fw-semibold">Configuración de Perfil</h5>
-            <p class="card-subtitle mb-4">Cambia tu foto de perfil</p>
-            <div class="text-center"><img src="/static/images/icons/user.png" alt="" width="120" height="120"
-                    class="img-fluid rounded-circle">
-                <div class="d-flex align-items-center justify-content-center my-4 gap-3"><button
-                        class="btn btn-primary">Subir</button> <button class="btn btn-outline-danger">Eliminar</button>
+    <div class="card">
+        <ul role="tablist" class="nav nav-pills user-profile-tab">
+            <li role="presentation" class="nav-item">
+                <button data-bs-toggle="pill" data-bs-target="#pills-account" type="button" role="tab"
+                    aria-controls="pills-account" aria-selected="true"
+                    class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-4 active">
+                    <i class="bx bxs-user me-2 fs-6"></i> <span class="d-none d-md-block">Mi Perfil</span>
+                </button>
+            </li>
+            <li role="presentation" class="nav-item">
+                <button data-bs-toggle="pill" data-bs-target="#pills-notifications" type="button" role="tab"
+                    aria-controls="pills-notifications" aria-selected="false"
+                    class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-4">
+                    <i class="bx bxs-bone me-2 fs-6"></i> <span class="d-none d-md-block">Mi Mascota</span>
+                </button>
+            </li>
+        </ul>
+    </div>
+    <!-- Contenido de "Mi Perfil" -->
+    <div class="tab-content">
+        <div id="pills-account" role="tabpanel" class="tab-pane fade show active">
+            <div class="card w-100 position-relative overflow-hidden">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-semibold">Configuración de Perfil</h5>
+                    <p class="card-subtitle mb-4">Cambia tu foto de perfil</p>
+                    <div class="text-center"><img src="/static/images/icons/user.png" alt="" width="120" height="120"
+                            class="img-fluid rounded-circle">
+                        <div class="d-flex align-items-center justify-content-center my-4 gap-3"><button
+                                class="btn btn-primary">Subir</button> <button
+                                class="btn btn-outline-danger">Eliminar</button>
+                        </div>
+                        <p class="mb-0">Formatos Permitidos JPG, GIF o PNG. Max 2MB</p>
+                    </div>
                 </div>
-                <p class="mb-0">Formatos Permitidos JPG, GIF o PNG. Max 2MB</p>
+            </div>
+            <div class="card w-100 position-relative overflow-hidden mb-0">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-semibold">Información Personal</h5>
+                    <p class="card-subtitle mb-4">Para cambiar tu información personal, rellena el formulario y guarda
+                        los
+                        cambios</p>
+                    <form>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="exampleInputPassword1" class="form-label fw-semibold">Nombre</label>
+                                    <input v-model="informacion_personal.nombre" type="text" class="form-control"
+                                        id="exampleInputtext">
+                                </div>
+                                <div class="mb-4"><label for="exampleInputPassword1"
+                                        class="form-label fw-semibold">Comuna</label> <input
+                                        v-model="informacion_personal.comuna" type="email" id="exampleInputtext"
+                                        class="form-control"></div>
+                                <div class="mb-4"><label for="exampleInputPassword1"
+                                        class="form-label fw-semibold">Dirección</label> <input
+                                        v-model="informacion_personal.direccion" type="text" id="exampleInputtext"
+                                        class="form-control"></div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-4"><label class="form-label fw-semibold">Teléfono</label> <input
+                                        v-model="informacion_personal.telefono" type="text" id="exampleInputtext"
+                                        class="form-control"></div>
+                                <div class="mb-4"><label class="form-label fw-semibold">Email</label> <input
+                                        v-model="informacion_personal.email" type="text" id="exampleInputtext"
+                                        class="form-control"></div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-center justify-content-end mt-4 gap-3"><button
+                                        type="button" class="btn btn-primary"
+                                        v-on:click="SetProfileInformation()">Guardar</button> <button
+                                        class="btn btn-light-danger text-danger">Cancelar</button></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido de "Mi Mascota" -->
+        <div id="pills-notifications" role="tabpanel" class="tab-pane fade">
+            <div class="row">
+                <div class="col-lg-6 d-flex align-items-stretch">
+                    <div class="card w-100 position-relative overflow-hidden">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">Configuración de Perfil Mascota</h5>
+                            <p class="card-subtitle">Cambia la foto de tu mascota</p>
+                            <div class="text-center mt-5"><img src="/static/images/icons/user.png" alt="" width="120"
+                                    height="120" class="img-fluid rounded-circle">
+                                <div class="d-flex align-items-center justify-content-center my-4 gap-3"><button
+                                        class="btn btn-primary">Subir</button> <button
+                                        class="btn btn-outline-danger">Eliminar</button></div>
+                                <p class="mb-0">Formatos Permitidos JPG, GIF o PNG. Max 2MB</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-flex align-items-stretch">
+                    <div class="card w-100 position-relative overflow-hidden">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-semibold">Información de tu Mascota</h5>
+                            <p class="card-subtitle mb-4">Para cambiar la información de tu mascota, rellena el
+                                formulario y guarda los cambios</p>
+                            <form>
+                                <div class="mb-4">
+                                    <label for="petName" class="form-label fw-semibold">Nombre de la mascota</label>
+                                    <input v-model="informacion_mascota.nombre" type="text" class="form-control"
+                                        id="petName">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="petType" class="form-label fw-semibold">Tipo de mascota</label>
+                                    <input v-model="informacion_mascota.tipo_mascota" type="text" class="form-control"
+                                        id="petType">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="petAge" class="form-label fw-semibold">Edad de la mascota</label>
+                                    <input v-model="informacion_mascota.edad" type="text" class="form-control"
+                                        id="petAge">
+                                </div>
+                                <input type="hidden" v-model="informacion_mascota.pet_id">
+                                <div class="col-12">
+                                    <div class="d-flex my-4 gap-3">
+                                        <button class="btn btn-primary">Ficha Medica</button>
+                                        <button class="btn btn-primary">Vacunas</button>
+                                        <button v-on:click="SetPetInformation()" class=" btn
+                                            btn-primary">Guardar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="card w-100 position-relative overflow-hidden mb-0">
-        <div class="card-body p-4">
-            <h5 class="card-title fw-semibold">Información Personal</h5>
-            <p class="card-subtitle mb-4">Para cambiar tu información personal, rellena el formulario y guarda los
-                cambios</p>
-            <form>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="mb-4">
-                            <label for="exampleInputPassword1" class="form-label fw-semibold">Nombre</label>
-                            <input v-model="informacion_personal.nombre" type="text" class="form-control"
-                                id="exampleInputtext">
-                        </div>
-                        <div class="mb-4"><label for="exampleInputPassword1"
-                                class="form-label fw-semibold">Comuna</label> <input
-                                v-model="informacion_personal.comuna" type="email" id="exampleInputtext"
-                                class="form-control"></div>
-                        <div class="mb-4"><label for="exampleInputPassword1"
-                                class="form-label fw-semibold">Dirección</label> <input
-                                v-model="informacion_personal.direccion" type="text" id="exampleInputtext"
-                                class="form-control"></div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="mb-4"><label for="exampleInputPassword1"
-                                class="form-label fw-semibold">Teléfono</label> <input
-                                v-model="informacion_personal.telefono" type="text" id="exampleInputtext"
-                                class="form-control"></div>
-                        <div class="mb-4"><label for="exampleInputPassword1"
-                                class="form-label fw-semibold">Email</label> <input v-model="informacion_personal.email"
-                                type="text" id="exampleInputtext" class="form-control"></div>
-                    </div>
-                    <div class="col-12">
-                        <div class="d-flex align-items-center justify-content-end mt-4 gap-3"><button type="button"
-                                class="btn btn-primary" v-on:click="SetProfileInformation()">Guardar</button> <button
-                                class="btn btn-light-danger text-danger">Cancelar</button></div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- <div class="card w-100 position-relative overflow-hidden mb-0">
-        <div class="card-body p-4">
-            <h5 class="card-title fw-semibold">Información Personal</h5>
-            <p class="card-subtitle mb-4">Para cambiar tu información personal, rellena el formulario y guarda los
-                cambios</p>
-            <form>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="mb-4">
-                            <label for="exampleInputPassword1" class="form-label fw-semibold">Nombre</label>
-                            <input v-model="informacion_personal.nombre" type="text" class="form-control"
-                                id="exampleInputtext">
-                        </div>
-                        <div class="mb-4">
-                            <label for="exampleInputPassword1" class="form-label fw-semibold">Email</label>
-                            <input v-model="informacion_personal.email" type="email" class="form-control"
-                                id="exampleInputtext">
-                        </div>
-                        <div class="mb-4">
-                            <label for="exampleInputPassword1" class="form-label fw-semibold">Dirección</label>
-                            <input v-model="informacion_personal.direccion" type="text" class="form-control"
-                                id="exampleInputtext">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="mb-4">
-                            <label for="exampleInputPassword1" class="form-label fw-semibold">Nombre Empresa</label>
-                            <input v-model="informacion_personal.nombre_empresa" type="text" class="form-control"
-                                id="exampleInputtext">
-                        </div>
-                        <div class="mb-4">
-                            <label for="exampleInputPassword1" class="form-label fw-semibold">Telefono de
-                                contacto</label>
-                            <input v-model="informacion_personal.telefono" type="text" class="form-control"
-                                id="exampleInputtext">
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="d-flex align-items-center justify-content-end mt-4 gap-3">
-                            <button type="button" v-on:click="SetProfileInformation()"
-                                class="btn btn-primary">Guardar</button>
-                            <button class="btn btn-light-danger text-danger">Cancelar</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div> -->
+</div>
+
 </div>
 
 
@@ -132,7 +1016,14 @@
                 "email": "{{request.user.email}}",
                 "telefono": "{{request.user.usuario.telefono}}",
                 "direccion": "{{request.user.usuario.direccion}}"
-            }
+            },
+            informacion_mascota: {
+                "nombre": "{{request.mi_mascota.nombre}}",
+                "tipo_mascota": "{{request.mi_mascota.tipo_mascota}}",
+                "edad": "{{request.mi_mascota.edad}}",
+                "pet_id": "{{request.mi_mascota.id}}"
+            },
+            pets: [],
         },
         methods: {
             SetProfileInformation() {
@@ -143,6 +1034,19 @@
                     Swal.fire(
                         'Éxito!',
                         'La información fue actualizada con éxito!',
+                        'success'
+                    )
+                })
+            },
+            SetPetInformation() {
+                console.log(this.informacion_mascota)
+                axios.post("/api/internal/update/pet_information", this.informacion_mascota, {
+                    xsrfCookieName: 'csrftoken',
+                    xsrfHeaderName: 'X-CSRFTOKEN',
+                }).then((response) => {
+                    Swal.fire(
+                        'Éxito!',
+                        'La información de la mascota fue actualizada con éxito!',
                         'success'
                     )
                 })

@@ -75,6 +75,8 @@ def shops(request):
 def perfil(request):
     template_name = "perfil.html"
     context = {}
+    mi_mascota = Mi_Mascota.objects.get(dueño=request.user.usuario)
+    request.mi_mascota = mi_mascota
     return render(request, template_name, context)
 
 @login_required(login_url='login')

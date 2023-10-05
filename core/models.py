@@ -21,6 +21,12 @@ class Usuario(models.Model):
     user = models.OneToOneField(User, max_length=50, on_delete=models.CASCADE, default='UserPrueba')
     active = models.BooleanField(default=True)
 
+class Mi_Mascota(models.Model):
+    nombre = models.CharField(max_length=255, blank=True , null=True)
+    tipo_mascota = models.CharField(max_length=255, blank=True, null=True)
+    edad = models.CharField(max_length=255, blank=True, null=True)
+    dueño = models.ForeignKey(Usuario, on_delete=models.CASCADE, blank=True , null=True)
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -90,6 +96,7 @@ def post_save_mascota(sender, instance, created, **kwargs):
             instance.tipo_de_animal = data["Tipo_de_Animal"]
             instance.color = data["Color"]
             instance.save()
+            print(data["Tags"])
             for tag in data["Tags"]:
                 obj, created = Tag.objects.get_or_create(name=tag)
                 obj.save()

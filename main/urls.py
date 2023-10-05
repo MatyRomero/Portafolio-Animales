@@ -27,4 +27,6 @@ urlpatterns = [
     ## API Comentarios
     path('api/get_allcomentarios', GetAllComentarios.as_view()),
     path('api/create/comentarios/<int:publicacion_id>/', CreateComentario.as_view()),
+    ## API Mi Mascota
+    path("api/internal/update/pet_information", SetPetInformation.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -71,9 +71,18 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label for="" class="control-label">Comuna: </label>
-                                                    <input v-model="nuevo_usuario.comuna" type="text" maxlength="99"
-                                                        class="form-control" placeholder="Ingresar teléfono">
+                                                    <label for="comuna" class="control-label">Comuna: </label>
+                                                    <select v-model="nuevo_usuario.comuna" class="form-control"
+                                                        id="comuna">
+                                                        <option value="" disabled>Selecciona una comuna</option>
+                                                        <option value="San Bernardo">San Bernardo</option>
+                                                        <option value="Providencia">Providencia</option>
+                                                        <option value="El Bosque">El Bosque</option>
+                                                        <option value="Buin">Buin</option>
+                                                        <option value="Puente Alto">Puente Alto</option>
+                                                        <option value="Cerro Navia">Cerro Navia</option>
+
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
