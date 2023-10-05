@@ -95,12 +95,12 @@ def post_save_mascota(sender, instance, created, **kwargs):
             instance.es_animal = data["Es_Animal"]
             instance.tipo_de_animal = data["Tipo_de_Animal"]
             instance.color = data["Color"]
+            for tag in data["Tags"]:
+                print(data, "LLEGO ACA?")
+                obj, created = Tag.objects.get_or_create(name=tag)
+                obj.save()
+                instance.tags.add(obj)
+                instance.save()
             instance.save()
             print(data, "LLEGO ACA?")
-        for tag in data["Tags"]:
-            print(data, "LLEGO ACA?")
-            obj, created = Tag.objects.get_or_create(name=tag)
-            obj.save()
-            instance.tags.add(obj)
-            instance.save()
-        instance.save()
+        
