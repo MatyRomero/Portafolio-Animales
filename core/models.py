@@ -29,7 +29,7 @@ class Mi_Mascota(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True, blank=True)
     def __str__(self):
         return self.name
 
@@ -42,7 +42,7 @@ class Mascota(models.Model):
     es_animal = models.BooleanField(null=True, blank=True, choices=ES_ANIMAL_CHOICES, default=True)
     tipo_de_animal = models.CharField(null=True, blank=True, max_length=255)
     color = models.TextField(null=True, blank=True, )
-    tags = models.ManyToManyField(Tag,related_name='mascotas')
+    tags = models.ManyToManyField(Tag, blank=True, related_name='mascotas')
     foto = models.ImageField(null=True, blank=True, upload_to="media/mascotas")
 
 
