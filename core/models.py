@@ -96,9 +96,9 @@ def post_save_mascota(sender, instance, created, **kwargs):
             instance.tipo_de_animal = data["Tipo_de_Animal"]
             instance.color = data["Color"]
             instance.save()
-            print(data["Tags"])
+            if "Tags" in data and data["Tags"]:
+                print(data["Tags"])
             for tag_name in data["Tags"]:
-        
                 tag, created = Tag.objects.get_or_create(name=tag_name)
                 # Agregar la etiqueta a la instancia de Mascota
                 instance.tags.add(tag)
