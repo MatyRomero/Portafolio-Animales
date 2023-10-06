@@ -20,12 +20,14 @@ class Usuario(models.Model):
     direccion = models.CharField(max_length=255, null=True, blank=True)
     user = models.OneToOneField(User, max_length=50, on_delete=models.CASCADE, default='UserPrueba')
     active = models.BooleanField(default=True)
+    foto = models.ImageField(null=True, blank=True, upload_to="media/usuario")
 
 class Mi_Mascota(models.Model):
     nombre = models.CharField(max_length=255, blank=True , null=True)
     tipo_mascota = models.CharField(max_length=255, blank=True, null=True)
     edad = models.CharField(max_length=255, blank=True, null=True)
     dueño = models.ForeignKey(Usuario, on_delete=models.CASCADE, blank=True , null=True)
+    foto = models.ImageField(null=True, blank=True, upload_to="media/mi_mascota")
 
 
 class Tag(models.Model):

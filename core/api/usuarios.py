@@ -22,7 +22,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class CreateUsuarios(APIView):
@@ -98,3 +98,23 @@ class SetProfileInformation(APIView):
         request.user.usuario.comuna = request.data["comuna"]
         request.user.usuario.save()
         return Response(response)
+    
+class UploadProfilePhoto(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self, request, format=None):
+        response = {}
+        # Verifica si el usuario está autenticado
+        if not request.user.is_authenticated:
+            return Response({"error": "Usuario no autenticado"}, status=status.HTTP_401_UNAUTHORIZED)
+        # Obtén el objeto Usuario relacionado con el usuario autenticado
+        usuario = Usuario.objects.get(user=request.user)
+        # Procesa y guarda la foto si se proporciona
+        if 'foto' in request.data:
+            usuario.foto = request.data['foto']
+            usuario.save()
+            return Response({"message": "Foto de perfil actualizada con éxito."}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "No se proporcionó ninguna foto."}, status=status.HTTP_400_BAD_REQUEST)
+
+

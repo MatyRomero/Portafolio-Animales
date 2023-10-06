@@ -76,19 +76,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.oracle',
-#         'NAME': 'portafolio',
-#         'USER': 'admin',
-#         'PASSWORD': '11UNI019verso10@',
-#         'HOST': 'localhost',  # O la dirección de tu servidor Oracle
-#         'PORT': '1521',     # El puerto de tu servidor Oracle
-#         'OPTIONS': {
-#             'threaded': True,  # Puede ayudar a mejorar el rendimiento
-#         },
-#     }
-# }
 
 CORS_ALLOW_ALL_ORIGINS = True
 

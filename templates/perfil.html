@@ -886,11 +886,17 @@
                 <div class="card-body p-4">
                     <h5 class="card-title fw-semibold">Configuración de Perfil</h5>
                     <p class="card-subtitle mb-4">Cambia tu foto de perfil</p>
-                    <div class="text-center"><img src="/static/images/icons/user.png" alt="" width="120" height="120"
-                            class="img-fluid rounded-circle">
-                        <div class="d-flex align-items-center justify-content-center my-4 gap-3"><button
-                                class="btn btn-primary">Subir</button> <button
-                                class="btn btn-outline-danger">Eliminar</button>
+                    <div class="text-center"><img v-if="selectedProfilePhoto" :src="selectedProfilePhotoUrl" alt=""
+                            class="img-fluid rounded-circle" style="width: 200px; height: 200px;">
+                        <img v-else :src="userProfilePhotoUrl" alt="" class="img-fluid rounded-circle"
+                            style="width: 140px; height: 140px;">
+                        <div class="d-flex align-items-center justify-content-center my-4 gap-3">
+                            <label for="profilePhotoInput" style="cursor: pointer" class="btn btn-primary">
+                                Subir<input type="file" id="profilePhotoInput" style="display: none"
+                                    @change="handleProfilePhotoChange" accept="image/*">
+                            </label>
+                            <button class="btn btn-primary" @click="uploadProfilePhoto">Guardar</button>
+                            <button class="btn btn-outline-danger">Eliminar</button>
                         </div>
                         <p class="mb-0">Formatos Permitidos JPG, GIF o PNG. Max 2MB</p>
                     </div>
@@ -912,7 +918,7 @@
                                 </div>
                                 <div class="mb-4"><label for="exampleInputPassword1"
                                         class="form-label fw-semibold">Comuna</label> <input
-                                        v-model="informacion_personal.comuna" type="email" id="exampleInputtext"
+                                        v-model="informacion_personal.comuna" type="text" id="exampleInputtext"
                                         class="form-control"></div>
                                 <div class="mb-4"><label for="exampleInputPassword1"
                                         class="form-label fw-semibold">Dirección</label> <input
@@ -924,7 +930,7 @@
                                         v-model="informacion_personal.telefono" type="text" id="exampleInputtext"
                                         class="form-control"></div>
                                 <div class="mb-4"><label class="form-label fw-semibold">Email</label> <input
-                                        v-model="informacion_personal.email" type="text" id="exampleInputtext"
+                                        v-model="informacion_personal.email" type="email" id="exampleInputtext"
                                         class="form-control"></div>
                             </div>
                             <div class="col-12">
@@ -947,12 +953,22 @@
                         <div class="card-body">
                             <h5 class="card-title fw-semibold">Configuración de Perfil Mascota</h5>
                             <p class="card-subtitle">Cambia la foto de tu mascota</p>
-                            <div class="text-center mt-5"><img src="/static/images/icons/user.png" alt="" width="120"
-                                    height="120" class="img-fluid rounded-circle">
-                                <div class="d-flex align-items-center justify-content-center my-4 gap-3"><button
-                                        class="btn btn-primary">Subir</button> <button
-                                        class="btn btn-outline-danger">Eliminar</button></div>
-                                <p class="mb-0">Formatos Permitidos JPG, GIF o PNG. Max 2MB</p>
+                            <div class="text-center mt-5">
+                                <img v-if="selectedPetPhoto" :src="selectedPetPhotoUrl" alt=""
+                                    class="img-fluid rounded-circle" style="width: 200px; height: 200px;">
+                                <img v-else :src="petProfilePhotoUrl" alt="" class="img-fluid rounded-circle"
+                                    style="width: 140px; height: 140px;">
+                                <div class="d-flex align-items-center justify-content-center my-4 gap-3">
+                                    <label for="petPhotoInput" style="cursor: pointer" class="btn btn-primary">
+                                        Subir
+                                        <input type="file" id="petPhotoInput" style="display: none"
+                                            @change="handlePetPhotoChange" accept="image/*">
+                                    </label>
+                                    <input type="hidden" v-model="informacion_mascota.pet_id">
+                                    <button class="btn btn-primary" @click="uploadPetPhoto">Guardar</button>
+                                    <button class="btn btn-outline-danger">Eliminar</button>
+                                </div>
+                                <p class="mb-0">Formatos Permitidos JPG o PNG. Max 2MB</p>
                             </div>
                         </div>
                     </div>
@@ -984,7 +1000,7 @@
                                     <div class="d-flex my-4 gap-3">
                                         <button class="btn btn-primary">Ficha Medica</button>
                                         <button class="btn btn-primary">Vacunas</button>
-                                        <button v-on:click="SetPetInformation()" class=" btn
+                                        <button v-on:click="SetPetInformation($event)" class=" btn
                                             btn-primary">Guardar</button>
                                     </div>
                                 </div>
@@ -997,7 +1013,6 @@
     </div>
 </div>
 
-</div>
 
 
 {% endblock content %}
@@ -1024,6 +1039,16 @@
                 "pet_id": "{{request.mi_mascota.id}}"
             },
             pets: [],
+            selectedProfilePhoto: null,
+            selectedPetPhoto: null,
+            userProfilePhotoUrl: "",
+            petProfilePhotoUrl: "",
+        },
+        created() {
+            // Obtener la URL de la imagen de perfil del usuario desde tus datos de usuario
+            // y asignarla a userProfilePhotoUrl
+            this.userProfilePhotoUrl = "{{request.user.usuario.foto.url}}";
+            this.petProfilePhotoUrl = "{{request.mi_mascota.foto.url}}";
         },
         methods: {
             SetProfileInformation() {
@@ -1039,7 +1064,8 @@
                 })
             },
             SetPetInformation() {
-                console.log(this.informacion_mascota)
+                console.log(this.informacion_mascota);
+                // Realizar una solicitud AJAX en lugar de una solicitud POST estándar
                 axios.post("/api/internal/update/pet_information", this.informacion_mascota, {
                     xsrfCookieName: 'csrftoken',
                     xsrfHeaderName: 'X-CSRFTOKEN',
@@ -1048,8 +1074,64 @@
                         'Éxito!',
                         'La información de la mascota fue actualizada con éxito!',
                         'success'
-                    )
-                })
+                    );
+
+                    // Puedes agregar el código para cambiar la pestaña activa a "Mi Mascota" si es necesario
+                }).catch((error) => {
+                    console.error(error);
+                });
+                // Evitar que el formulario se envíe y recargue la página
+                event.preventDefault();
+            },
+            handleProfilePhotoChange(event) {
+                // Captura la imagen seleccionada por el usuario
+                this.selectedProfilePhoto = event.target.files[0];
+            },
+            handlePetPhotoChange(event) {
+                this.selectedPetPhoto = event.target.files[0];
+            },
+            uploadProfilePhoto() {
+                const formData = new FormData();
+                formData.append('foto', this.selectedProfilePhoto);
+
+                // Realiza una solicitud POST para subir la foto
+                axios.post("/api/actualizar_img/user", formData, {
+                    xsrfCookieName: 'csrftoken',
+                    xsrfHeaderName: 'X-CSRFTOKEN',
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then((response) => {
+                    Swal.fire(
+                        'Éxito!',
+                        'La foto de perfil fue actualizada con éxito!',
+                        'success'
+                    );
+                }).catch((error) => {
+                    console.error(error);
+                });
+            },
+            uploadPetPhoto() {
+                const formData = new FormData();
+                formData.append('foto', this.selectedPetPhoto);
+                formData.append('pet_id', this.informacion_mascota.pet_id); // Agrega el pet_id al formulario
+
+                // Realiza una solicitud POST para subir la foto
+                axios.post("/api/actualizar_img/pet", formData, {
+                    xsrfCookieName: 'csrftoken',
+                    xsrfHeaderName: 'X-CSRFTOKEN',
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then((response) => {
+                    Swal.fire(
+                        'Éxito!',
+                        'La foto de tu mascota fue actualizada con éxito!',
+                        'success'
+                    );
+                }).catch((error) => {
+                    console.error(error);
+                });
             },
         },
     })

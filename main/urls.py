@@ -21,6 +21,7 @@ urlpatterns = [
     path("api/edit/usuarios", EditarUsuarios.as_view()),
     path("api/delete/usuarios", DeleteUsuarios.as_view()),
     path("api/internal/set/profile_information", SetProfileInformation.as_view()),
+    path('api/actualizar_img/user', UploadProfilePhoto.as_view(), name='upload-profile-photo'),
     ## API Publicaciones
     path("api/create/publicaciones", CreatePublicaciones.as_view()),
     path('api/get_allpublicaciones', GetAllPublicaciones.as_view()),
@@ -29,4 +30,5 @@ urlpatterns = [
     path('api/create/comentarios/<int:publicacion_id>/', CreateComentario.as_view()),
     ## API Mi Mascota
     path("api/internal/update/pet_information", SetPetInformation.as_view()),
+    path('api/actualizar_img/pet', UploadPetPhoto.as_view(), name='upload-pet-photo'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

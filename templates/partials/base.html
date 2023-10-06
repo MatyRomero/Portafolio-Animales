@@ -90,7 +90,8 @@
 										<p class="user-name mb-0">{{request.user.first_name}} {{request.user.last_name}}
 										</p>
 									</div>
-									<img src="{% static 'images/icons/user.png' %}" class="user-img" alt="user avatar">
+									<img src="{% if request.user.usuario.foto.url %}{{request.user.usuario.foto.url}}{% else %}{% static 'images/icons/user.png' %}{% endif %}"
+										class="user-img" alt="user avatar" style="width: 50px; height: 50px;">
 								</div>
 							</a>
 							<div class="dropdown-menu dropdown-menu-end">
