@@ -31,4 +31,8 @@ urlpatterns = [
     ## API Mi Mascota
     path("api/internal/update/pet_information", SetPetInformation.as_view()),
     path('api/actualizar_img/pet', UploadPetPhoto.as_view(), name='upload-pet-photo'),
+    path('api/create/vacunas', CreateVacuna.as_view()),
+    path('api/get/vacunas', GetVacunas.as_view()),
+    path('api/get/fichamedica', GetFichaMedica.as_view()),
+    path('api/create/fichamedica', CreateConsulta.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -22,12 +22,25 @@ class Usuario(models.Model):
     active = models.BooleanField(default=True)
     foto = models.ImageField(null=True, blank=True, upload_to="media/usuario")
 
+class Vacuna(models.Model):
+    peso = models.CharField(max_length=255, blank=True , null=True)
+    nombre_vacuna = models.CharField(max_length=255, blank=True , null=True)
+    fecha_aplicacion = models.DateTimeField(null=True, blank=True)
+    fecha_proxima_vacuna = models.DateTimeField(null=True, blank=True)
+
+
 class Mi_Mascota(models.Model):
     nombre = models.CharField(max_length=255, blank=True , null=True)
     tipo_mascota = models.CharField(max_length=255, blank=True, null=True)
     edad = models.CharField(max_length=255, blank=True, null=True)
     dueño = models.ForeignKey(Usuario, on_delete=models.CASCADE, blank=True , null=True)
     foto = models.ImageField(null=True, blank=True, upload_to="media/mi_mascota")
+    vacunas = models.ManyToManyField(Vacuna, blank=True)
+
+class FichaMedica(models.Model):
+    mascota = models.ForeignKey(Mi_Mascota, on_delete=models.CASCADE)
+    fecha_consulta = models.DateTimeField(null=True, blank=True)
+    diagnostico = models.TextField(null=True, blank=True)
 
 
 class Tag(models.Model):
@@ -100,8 +113,7 @@ def post_save_mascota(sender, instance, created, **kwargs):
             instance.save()
             print(data, "LLEGO ACA?")
             for tag in data["Tags"]:
-                print(data, "LLEGO ACA?")
+                print(data, "LLEGO ACAAAAAA?")
                 obj, created = Tag.objects.get_or_create(name=tag)
                 instance.tags.add(obj)
-                instance.save()
             instance.save()

@@ -996,17 +996,181 @@
                                         id="petAge">
                                 </div>
                                 <input type="hidden" v-model="informacion_mascota.pet_id">
-                                <div class="col-12">
-                                    <div class="d-flex my-4 gap-3">
-                                        <button class="btn btn-primary">Ficha Medica</button>
-                                        <button class="btn btn-primary">Vacunas</button>
-                                        <button v-on:click="SetPetInformation($event)" class=" btn
-                                            btn-primary">Guardar</button>
-                                    </div>
-                                </div>
                             </form>
+                            <div class="col-12">
+                                <div class="d-flex my-4 gap-3">
+                                    <button data-bs-target="#VerFichaMedica" data-bs-toggle="modal"
+                                        v-on:click="cargarFichaMedica()" class="btn btn-primary">Ficha Medica</button>
+                                    <button data-bs-target="#VerVacunas" data-bs-toggle="modal"
+                                        v-on:click="cargarVacunas()" class="btn btn-primary">Vacunas</button>
+                                    <button v-on:click="SetPetInformation($event)" class=" btn
+                                        btn-primary">Guardar</button>
+                                    <button class="btn btn-outline-danger">¡Perdido!</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="VerVacunas" tabindex="-1" aria-labelledby="VerVacunas" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Registro de Vacunas
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table id="tablavacunas" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Peso (KG)</th>
+                                <th>Vacuna</th>
+                                <th>Fecha de Aplicación</th>
+                                <th>Fecha Próxima Vacuna</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="vacuna in vacunas" :key="vacuna.id">
+                                <td>[[vacuna.peso]]</td>
+                                <td>[[vacuna.nombre]]</td>
+                                <td>[[vacuna.fecha_aplicacion]]</td>
+                                <td>[[vacuna.fecha_proxima_vacuna]]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nueva_vacuna"
+                        @click="nueva_vacuna.pet_id = informacion_mascota.pet_id">
+                        Agregar Vacuna
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="VerFichaMedica" tabindex="-1" aria-labelledby="VerFichaMedica" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ficha Medica
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table id="tablavacunas" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Fecha de consulta</th>
+                                <th>Diagnóstico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="ficha_medica in ficha_medica" :key="ficha_medica.id">
+                                <td>[[ficha_medica.fecha_consulta]]</td>
+                                <td>[[ficha_medica.diagnostico]]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#nueva_consulta"
+                        @click="nueva_consulta.mascota.pet_id = informacion_mascota.pet_id">
+                        Agregar Consulta
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="nueva_vacuna" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Registrar Vacuna</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="control-label">Peso: </label>
+                                <input v-model="nueva_vacuna.peso" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group">
+                                <label for="" class="control-label">Nombre Vacuna:
+                                </label>
+                                <input v-model="nueva_vacuna.nombre_vacuna" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group">
+                                <label for="" class=" control-label">Fecha de
+                                    Aplicación: </label>
+                                <input v-model="nueva_vacuna.fecha_aplicacion" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group">
+                                <label for="" class=" control-label">Fecha
+                                    Próxima Vacuna: </label>
+                                <input v-model="nueva_vacuna.fecha_proxima_vacuna" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <input type="hidden" v-model="nueva_vacuna.mi_mascota.pet_id">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button v-on:click="CrearVacuna()" type="button" class="btn btn-primary">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="nueva_consulta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Registrar Consulta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <div class="form-group">
+                                <label for="" class=" control-label">Fecha Consulta: </label>
+                                <input v-model="nueva_consulta.fecha_consulta" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="form-group">
+                                <label for="" class="control-label">Diagnóstico:
+                                </label>
+                                <textarea v-model="nueva_consulta.diagnostico" type=" text"
+                                    class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <input type="hidden" v-model="nueva_consulta.mascota.pet_id">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button v-on:click="CrearConsulta()" type="button" class="btn btn-primary">Crear</button>
                 </div>
             </div>
         </div>
@@ -1043,6 +1207,24 @@
             selectedPetPhoto: null,
             userProfilePhotoUrl: "",
             petProfilePhotoUrl: "",
+            vacunas: [],
+            ficha_medica: [],
+            nueva_vacuna: {
+                peso: "",
+                nombre_vacuna: "",
+                fecha_aplicacion: "",
+                fecha_proxima_vacuna: "",
+                mi_mascota: {
+                    pet_id: "",
+                }
+            },
+            nueva_consulta: {
+                fecha_consulta: "",
+                diagnostico: "",
+                mascota: {
+                    pet_id: "",
+                }
+            }
         },
         created() {
             // Obtener la URL de la imagen de perfil del usuario desde tus datos de usuario
@@ -1132,6 +1314,85 @@
                 }).catch((error) => {
                     console.error(error);
                 });
+            },
+            cargarVacunas() {
+                axios.post("/api/get/vacunas", {
+                    pet_id: this.informacion_mascota.pet_id,
+                })
+                    .then((response) => {
+                        this.vacunas = response.data.vacunas.map((vacuna) => {
+                            return {
+                                peso: vacuna.peso,
+                                nombre: vacuna.nombre,
+                                fecha_aplicacion: this.formatearFecha(vacuna.fecha_aplicacion),
+                                fecha_proxima_vacuna: this.formatearFecha(vacuna.fecha_proxima_vacuna),
+                            };
+                        });
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            },
+            cargarFichaMedica() {
+                axios.post("/api/get/fichamedica", {
+                    pet_id: this.informacion_mascota.pet_id,
+                })
+                    .then((response) => {
+                        this.ficha_medica = response.data.ficha_medica.map((ficha) => {
+                            return {
+                                fecha_consulta: this.formatearFecha(ficha.fecha_consulta),
+                                diagnostico: ficha.diagnostico,
+                            };
+                        });
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            },
+            formatearFecha(fecha) {
+                if (!fecha) {
+                    return "";
+                }
+
+                const date = new Date(fecha);
+                date.setUTCHours(0, 0, 0, 0); // Establecer la zona horaria a UTC
+                const dia = date.getUTCDate().toString().padStart(2, "0");
+                const mes = (date.getUTCMonth() + 1).toString().padStart(2, "0");
+                const anio = date.getUTCFullYear();
+
+                return `${dia}/${mes}/${anio}`;
+            },
+            CrearVacuna() {
+                axios.post("/api/create/vacunas", this.nueva_vacuna)
+                    .then((response) => {
+                        Swal.fire({
+                            title: 'Éxito!',
+                            text: 'La vacuna fue ingresada con éxito!',
+                            icon: 'success',
+                        }).then(() => {
+                            location.reload();
+                        });
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            },
+            CrearConsulta() {
+                console.log("pet_id:", this.informacion_mascota.pet_id);
+                axios.post("/api/create/fichamedica", this.nueva_consulta)
+                    .then((response) => {
+                        Swal.fire({
+                            title: 'Éxito!',
+                            text: 'La consulta fue ingresada con éxito!',
+                            icon: 'success',
+
+                        }).then(() => {
+                            location.reload();
+                        });
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
             },
         },
     })
