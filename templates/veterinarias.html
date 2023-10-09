@@ -1,0 +1,95 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+
+{% block css %}
+
+<link href="{% static 'plugins/datatable/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'plugins/datatable/css/buttons.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
+
+
+{% endblock css %}
+{% block content %}
+
+<div id="app">
+    <div class="row">
+        <div class="col-12 col-lg-8 col-md-12">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.039707144202!2d-70.7064937!3d-33.60427419999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662d94841c7667b%3A0xb4fa4b39deaca84e!2sMaestranza%2C%20San%20Bernardo%2C%20Regi%C3%B3n%20Metropolitana!5e0!3m2!1ses!2scl!4v1695429591629!5m2!1ses!2scl"
+                width="750" height="550" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="col-12 col-lg-4 col-md-12">
+            <div class="card radius-15" id="suggestions">
+                <div class="card-body">
+                    <!-- Contenido de sugerencias -->
+                    <h5>Veterinarias más Populares</h5>
+                    <br>
+                    <div class="card radius-15 bg-login-color">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="">
+                                    <h5 class="mb-0">Shop 1</h5>
+                                    <p class="mb-0">Webdeveloper</p>
+                                    <div class="list-inline contacts-social mt-2"> <a href="javascript:;"
+                                            class="list-inline-item text-facebook"><i class="bx bxl-facebook"></i></a>
+                                        <a href="javascript:;" class="list-inline-item text-twitter"><i
+                                                class="bx bxl-twitter"></i></a>
+                                        <a href="javascript:;" class="list-inline-item"><i class="bx bxs-phone"></i></a>
+                                        <a href="javascript:;" class="list-inline-item text-skype"><i
+                                                class="bx bxl-skype"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card radius-15 bg-login-color">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="">
+                                    <h5 class="mb-0">Shop 2</h5>
+                                    <p class="mb-0">Webdeveloper</p>
+                                    <div class="list-inline contacts-social mt-2"> <a href="javascript:;"
+                                            class="list-inline-item text-facebook"><i class="bx bxl-facebook"></i></a>
+                                        <a href="javascript:;" class="list-inline-item text-twitter"><i
+                                                class="bx bxl-twitter"></i></a>
+                                        <a href="javascript:;" class="list-inline-item"><i class="bx bxs-phone"></i></a>
+                                        <a href="javascript:;" class="list-inline-item text-skype"><i
+                                                class="bx bxl-skype"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card radius-15 bg-login-color">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="">
+                                    <h5 class="mb-0">Shop 3</h5>
+                                    <p class="mb-0">Webdeveloper</p>
+                                    <div class="list-inline contacts-social mt-2"> <a href="javascript:;"
+                                            class="list-inline-item text-facebook"><i class="bx bxl-facebook"></i></a>
+                                        <a href="javascript:;" class="list-inline-item text-twitter"><i
+                                                class="bx bxl-twitter"></i></a>
+                                        <a href="javascript:;" class="list-inline-item"><i class="bx bxs-phone"></i></a>
+                                        <a href="javascript:;" class="list-inline-item text-skype"><i
+                                                class="bx bxl-skype"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock content %}
+
+
+{% block js %}
+
+{% endblock js %}

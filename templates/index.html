@@ -89,6 +89,11 @@
     .selectedDiv {
         border-color: #229D98;
     }
+
+    .suggestions {
+        position: sticky;
+        top: 100px;
+    }
 </style>
 {% endblock css %}
 {% block content %}
@@ -143,7 +148,7 @@
                 </div>
             </div>
             <div class="col-lg-4 d-none d-lg-block">
-                <div class="card radius-15" id="suggestions">
+                <div class="card radius-15 suggestions" id="suggestions">
                     <div class="card-body">
                         <!-- Contenido de sugerencias -->
                         <h5>Publicaciones Antiguas</h5>
