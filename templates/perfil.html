@@ -1207,6 +1207,7 @@
             selectedPetPhoto: null,
             userProfilePhotoUrl: "",
             petProfilePhotoUrl: "",
+            selectedProfilePhotoNueva: "",
             vacunas: [],
             ficha_medica: [],
             nueva_vacuna: {
@@ -1267,14 +1268,14 @@
             },
             handleProfilePhotoChange(event) {
                 // Captura la imagen seleccionada por el usuario
-                this.selectedProfilePhoto = event.target.files[0];
+                this.selectedProfilePhotoNueva = event.target.files[0];
             },
             handlePetPhotoChange(event) {
                 this.selectedPetPhoto = event.target.files[0];
             },
             uploadProfilePhoto() {
                 const formData = new FormData();
-                formData.append('foto', this.selectedProfilePhoto);
+                formData.append('foto', this.selectedProfilePhotoNueva);
 
                 // Realiza una solicitud POST para subir la foto
                 axios.post("/api/actualizar_img/user", formData, {
@@ -1284,6 +1285,8 @@
                         'Content-Type': 'multipart/form-data'
                     }
                 }).then((response) => {
+                    console.log(response)
+                    this.userProfilePhotoUrl = response.data.url_foto
                     Swal.fire(
                         'Éxito!',
                         'La foto de perfil fue actualizada con éxito!',

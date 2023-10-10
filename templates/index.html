@@ -130,18 +130,15 @@
                                     [[comentario.usuario.first_name]]
                                     [[comentario.usuario.last_name]]: [[comentario.comentario]]
                                 </div>
-                                <form class="comment-form">
-                                    {% csrf_token %}
-                                    <div class="comment-input-container">
-                                        <input v-model="nuevo_comentario.comentario" class="form-control" type="text"
-                                            class="comment-input" name="comentario"
-                                            placeholder="Agrega un comentario..." required>
-                                        <div>
-                                            <button @click="CrearComentario(publicacion.id)"
-                                                class="btn btn-primary btn-sm" type="submit">Comentar</button>
-                                        </div>
+                                <div class="comment-input-container">
+                                    <input v-model="nuevo_comentario.comentario" class="form-control" type="text"
+                                        class="comment-input" name="comentario" placeholder="Agrega un comentario..."
+                                        required>
+                                    <div>
+                                        <button @click="CrearComentario(publicacion.id)"
+                                            class="btn btn-primary btn-sm">Comentar</button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -449,6 +446,7 @@
                 axios.post(`/api/create/comentarios/${publicacion_id}/`, data, { headers: header_data })
                     .then((response) => {
                         console.log(this.nuevo_comentario.comentario);
+                        this.Getpublicacionesall()
                     })
                     .catch((error) => {
                         console.error("Error en la solicitud:", error);

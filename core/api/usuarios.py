@@ -113,7 +113,7 @@ class UploadProfilePhoto(APIView):
         if 'foto' in request.data:
             usuario.foto = request.data['foto']
             usuario.save()
-            return Response({"message": "Foto de perfil actualizada con éxito."}, status=status.HTTP_200_OK)
+            return Response({"message": "Foto de perfil actualizada con éxito.", "url_foto":usuario.foto.url}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "No se proporcionó ninguna foto."}, status=status.HTTP_400_BAD_REQUEST)
 
