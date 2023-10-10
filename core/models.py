@@ -94,7 +94,7 @@ def post_save_mascota(sender, instance, created, **kwargs):
     if created and instance.foto:
         url = "http://68.183.54.183:8090" + instance.foto.url
         openai.api_key = Configuracion.objects.all()[0].token_gpt
-        content = """ "Tienes experiencia en la identificación de animales en imágenes. Las personas te enviarán fotos y se espera que generes un archivo JSON con la siguiente estructura: {'Es_Animal': True, 'Tipo_de_Animal': 'Desconocido', 'Color': 'Desconocido', 'Tags': []}. Tu tarea principal es enfocarte en los animales en la foto. Si la imagen no contiene un animal, devuelve un JSON vacío. Además, en la sección de tags, incluye información relevante sobre el animal, como características distintivas que ayuden a su identificación. Ten en cuenta que pueden existir múltiples tags para un solo animal." """
+        content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu como experto deberias solo identificar un animal ademas debes armar un archivo json con la siguiente estructura {'Es_Animal': True, 'Tipo_de_Animal': 'Gato', 'Color': 'Atigrado con tonos grises, blancos y negros', 'Tags': []} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json vacio es importante que solo me respondas el json ademas en la parte de tags intenta colocar informacion sobre el animal como caracteristicas o algo que le pertenesca solo a el para poder identificarlo cabe destacar que pueden tener muchos tags" """
         prompt_obj = [
             {"role": "system", "content": content},
             {"role": "user", "content": "Esta es la foto " + url},
