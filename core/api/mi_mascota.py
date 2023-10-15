@@ -21,6 +21,7 @@ from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.authentication import TokenAuthentication
 
 
 
@@ -143,6 +144,29 @@ class CreateConsulta(APIView):
         )
         ficha_medica.save()
         response["message"] = "Ficha médica creada exitosamente y asociada a la mascota."
+        return Response(response, status=status.HTTP_201_CREATED)
+    
+class CreatePublicacionesMiMascota(APIView):
+    def post(self, request):
+        response = {}
+        # Obtén el usuario autenticado
+        usuario = Usuario.objects.get(user=request.user)
+        # Recupera los datos de la solicitud
+        tipo_mascota = request.data.get("tipo_mascota")
+        descripcion = request.data.get("descripcion")
+        foto_mascota = request.FILES.get("foto_mascota")
+        tipo_publicacion = request.data.get("tipo_publicacion")
+        # Siempre estableceremos 'Busqueda de mascota' como el tipo de publicación
+        tipo_publicacion = Publicaciones.Busqueda_mascota
+        # Crear la publicación relacionando al usuario actual
+        publicacion = Publicaciones(
+            tipo_mascota=tipo_mascota,
+            descripcion=descripcion,
+            foto_mascota=foto_mascota,
+            tipo_publicacion=tipo_publicacion,
+            usuario=usuario
+        )
+        publicacion.save()
         return Response(response, status=status.HTTP_201_CREATED)
 
 

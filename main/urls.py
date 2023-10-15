@@ -35,4 +35,5 @@ urlpatterns = [
     path('api/get/vacunas', GetVacunas.as_view()),
     path('api/get/fichamedica', GetFichaMedica.as_view()),
     path('api/create/fichamedica', CreateConsulta.as_view()),
+    path('api/create_publicacion/mi_mascota', CreatePublicacionesMiMascota.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

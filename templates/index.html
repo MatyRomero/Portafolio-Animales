@@ -119,7 +119,7 @@
                             <div class="mb-3">
                                 <a>
                                     <img :src="publicacion.foto_mascota" class="card-img-top"
-                                        alt="Imagen de la publicación">
+                                        alt="Imagen de la publicación" style="max-width: 400px; max-height: 400px;">
                                 </a>
                             </div>
                             <p class="text-muted mb-0">2 hours ago</p>
@@ -233,7 +233,7 @@
                             </div>
                         </div>
                         <div v-if="currentStep === 2">
-                            <div class="col-md-6 mb-2">
+                            <div class="col-md-12 mb-2">
                                 <div class="form-group">
                                     <label for="" class="control-label">¿Perro o Gato?</label>
                                     <div class="row">

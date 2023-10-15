@@ -980,6 +980,7 @@
                             <p class="card-subtitle mb-4">Para cambiar la información de tu mascota, rellena el
                                 formulario y guarda los cambios</p>
                             <form>
+                                {% csrf_token %}
                                 <div class="mb-4">
                                     <label for="petName" class="form-label fw-semibold">Nombre de la mascota</label>
                                     <input v-model="informacion_mascota.nombre" type="text" class="form-control"
@@ -1005,7 +1006,7 @@
                                         v-on:click="cargarVacunas()" class="btn btn-primary">Vacunas</button>
                                     <button v-on:click="SetPetInformation($event)" class=" btn
                                         btn-primary">Guardar</button>
-                                    <button class="btn btn-outline-danger">¡Perdido!</button>
+                                    <button @click="crearPublicacion" class="btn btn-outline-danger">¡Perdido!</button>
                                 </div>
                             </div>
                         </div>
@@ -1046,6 +1047,10 @@
                     </table>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                        @click="nueva_vacuna.pet_id = informacion_mascota.pet_id">
+                        Descargar Vacunas
+                    </button>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nueva_vacuna"
                         @click="nueva_vacuna.pet_id = informacion_mascota.pet_id">
                         Agregar Vacuna
@@ -1082,6 +1087,10 @@
                     </table>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                        @click="nueva_vacuna.pet_id = informacion_mascota.pet_id">
+                        Descargar Ficha Medica
+                    </button>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#nueva_consulta"
                         @click="nueva_consulta.mascota.pet_id = informacion_mascota.pet_id">
@@ -1203,6 +1212,7 @@
                 "pet_id": "{{request.mi_mascota.id}}"
             },
             pets: [],
+            mascotas: [],
             selectedProfilePhoto: null,
             selectedPetPhoto: null,
             userProfilePhotoUrl: "",
@@ -1395,6 +1405,47 @@
                     })
                     .catch((error) => {
                         console.error(error);
+                    });
+            },
+            crearPublicacion: function () {
+                // Obtén la información de la mascota y otros datos necesarios
+                var tipoMascota = document.querySelector('#petType').value;
+                var descripcion = "Ayuda porfavor he perdido a mi mascota {{request.mi_mascota.nombre}}";
+                var fotoMascota = this.petProfilePhotoUrl;// Reemplaza selectedPetPhotoFile con la variable que contiene la foto seleccionada
+                var tipoPublicacion = "Busqueda de mascota";
+                // Obtén el token CSRF de tu página HTML
+                var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+                // Agrega el token CSRF a las cabeceras de Axios
+                axios.defaults.headers.common['X-CSRFToken'] = csrfToken; // Tipo de publicación
+                // Crea un objeto FormData para enviar los datos al servidor
+                var formData = new FormData();
+                formData.append("tipo_mascota", tipoMascota);
+                formData.append("descripcion", descripcion);
+                formData.append("foto_mascota", fotoMascota);
+                formData.append("tipo_publicacion", tipoPublicacion);
+
+                // Realiza una solicitud POST a la API para crear la publicación
+                axios.post("/api/create_publicacion/mi_mascota", formData)
+                    .then((response) => {
+                        // Publicación creada exitosamente
+                        console.log('Publicación creada con éxito');
+                        Swal.fire({
+                            title: 'Éxito!',
+                            text: 'La publicación fue creada con éxito!',
+                            icon: 'success',
+                        }).then(() => {
+                            location.reload(); // Puedes recargar la página o realizar otra acción después del éxito
+                        });
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        // Maneja los errores si es necesario
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Hubo un error al crear la publicación',
+                            icon: 'error',
+                        });
                     });
             },
         },
