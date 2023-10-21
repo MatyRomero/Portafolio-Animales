@@ -1245,7 +1245,7 @@
         created() {
             // Obtener la URL de la imagen de perfil del usuario desde tus datos de usuario
             // y asignarla a userProfilePhotoUrl
-            this.userProfilePhotoUrl = "{{ request.user.usuario.foto.url|default:'static/images/icons/user.png' }}";
+            this.userProfilePhotoUrl = "{{request.user.usuario.foto.url}}";
             this.petProfilePhotoUrl = "{{request.mi_mascota.foto.url}}";
         },
         methods: {
