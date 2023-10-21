@@ -74,9 +74,8 @@ def shops(request):
 @login_required(login_url='login')
 def perfil(request):
     template_name = "perfil.html"
-    context = {}
-    mi_mascota = Mi_Mascota.objects.get(dueño=request.user.usuario)
-    request.mi_mascota = mi_mascota
+    mi_mascotas = Mi_Mascota.objects.filter(dueño=request.user.usuario)
+    context = {'mi_mascotas': mi_mascotas, 'mascota': mi_mascotas.first()}
     return render(request, template_name, context)
 
 @login_required(login_url='login')

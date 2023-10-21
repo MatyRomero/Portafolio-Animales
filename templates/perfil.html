@@ -948,16 +948,15 @@
         <!-- Contenido de "Mi Mascota" -->
         <div id="pills-notifications" role="tabpanel" class="tab-pane fade">
             <div class="row">
+                {% for mascota in mi_mascotas %}
                 <div class="col-lg-6 d-flex align-items-stretch">
                     <div class="card w-100 position-relative overflow-hidden">
                         <div class="card-body">
                             <h5 class="card-title fw-semibold">Configuración de Perfil Mascota</h5>
                             <p class="card-subtitle">Cambia la foto de tu mascota</p>
                             <div class="text-center mt-5">
-                                <img v-if="selectedPetPhoto" :src="selectedPetPhotoUrl" alt=""
+                                <img src="{{ mascota.foto.url }}" alt="Foto de la mascota"
                                     class="img-fluid rounded-circle" style="width: 200px; height: 200px;">
-                                <img v-else :src="petProfilePhotoUrl" alt="" class="img-fluid rounded-circle"
-                                    style="width: 140px; height: 140px;">
                                 <div class="d-flex align-items-center justify-content-center my-4 gap-3">
                                     <label for="petPhotoInput" style="cursor: pointer" class="btn btn-primary">
                                         Subir
@@ -976,27 +975,29 @@
                 <div class="col-lg-6 d-flex align-items-stretch">
                     <div class="card w-100 position-relative overflow-hidden">
                         <div class="card-body p-4">
-                            <h5 class="card-title fw-semibold">Información de tu Mascota</h5>
+                            <h5 class="card-title fw-semibold d-flex justify-content-between align-items-center">
+                                Información de tu Mascota
+                                <button @click="crearPublicacion" class="btn btn-outline-danger">¡Perdido!</button>
+                            </h5>
                             <p class="card-subtitle mb-4">Para cambiar la información de tu mascota, rellena el
                                 formulario y guarda los cambios</p>
                             <form>
                                 {% csrf_token %}
                                 <div class="mb-4">
                                     <label for="petName" class="form-label fw-semibold">Nombre de la mascota</label>
-                                    <input v-model="informacion_mascota.nombre" type="text" class="form-control"
-                                        id="petName">
+                                    <input v-model="informacion_mascota.nombre" type=" text" class="form-control"
+                                        id="petName" value="{{ mascota.nombre }}">
                                 </div>
                                 <div class="mb-4">
                                     <label for="petType" class="form-label fw-semibold">Tipo de mascota</label>
-                                    <input v-model="informacion_mascota.tipo_mascota" type="text" class="form-control"
-                                        id="petType">
+                                    <input type="text" class="form-control" id="petType"
+                                        value="{{mascota.tipo_mascota}}">
                                 </div>
                                 <div class="mb-4">
                                     <label for="petAge" class="form-label fw-semibold">Edad de la mascota</label>
-                                    <input v-model="informacion_mascota.edad" type="text" class="form-control"
-                                        id="petAge">
+                                    <input type="text" class="form-control" id="petAge" value="{{mascota.edad}}">
                                 </div>
-                                <input type="hidden" v-model="informacion_mascota.pet_id">
+                                <input type="hidden" value="{{ mascota.id }}" v-model="informacion_mascota.mascota_id">
                             </form>
                             <div class="col-12">
                                 <div class="d-flex my-4 gap-3">
@@ -1006,12 +1007,12 @@
                                         v-on:click="cargarVacunas()" class="btn btn-primary">Vacunas</button>
                                     <button v-on:click="SetPetInformation($event)" class=" btn
                                         btn-primary">Guardar</button>
-                                    <button @click="crearPublicacion" class="btn btn-outline-danger">¡Perdido!</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -1194,6 +1195,15 @@
 {% block js %}
 
 <script>
+    let initialData = {
+        nombre: "{{ mascota.nombre }}",
+        tipo_mascota: "{{ mascota.tipo_mascota }}",
+        edad: "{{ mascota.edad }}",
+        pet_id: "{{ mascota.id }}"
+    };
+</script>
+
+<script>
     var app = new Vue({
         el: '#app',
         delimiters: ['[[', ']]'],
@@ -1205,18 +1215,13 @@
                 "telefono": "{{request.user.usuario.telefono}}",
                 "direccion": "{{request.user.usuario.direccion}}"
             },
-            informacion_mascota: {
-                "nombre": "{{request.mi_mascota.nombre}}",
-                "tipo_mascota": "{{request.mi_mascota.tipo_mascota}}",
-                "edad": "{{request.mi_mascota.edad}}",
-                "pet_id": "{{request.mi_mascota.id}}"
-            },
+            informacion_mascota: initialData,
             pets: [],
             mascotas: [],
             selectedProfilePhoto: null,
             selectedPetPhoto: null,
             userProfilePhotoUrl: "",
-            petProfilePhotoUrl: "",
+            petProfilePhotoUrl: '{{ mascota.foto.url }}',
             selectedProfilePhotoNueva: "",
             vacunas: [],
             ficha_medica: [],
@@ -1410,7 +1415,7 @@
             crearPublicacion: function () {
                 // Obtén la información de la mascota y otros datos necesarios
                 var tipoMascota = document.querySelector('#petType').value;
-                var descripcion = "Ayuda porfavor he perdido a mi mascota {{request.mi_mascota.nombre}}";
+                var descripcion = "Ayuda porfavor he perdido a mi mascota {{mascota.nombre}}";
                 var fotoMascota = this.petProfilePhotoUrl;// Reemplaza selectedPetPhotoFile con la variable que contiene la foto seleccionada
                 var tipoPublicacion = "Busqueda de mascota";
                 // Obtén el token CSRF de tu página HTML

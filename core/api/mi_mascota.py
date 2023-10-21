@@ -22,6 +22,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.exceptions import NotFound
 
 
 
@@ -32,20 +33,25 @@ class SetPetInformation(APIView):
     def post(self, request, format=None):
         response = {}
         data = request.data
-
         # Obtener el objeto Usuario relacionado con el User actual
-        usuario, created = Usuario.objects.get_or_create(user=request.user)
-
-        # Recuperar la mascota del usuario actual, si existe, o crear una nueva
-        mascota, created = Mi_Mascota.objects.get_or_create(dueño=usuario)
+        usuario, _ = Usuario.objects.get_or_create(user=request.user)
+        # Recibir el ID de la mascota a actualizar desde el request
+        pet_id = int(request.data.get('pet_id'))
+        mascota = Mi_Mascota.objects.get(id=pet_id)
+        if not pet_id:
+            return Response({"detail": "Se requiere el ID de la mascota para la actualización."}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            mascota = Mi_Mascota.objects.get(id=pet_id)
+        except Mi_Mascota.DoesNotExist:
+            return Response({"detail": "Mascota no encontrada."}, status=status.HTTP_404_NOT_FOUND)
 
         # Actualizar los campos de la mascota según los datos recibidos
-        mascota.nombre = data.get("nombre", mascota.nombre)
-        mascota.tipo_mascota = data.get("tipo_mascota", mascota.tipo_mascota)
-        mascota.edad = data.get("edad", mascota.edad)
-
+        mascota.nombre = request.data.get('nombre')
+        mascota.tipo_mascota = request.data.get('tipo_mascota')
+        mascota.edad = request.data.get('edad')
         mascota.save()
         return Response(response, status=status.HTTP_200_OK)
+
     
 
 class UploadPetPhoto(APIView):
