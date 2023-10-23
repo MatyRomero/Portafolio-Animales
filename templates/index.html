@@ -414,7 +414,8 @@
                 };
 
                 // Obtener el token CSRF del formulario
-                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                console.log(csrfToken)
+                const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
 
                 data.append("csrfmiddlewaretoken", csrfToken);  // Incluir el token CSRF en la solicitud
                 data.append("tipo_mascota", this.nueva_publicacion.tipo_mascota);
