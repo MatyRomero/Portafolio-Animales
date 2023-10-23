@@ -1245,215 +1245,219 @@
         created() {
             // Obtener la URL de la imagen de perfil del usuario desde tus datos de usuario
             // y asignarla a userProfilePhotoUrl
+            {% if request.user.foto %}
             this.userProfilePhotoUrl = "{{request.user.usuario.foto.url}}";
-            this.petProfilePhotoUrl = "{{request.mi_mascota.foto.url}}";
+            {% else %}
+            this.userProfilePhotoUrl = "{% static 'images/icons/user.png' %}";
+    {% endif %}
+    this.petProfilePhotoUrl = "{{request.mi_mascota.foto.url}}";
         },
-        methods: {
-            SetProfileInformation() {
-                axios.post("/api/internal/set/profile_information", this.informacion_personal, {
-                    xsrfCookieName: 'csrftoken',
-                    xsrfHeaderName: 'X-CSRFTOKEN',
-                }).then((response) => {
-                    Swal.fire(
-                        'Éxito!',
-                        'La información fue actualizada con éxito!',
-                        'success'
-                    )
-                })
-            },
-            SetPetInformation() {
-                console.log(this.informacion_mascota);
-                // Realizar una solicitud AJAX en lugar de una solicitud POST estándar
-                axios.post("/api/internal/update/pet_information", this.informacion_mascota, {
-                    xsrfCookieName: 'csrftoken',
-                    xsrfHeaderName: 'X-CSRFTOKEN',
-                }).then((response) => {
-                    Swal.fire(
-                        'Éxito!',
-                        'La información de la mascota fue actualizada con éxito!',
-                        'success'
-                    );
+    methods: {
+        SetProfileInformation() {
+            axios.post("/api/internal/set/profile_information", this.informacion_personal, {
+                xsrfCookieName: 'csrftoken',
+                xsrfHeaderName: 'X-CSRFTOKEN',
+            }).then((response) => {
+                Swal.fire(
+                    'Éxito!',
+                    'La información fue actualizada con éxito!',
+                    'success'
+                )
+            })
+        },
+        SetPetInformation() {
+            console.log(this.informacion_mascota);
+            // Realizar una solicitud AJAX en lugar de una solicitud POST estándar
+            axios.post("/api/internal/update/pet_information", this.informacion_mascota, {
+                xsrfCookieName: 'csrftoken',
+                xsrfHeaderName: 'X-CSRFTOKEN',
+            }).then((response) => {
+                Swal.fire(
+                    'Éxito!',
+                    'La información de la mascota fue actualizada con éxito!',
+                    'success'
+                );
 
-                    // Puedes agregar el código para cambiar la pestaña activa a "Mi Mascota" si es necesario
-                }).catch((error) => {
-                    console.error(error);
-                });
-                // Evitar que el formulario se envíe y recargue la página
-                event.preventDefault();
-            },
-            handleProfilePhotoChange(event) {
-                // Captura la imagen seleccionada por el usuario
-                this.selectedProfilePhotoNueva = event.target.files[0];
-            },
-            handlePetPhotoChange(event) {
-                this.selectedPetPhoto = event.target.files[0];
-            },
-            uploadProfilePhoto() {
-                const formData = new FormData();
-                formData.append('foto', this.selectedProfilePhotoNueva);
+                // Puedes agregar el código para cambiar la pestaña activa a "Mi Mascota" si es necesario
+            }).catch((error) => {
+                console.error(error);
+            });
+            // Evitar que el formulario se envíe y recargue la página
+            event.preventDefault();
+        },
+        handleProfilePhotoChange(event) {
+            // Captura la imagen seleccionada por el usuario
+            this.selectedProfilePhotoNueva = event.target.files[0];
+        },
+        handlePetPhotoChange(event) {
+            this.selectedPetPhoto = event.target.files[0];
+        },
+        uploadProfilePhoto() {
+            const formData = new FormData();
+            formData.append('foto', this.selectedProfilePhotoNueva);
 
-                // Realiza una solicitud POST para subir la foto
-                axios.post("/api/actualizar_img/user", formData, {
-                    xsrfCookieName: 'csrftoken',
-                    xsrfHeaderName: 'X-CSRFTOKEN',
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }).then((response) => {
-                    console.log(response)
-                    this.userProfilePhotoUrl = response.data.url_foto
-                    Swal.fire(
-                        'Éxito!',
-                        'La foto de perfil fue actualizada con éxito!',
-                        'success'
-                    );
-                }).catch((error) => {
-                    console.error(error);
-                });
-            },
-            uploadPetPhoto() {
-                const formData = new FormData();
-                formData.append('foto', this.selectedPetPhoto);
-                formData.append('pet_id', this.informacion_mascota.pet_id); // Agrega el pet_id al formulario
-
-                // Realiza una solicitud POST para subir la foto
-                axios.post("/api/actualizar_img/pet", formData, {
-                    xsrfCookieName: 'csrftoken',
-                    xsrfHeaderName: 'X-CSRFTOKEN',
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }).then((response) => {
-                    Swal.fire(
-                        'Éxito!',
-                        'La foto de tu mascota fue actualizada con éxito!',
-                        'success'
-                    );
-                }).catch((error) => {
-                    console.error(error);
-                });
-            },
-            cargarVacunas() {
-                axios.post("/api/get/vacunas", {
-                    pet_id: this.informacion_mascota.pet_id,
-                })
-                    .then((response) => {
-                        this.vacunas = response.data.vacunas.map((vacuna) => {
-                            return {
-                                peso: vacuna.peso,
-                                nombre: vacuna.nombre,
-                                fecha_aplicacion: this.formatearFecha(vacuna.fecha_aplicacion),
-                                fecha_proxima_vacuna: this.formatearFecha(vacuna.fecha_proxima_vacuna),
-                            };
-                        });
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    });
-            },
-            cargarFichaMedica() {
-                axios.post("/api/get/fichamedica", {
-                    pet_id: this.informacion_mascota.pet_id,
-                })
-                    .then((response) => {
-                        this.ficha_medica = response.data.ficha_medica.map((ficha) => {
-                            return {
-                                fecha_consulta: this.formatearFecha(ficha.fecha_consulta),
-                                diagnostico: ficha.diagnostico,
-                            };
-                        });
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    });
-            },
-            formatearFecha(fecha) {
-                if (!fecha) {
-                    return "";
+            // Realiza una solicitud POST para subir la foto
+            axios.post("/api/actualizar_img/user", formData, {
+                xsrfCookieName: 'csrftoken',
+                xsrfHeaderName: 'X-CSRFTOKEN',
+                headers: {
+                    'Content-Type': 'multipart/form-data'
                 }
-
-                const date = new Date(fecha);
-                date.setUTCHours(0, 0, 0, 0); // Establecer la zona horaria a UTC
-                const dia = date.getUTCDate().toString().padStart(2, "0");
-                const mes = (date.getUTCMonth() + 1).toString().padStart(2, "0");
-                const anio = date.getUTCFullYear();
-
-                return `${dia}/${mes}/${anio}`;
-            },
-            CrearVacuna() {
-                axios.post("/api/create/vacunas", this.nueva_vacuna)
-                    .then((response) => {
-                        Swal.fire({
-                            title: 'Éxito!',
-                            text: 'La vacuna fue ingresada con éxito!',
-                            icon: 'success',
-                        }).then(() => {
-                            location.reload();
-                        });
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    });
-            },
-            CrearConsulta() {
-                console.log("pet_id:", this.informacion_mascota.pet_id);
-                axios.post("/api/create/fichamedica", this.nueva_consulta)
-                    .then((response) => {
-                        Swal.fire({
-                            title: 'Éxito!',
-                            text: 'La consulta fue ingresada con éxito!',
-                            icon: 'success',
-
-                        }).then(() => {
-                            location.reload();
-                        });
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    });
-            },
-            crearPublicacion: function () {
-                // Obtén la información de la mascota y otros datos necesarios
-                var tipoMascota = document.querySelector('#petType').value;
-                var descripcion = "Ayuda porfavor he perdido a mi mascota {{mascota.nombre}}";
-                var fotoMascota = this.petProfilePhotoUrl;// Reemplaza selectedPetPhotoFile con la variable que contiene la foto seleccionada
-                var tipoPublicacion = "Busqueda de mascota";
-                // Obtén el token CSRF de tu página HTML
-                var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-
-                // Agrega el token CSRF a las cabeceras de Axios
-                axios.defaults.headers.common['X-CSRFToken'] = csrfToken; // Tipo de publicación
-                // Crea un objeto FormData para enviar los datos al servidor
-                var formData = new FormData();
-                formData.append("tipo_mascota", tipoMascota);
-                formData.append("descripcion", descripcion);
-                formData.append("foto_mascota", fotoMascota);
-                formData.append("tipo_publicacion", tipoPublicacion);
-
-                // Realiza una solicitud POST a la API para crear la publicación
-                axios.post("/api/create_publicacion/mi_mascota", formData)
-                    .then((response) => {
-                        // Publicación creada exitosamente
-                        console.log('Publicación creada con éxito');
-                        Swal.fire({
-                            title: 'Éxito!',
-                            text: 'La publicación fue creada con éxito!',
-                            icon: 'success',
-                        }).then(() => {
-                            location.reload(); // Puedes recargar la página o realizar otra acción después del éxito
-                        });
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        // Maneja los errores si es necesario
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'Hubo un error al crear la publicación',
-                            icon: 'error',
-                        });
-                    });
-            },
+            }).then((response) => {
+                console.log(response)
+                this.userProfilePhotoUrl = response.data.url_foto
+                Swal.fire(
+                    'Éxito!',
+                    'La foto de perfil fue actualizada con éxito!',
+                    'success'
+                );
+            }).catch((error) => {
+                console.error(error);
+            });
         },
+        uploadPetPhoto() {
+            const formData = new FormData();
+            formData.append('foto', this.selectedPetPhoto);
+            formData.append('pet_id', this.informacion_mascota.pet_id); // Agrega el pet_id al formulario
+
+            // Realiza una solicitud POST para subir la foto
+            axios.post("/api/actualizar_img/pet", formData, {
+                xsrfCookieName: 'csrftoken',
+                xsrfHeaderName: 'X-CSRFTOKEN',
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then((response) => {
+                Swal.fire(
+                    'Éxito!',
+                    'La foto de tu mascota fue actualizada con éxito!',
+                    'success'
+                );
+            }).catch((error) => {
+                console.error(error);
+            });
+        },
+        cargarVacunas() {
+            axios.post("/api/get/vacunas", {
+                pet_id: this.informacion_mascota.pet_id,
+            })
+                .then((response) => {
+                    this.vacunas = response.data.vacunas.map((vacuna) => {
+                        return {
+                            peso: vacuna.peso,
+                            nombre: vacuna.nombre,
+                            fecha_aplicacion: this.formatearFecha(vacuna.fecha_aplicacion),
+                            fecha_proxima_vacuna: this.formatearFecha(vacuna.fecha_proxima_vacuna),
+                        };
+                    });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        },
+        cargarFichaMedica() {
+            axios.post("/api/get/fichamedica", {
+                pet_id: this.informacion_mascota.pet_id,
+            })
+                .then((response) => {
+                    this.ficha_medica = response.data.ficha_medica.map((ficha) => {
+                        return {
+                            fecha_consulta: this.formatearFecha(ficha.fecha_consulta),
+                            diagnostico: ficha.diagnostico,
+                        };
+                    });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        },
+        formatearFecha(fecha) {
+            if (!fecha) {
+                return "";
+            }
+
+            const date = new Date(fecha);
+            date.setUTCHours(0, 0, 0, 0); // Establecer la zona horaria a UTC
+            const dia = date.getUTCDate().toString().padStart(2, "0");
+            const mes = (date.getUTCMonth() + 1).toString().padStart(2, "0");
+            const anio = date.getUTCFullYear();
+
+            return `${dia}/${mes}/${anio}`;
+        },
+        CrearVacuna() {
+            axios.post("/api/create/vacunas", this.nueva_vacuna)
+                .then((response) => {
+                    Swal.fire({
+                        title: 'Éxito!',
+                        text: 'La vacuna fue ingresada con éxito!',
+                        icon: 'success',
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        },
+        CrearConsulta() {
+            console.log("pet_id:", this.informacion_mascota.pet_id);
+            axios.post("/api/create/fichamedica", this.nueva_consulta)
+                .then((response) => {
+                    Swal.fire({
+                        title: 'Éxito!',
+                        text: 'La consulta fue ingresada con éxito!',
+                        icon: 'success',
+
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        },
+        crearPublicacion: function () {
+            // Obtén la información de la mascota y otros datos necesarios
+            var tipoMascota = document.querySelector('#petType').value;
+            var descripcion = "Ayuda porfavor he perdido a mi mascota {{mascota.nombre}}";
+            var fotoMascota = this.petProfilePhotoUrl;// Reemplaza selectedPetPhotoFile con la variable que contiene la foto seleccionada
+            var tipoPublicacion = "Busqueda de mascota";
+            // Obtén el token CSRF de tu página HTML
+            var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+            // Agrega el token CSRF a las cabeceras de Axios
+            axios.defaults.headers.common['X-CSRFToken'] = csrfToken; // Tipo de publicación
+            // Crea un objeto FormData para enviar los datos al servidor
+            var formData = new FormData();
+            formData.append("tipo_mascota", tipoMascota);
+            formData.append("descripcion", descripcion);
+            formData.append("foto_mascota", fotoMascota);
+            formData.append("tipo_publicacion", tipoPublicacion);
+
+            // Realiza una solicitud POST a la API para crear la publicación
+            axios.post("/api/create_publicacion/mi_mascota", formData)
+                .then((response) => {
+                    // Publicación creada exitosamente
+                    console.log('Publicación creada con éxito');
+                    Swal.fire({
+                        title: 'Éxito!',
+                        text: 'La publicación fue creada con éxito!',
+                        icon: 'success',
+                    }).then(() => {
+                        location.reload(); // Puedes recargar la página o realizar otra acción después del éxito
+                    });
+                })
+                .catch((error) => {
+                    console.error(error);
+                    // Maneja los errores si es necesario
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Hubo un error al crear la publicación',
+                        icon: 'error',
+                    });
+                });
+        },
+    },
     })
 
 </script>
