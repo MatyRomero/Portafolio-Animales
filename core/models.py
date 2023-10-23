@@ -30,12 +30,19 @@ class Vacuna(models.Model):
 
 
 class Mi_Mascota(models.Model):
+    ES_ANIMAL_CHOICES = [
+        (True, 'Sí'),
+        (False, 'No'),
+    ]
     nombre = models.CharField(max_length=255, blank=True , null=True)
     tipo_mascota = models.CharField(max_length=255, blank=True, null=True)
     edad = models.CharField(max_length=255, blank=True, null=True)
     dueño = models.ForeignKey(Usuario, on_delete=models.CASCADE, blank=True , null=True)
     foto = models.ImageField(null=True, blank=True, upload_to="media/mi_mascota")
     vacunas = models.ManyToManyField(Vacuna, blank=True)
+    tags = models.ManyToManyField("Tag", blank=True)
+    color = models.TextField(null=True, blank=True, )
+    es_animal = models.BooleanField(null=True, blank=True, choices=ES_ANIMAL_CHOICES, default=True)
 
 class FichaMedica(models.Model):
     mascota = models.ForeignKey(Mi_Mascota, on_delete=models.CASCADE)
@@ -48,17 +55,16 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-class Mascota(models.Model):
-    ES_ANIMAL_CHOICES = [
-        (True, 'Sí'),
-        (False, 'No'),
-    ]
+# class Mascota(models.Model):
+#     ES_ANIMAL_CHOICES = [
+#         (True, 'Sí'),
+#         (False, 'No'),
+#     ]
 
-    es_animal = models.BooleanField(null=True, blank=True, choices=ES_ANIMAL_CHOICES, default=True)
-    tipo_de_animal = models.CharField(null=True, blank=True, max_length=255)
-    color = models.TextField(null=True, blank=True, )
-    tags = models.ManyToManyField(Tag, blank=True)
-    foto = models.ImageField(null=True, blank=True, upload_to="media/mascotas")
+#     es_animal = models.BooleanField(null=True, blank=True, choices=ES_ANIMAL_CHOICES, default=True)
+#     tipo_de_animal = models.CharField(null=True, blank=True, max_length=255)
+#     color = models.TextField(null=True, blank=True, )
+#     foto = models.ImageField(null=True, blank=True, upload_to="media/mascotas")
 
 
 class Publicaciones(models.Model):
@@ -77,20 +83,32 @@ class Publicaciones(models.Model):
         (Busqueda_mascota, 'Busqueda de mascota'),
         (Presentacion, 'Presentacion de mascota'),
     )
-
-    tipo_mascota = models.CharField(max_length=255, choices=tipo_mascotas, default=Perro)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
-    foto_mascota = models.ImageField(null=True, blank=True, upload_to="media/")
     tipo_publicacion = models.CharField(max_length=255, choices=tipo_publicaciones, default=Busqueda_mascota)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, blank=True)
+    mascota = models.ForeignKey(Mi_Mascota, on_delete=models.SET_NULL, null=True, blank=True)
 
 class Comentarios(models.Model):
     publicacion = models.ForeignKey(Publicaciones, on_delete=models.CASCADE)
     comentario = models.CharField(max_length=255, blank=True, null=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, blank=True)
 
-@receiver(post_save, sender=Mascota)
-def post_save_mascota(sender, instance, created, **kwargs):
+class Servicios(models.Model):
+
+    tipo_servicio = (
+        ("Peluqueria", 'Peluqueria'),
+        ("Veterinaria", 'Veterinaria'),
+        ("Petshop", 'Petshop'),
+    )
+
+    nombre = models.CharField(max_length=255, blank=True, null=True)
+    direccion = models.CharField(max_length=255, blank=True, null=True)
+    latitud = models.CharField(max_length=255, blank=True, null=True)
+    longitud = models.CharField(max_length=255, blank=True, null=True)
+    tipo = models.CharField(max_length=255, choices=tipo_servicio, blank=True, null=True)
+
+@receiver(post_save, sender=Mi_Mascota)
+def post_save_Mi_mascota(sender, instance, created, **kwargs):
     if created and instance.foto:
         url = "http://68.183.54.183:8090" + instance.foto.url
         openai.api_key = Configuracion.objects.all()[0].token_gpt
