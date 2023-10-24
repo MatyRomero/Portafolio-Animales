@@ -870,11 +870,18 @@
                     <i class="bx bxs-user me-2 fs-6"></i> <span class="d-none d-md-block">Mi Perfil</span>
                 </button>
             </li>
-            <li role="presentation" class="nav-item">
+            <li role="presentation" class="nav-item" v-if="tieneMascotas">
                 <button data-bs-toggle="pill" data-bs-target="#pills-notifications" type="button" role="tab"
                     aria-controls="pills-notifications" aria-selected="false"
                     class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-4">
                     <i class="bx bxs-bone me-2 fs-6"></i> <span class="d-none d-md-block">Mi Mascota</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button data-bs-target="#nueva_mascota" data-bs-toggle="modal" type="button" role="tab"
+                    aria-controls="pills-notifications" aria-selected="false"
+                    class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-4">
+                    <i class="bx bxs-bone me-2 fs-6"></i> <span class="d-none d-md-block">Agregar Mascota</span>
                 </button>
             </li>
         </ul>
@@ -947,23 +954,24 @@
 
         <!-- Contenido de "Mi Mascota" -->
         <div id="pills-notifications" role="tabpanel" class="tab-pane fade">
-            <div class="row">
-                {% for mascota in mi_mascotas %}
+            <div class="row" v-for="mascota in dataMascota" :key="mascota.id">
+                <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
                 <div class="col-lg-6 d-flex align-items-stretch">
                     <div class="card w-100 position-relative overflow-hidden">
                         <div class="card-body">
                             <h5 class="card-title fw-semibold">Configuración de Perfil Mascota</h5>
                             <p class="card-subtitle">Cambia la foto de tu mascota</p>
                             <div class="text-center mt-5">
-                                <img src="{{ mascota.foto.url }}" alt="Foto de la mascota"
+                                <img v-if="mascota.foto" :src="mascota.foto" alt="Foto de la mascota"
                                     class="img-fluid rounded-circle" style="width: 200px; height: 200px;">
+                                <p v-else>No hay foto disponible</p>
                                 <div class="d-flex align-items-center justify-content-center my-4 gap-3">
                                     <label for="petPhotoInput" style="cursor: pointer" class="btn btn-primary">
                                         Subir
                                         <input type="file" id="petPhotoInput" style="display: none"
                                             @change="handlePetPhotoChange" accept="image/*">
                                     </label>
-                                    <input type="hidden" v-model="informacion_mascota.pet_id">
+                                    <input type="hidden" v-model="mascota.id">
                                     <button class="btn btn-primary" @click="uploadPetPhoto">Guardar</button>
                                     <button class="btn btn-outline-danger">Eliminar</button>
                                 </div>
@@ -985,34 +993,32 @@
                                 {% csrf_token %}
                                 <div class="mb-4">
                                     <label for="petName" class="form-label fw-semibold">Nombre de la mascota</label>
-                                    <input v-model="informacion_mascota.nombre" type=" text" class="form-control"
-                                        id="petName" value="{{ mascota.nombre }}">
+                                    <input v-model="mascota.nombre" type=" text" class="form-control" id="petName">
                                 </div>
                                 <div class="mb-4">
                                     <label for="petType" class="form-label fw-semibold">Tipo de mascota</label>
-                                    <input type="text" class="form-control" id="petType"
-                                        value="{{mascota.tipo_mascota}}">
+                                    <input v-model="mascota.tipo_mascota" type="text" class="form-control" id="petType">
                                 </div>
                                 <div class="mb-4">
                                     <label for="petAge" class="form-label fw-semibold">Edad de la mascota</label>
-                                    <input type="text" class="form-control" id="petAge" value="{{mascota.edad}}">
+                                    <input v-model="mascota.edad" type="text" class="form-control" id="petAge">
                                 </div>
-                                <input type="hidden" value="{{ mascota.id }}" v-model="informacion_mascota.mascota_id">
+                                <input type="hidden" v-model="mascota.id">
                             </form>
                             <div class="col-12">
                                 <div class="d-flex my-4 gap-3">
                                     <button data-bs-target="#VerFichaMedica" data-bs-toggle="modal"
-                                        v-on:click="cargarFichaMedica()" class="btn btn-primary">Ficha Medica</button>
+                                        v-on:click="cargarFichaMedica(mascota)" class="btn btn-primary">Ficha
+                                        Medica</button>
                                     <button data-bs-target="#VerVacunas" data-bs-toggle="modal"
-                                        v-on:click="cargarVacunas()" class="btn btn-primary">Vacunas</button>
-                                    <button v-on:click="SetPetInformation($event)" class=" btn
+                                        v-on:click="cargarVacunas(mascota)" class="btn btn-primary">Vacunas</button>
+                                    <button v-on:click="SetPetInformation(mascota)" class=" btn
                                         btn-primary">Guardar</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
             </div>
         </div>
     </div>
@@ -1048,12 +1054,10 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary"
-                        @click="nueva_vacuna.pet_id = informacion_mascota.pet_id">
+                    <button type="button" class="btn btn-primary">
                         Descargar Vacunas
                     </button>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nueva_vacuna"
-                        @click="nueva_vacuna.pet_id = informacion_mascota.pet_id">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nueva_vacuna">
                         Agregar Vacuna
                     </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -1088,13 +1092,11 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary"
-                        @click="nueva_vacuna.pet_id = informacion_mascota.pet_id">
+                    <button type="button" class="btn btn-primary">
                         Descargar Ficha Medica
                     </button>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#nueva_consulta"
-                        @click="nueva_consulta.mascota.pet_id = informacion_mascota.pet_id">
+                        data-bs-target="#nueva_consulta">
                         Agregar Consulta
                     </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -1141,7 +1143,6 @@
                                 <input v-model="nueva_vacuna.fecha_proxima_vacuna" type="date" class="form-control">
                             </div>
                         </div>
-                        <input type="hidden" v-model="nueva_vacuna.mi_mascota.pet_id">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1175,12 +1176,60 @@
                                     class="form-control"></textarea>
                             </div>
                         </div>
-                        <input type="hidden" v-model="nueva_consulta.mascota.pet_id">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button v-on:click="CrearConsulta()" type="button" class="btn btn-primary">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="nueva_mascota" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Registrar Mascota</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="" class=" control-label">Nombre de la mascota</label>
+                                <input v-model="nueva_mascota.nombre" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group">
+                                <label for="" class=" control-label">Tipo de mascota</label>
+                                <input v-model="nueva_mascota.tipo_mascota" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group">
+                                <label for="" class=" control-label">Edad de la mascota</label>
+                                <input v-model="nueva_mascota.edad" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="" class="control-label">Imagen de la mascota: </label>
+                                        <input ref="fileInput" @change="PreviewPhotoCrear" type="file"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button v-on:click="CrearMascota()" type="button" class="btn btn-primary">Crear</button>
                 </div>
             </div>
         </div>
@@ -1195,15 +1244,6 @@
 {% block js %}
 
 <script>
-    let initialData = {
-        nombre: "{{ mascota.nombre }}",
-        tipo_mascota: "{{ mascota.tipo_mascota }}",
-        edad: "{{ mascota.edad }}",
-        pet_id: "{{ mascota.id }}"
-    };
-</script>
-
-<script>
     var app = new Vue({
         el: '#app',
         delimiters: ['[[', ']]'],
@@ -1215,16 +1255,20 @@
                 "telefono": "{{request.user.usuario.telefono}}",
                 "direccion": "{{request.user.usuario.direccion}}"
             },
-            informacion_mascota: initialData,
             pets: [],
             mascotas: [],
+            loggedUser: {
+                id: "{{ request.user.id }}",
+                // otras propiedades si las necesitas
+            },
+            csrf_token: document.getElementById('csrf_token').value,
             selectedProfilePhoto: null,
-            selectedPetPhoto: null,
             userProfilePhotoUrl: "",
-            petProfilePhotoUrl: '{{ mascota.foto.url }}',
             selectedProfilePhotoNueva: "",
             vacunas: [],
             ficha_medica: [],
+            url_preview: "",
+            nueva_publicacion: {},
             nueva_vacuna: {
                 peso: "",
                 nombre_vacuna: "",
@@ -1240,7 +1284,16 @@
                 mascota: {
                     pet_id: "",
                 }
-            }
+            },
+            nueva_mascota: {
+                nombre: "",
+                tipo_mascota: "",
+                edad: "",
+                foto: null,
+            },
+            dataMascota: [],
+            tieneMascotas: false,
+            mascota_activa: null,
         },
         created() {
             // Obtener la URL de la imagen de perfil del usuario desde tus datos de usuario
@@ -1251,6 +1304,7 @@
             this.userProfilePhotoUrl = "{% static 'images/icons/user.png' %}";
     {% endif %}
     this.petProfilePhotoUrl = "{{request.mi_mascota.foto.url}}";
+    this.Getmascotas(this.dueñoId);
         },
     methods: {
         SetProfileInformation() {
@@ -1265,10 +1319,10 @@
                 )
             })
         },
-        SetPetInformation() {
-            console.log(this.informacion_mascota);
+        SetPetInformation(informacion_mascota) {
+            console.log(informacion_mascota);
             // Realizar una solicitud AJAX en lugar de una solicitud POST estándar
-            axios.post("/api/internal/update/pet_information", this.informacion_mascota, {
+            axios.post("/api/internal/update/pet_information", informacion_mascota, {
                 xsrfCookieName: 'csrftoken',
                 xsrfHeaderName: 'X-CSRFTOKEN',
             }).then((response) => {
@@ -1337,9 +1391,12 @@
                 console.error(error);
             });
         },
-        cargarVacunas() {
+        cargarVacunas(informacion_mascota) {
+            console.log(informacion_mascota.pet_id);
+            this.mascota_activa = informacion_mascota
             axios.post("/api/get/vacunas", {
-                pet_id: this.informacion_mascota.pet_id,
+                pet_id: informacion_mascota.pet_id,
+
             })
                 .then((response) => {
                     this.vacunas = response.data.vacunas.map((vacuna) => {
@@ -1355,9 +1412,10 @@
                     console.error(error);
                 });
         },
-        cargarFichaMedica() {
+        cargarFichaMedica(informacion_mascota) {
+            this.mascota_activa = informacion_mascota
             axios.post("/api/get/fichamedica", {
-                pet_id: this.informacion_mascota.pet_id,
+                pet_id: informacion_mascota.pet_id,
             })
                 .then((response) => {
                     this.ficha_medica = response.data.ficha_medica.map((ficha) => {
@@ -1385,6 +1443,16 @@
             return `${dia}/${mes}/${anio}`;
         },
         CrearVacuna() {
+            this.nueva_vacuna.mi_mascota = this.mascota_activa
+            if (!this.nueva_vacuna.mi_mascota.pet_id) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Debes seleccionar una mascota antes de agregar una vacuna.',
+                    icon: 'error',
+                });
+                return;
+            }
+
             axios.post("/api/create/vacunas", this.nueva_vacuna)
                 .then((response) => {
                     Swal.fire({
@@ -1397,10 +1465,23 @@
                 })
                 .catch((error) => {
                     console.error(error);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Hubo un problema al agregar la vacuna. Por favor, inténtalo de nuevo.',
+                        icon: 'error',
+                    });
                 });
         },
         CrearConsulta() {
-            console.log("pet_id:", this.informacion_mascota.pet_id);
+            this.nueva_consulta.mascota = this.mascota_activa
+            if (!this.nueva_consulta.mascota.pet_id) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Debes seleccionar una mascota antes de agregar una vacuna.',
+                    icon: 'error',
+                });
+                return;
+            }
             axios.post("/api/create/fichamedica", this.nueva_consulta)
                 .then((response) => {
                     Swal.fire({
@@ -1456,6 +1537,59 @@
                         icon: 'error',
                     });
                 });
+        },
+        Getmascotas() {
+            console.log('Llamando a Getmascotas');
+            const userId = this.loggedUser.id;
+            if (!userId) {
+                console.error("El ID del usuario no está definido");
+                return;
+            }
+            axios.post("/api/get_mascotas_by_dueño", { id: userId }, {
+                headers: {
+                    'X-CSRFToken': this.csrf_token,
+                }
+            })
+                .then((response) => {
+                    this.dataMascota = response.data.mascotas;
+                    this.tieneMascotas = this.dataMascota.length > 0;
+                })
+                .catch(error => {
+                    console.error("Error al obtener las mascotas:", error);
+                });
+        },
+        CrearMascota() {
+            let data = new FormData();
+            const header_data = {
+                'Content-Type': 'multipart/form-data'
+            };
+
+            // Obtener el token CSRF del formulario
+            const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+
+            data.append("csrfmiddlewaretoken", csrfToken);  // Incluir el token CSRF en la solicitud
+            data.append("nombre", this.nueva_mascota.nombre);
+            data.append("tipo_mascota", this.nueva_mascota.tipo_mascota);
+            data.append("edad", this.nueva_mascota.edad);
+            data.append("foto", this.nueva_mascota.foto);
+
+            axios.post("/api/create/mascota", data, { headers: header_data })
+                .then((response) => {
+                    console.log("Mascota creada con éxito:", response.data);
+                    window.location.reload();
+                    // Aquí puedes añadir lógica adicional si es necesario
+                })
+                .catch((error) => {
+                    console.error("Error creando la mascota:", error);
+                });
+        },
+        PreviewPhotoCrear(event) {
+            console.log(event.target.files);
+            if (event.target.files && event.target.files.length > 0) {
+                const archivo = event.target.files[0];
+                this.nueva_mascota.foto = archivo;
+                this.url_preview = URL.createObjectURL(archivo);
+            }
         },
     },
     })

@@ -413,9 +413,13 @@
                     'Content-Type': 'multipart/form-data'
                 };
 
-                // Obtener el token CSRF del formulario
-                console.log(csrfToken)
-                const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+                // Obtener el token CSRF del meta tag
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                if (!csrfToken) {
+                    console.error("Token CSRF no encontrado");
+                    return;
+                }
 
                 data.append("csrfmiddlewaretoken", csrfToken);  // Incluir el token CSRF en la solicitud
                 data.append("tipo_mascota", this.nueva_publicacion.tipo_mascota);

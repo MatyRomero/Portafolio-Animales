@@ -33,8 +33,9 @@ class SetPetInformation(APIView):
     def post(self, request, format=None):
         response = {}
         data = request.data
+        print(request.data)
         # Obtener el objeto Usuario relacionado con el User actual
-        usuario, _ = Usuario.objects.get_or_create(user=request.user)
+        usuario = Usuario.objects.get_or_create(user=request.user)
         # Recibir el ID de la mascota a actualizar desde el request
         pet_id = int(request.data.get('pet_id'))
         mascota = Mi_Mascota.objects.get(id=pet_id)
@@ -74,21 +75,34 @@ class CreateVacuna(APIView):
     permission_classes = []
 
     def post(self, request):
-        response = {}
-        pet_id = request.data.get("pet_id")
+        pet_id = request.data.get("mi_mascota", {}).get("pet_id")
+        if not pet_id:
+            return Response({"error": "Pet ID no proporcionado"}, status=status.HTTP_400_BAD_REQUEST)
+        
         try:
             mascota = Mi_Mascota.objects.get(pk=pet_id)
         except Mi_Mascota.DoesNotExist:
             return Response({"error": "La mascota no existe"}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Asegúrate de validar y limpiar los datos antes de usarlos
+        try:
+            peso = float(request.data.get("peso"))
+        except ValueError:
+            return Response({"error": "Peso inválido"}, status=status.HTTP_400_BAD_REQUEST)
+
+        nombre_vacuna = request.data.get("nombre_vacuna")
+        fecha_aplicacion = request.data.get("fecha_aplicacion")
+        fecha_proxima_vacuna = request.data.get("fecha_proxima_vacuna")
+
         vacuna = Vacuna.objects.create(
-            peso=request.data["peso"],
-            nombre_vacuna=request.data["nombre_vacuna"],
-            fecha_aplicacion=request.data["fecha_aplicacion"],
-            fecha_proxima_vacuna=request.data["fecha_proxima_vacuna"],
+            peso=peso,
+            nombre_vacuna=nombre_vacuna,
+            fecha_aplicacion=fecha_aplicacion,
+            fecha_proxima_vacuna=fecha_proxima_vacuna,
         )
         mascota.vacunas.add(vacuna)
-        response["message"] = "Vacuna creada exitosamente y asociada a la mascota."
-        return Response(response, status=status.HTTP_201_CREATED)
+        
+        return Response({"message": "Vacuna creada exitosamente y asociada a la mascota."}, status=status.HTTP_201_CREATED)
 
 class GetVacunas(APIView):
     authentication_classes = []
@@ -175,4 +189,48 @@ class CreatePublicacionesMiMascota(APIView):
         publicacion.save()
         return Response(response, status=status.HTTP_201_CREATED)
 
+class GetMascotasPorDueno(APIView):
+    def post(self, request, format=None):
+        user_id = request.data.get('id')
+        
+        if not user_id:
+            return Response({"error": "ID de usuario no proporcionado"}, status=400)
 
+        try:
+            usuario = Usuario.objects.get(user_id=user_id)
+        except Usuario.DoesNotExist:
+            return Response({"error": "Usuario no encontrado"}, status=404)
+
+        mascotas = Mi_Mascota.objects.filter(dueño=usuario)
+        response = {
+            "mascotas": [
+                {
+                    "nombre": mascota.nombre,
+                    "tipo_mascota": mascota.tipo_mascota,
+                    "edad": mascota.edad,
+                    "pet_id":mascota.id,
+                    "foto": mascota.foto.url if mascota.foto else None
+                } for mascota in mascotas
+            ]
+        }
+        return Response(response)
+
+class CreateMascota(APIView):
+    def post(self, request):
+        response = {}
+        usuario = Usuario.objects.get(user=request.user)
+
+        nombre = request.data.get("nombre")
+        tipo_mascota = request.data.get("tipo_mascota")
+        edad = request.data.get("edad")
+        foto = request.FILES.get("foto")
+
+        mascota = Mi_Mascota(
+            nombre=nombre,
+            tipo_mascota=tipo_mascota,
+            edad=edad,
+            foto=foto,
+            dueño=usuario
+        )
+        mascota.save()
+        return Response(response, status=status.HTTP_201_CREATED)
