@@ -10,6 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate
 from core.models import *
 from django.contrib.auth import login as login_f
+from django.db.models.functions import TruncMonth
+from django.db.models import Count
 # Create your views here.
 
 def login(request):
@@ -80,5 +82,55 @@ def perfil(request):
 @login_required(login_url='login')
 def dashboard(request):
     template_name = "dashboard.html"
-    context = {}
+    
+    # Count the number of lost dog posts
+    num_perros_perdidos = Publicaciones.objects.filter(
+        tipo_mascota=Publicaciones.Perro,
+        tipo_publicacion=Publicaciones.Perdida_mascota
+    ).count()
+
+    # Count the number of lost cat posts
+    num_gatos_perdidos = Publicaciones.objects.filter(
+        tipo_mascota=Publicaciones.Gato,
+        tipo_publicacion=Publicaciones.Perdida_mascota
+    ).count()
+
+    dog_counts, cat_counts = get_counts_by_month()
+    # Calculate the percentage change for cats (you need to add the logic based on your data)
+
+    context = {
+        'num_perros_perdidos': num_perros_perdidos,
+        'num_gatos_perdidos': num_gatos_perdidos,
+        'dog_counts': dog_counts,
+        'cat_counts': cat_counts,
+    }
+
     return render(request, template_name, context)
+
+def get_counts_by_month():
+    # Filtrar publicaciones de perdidas por mes y contarlas
+    counts_per_month = Publicaciones.objects.filter(
+        tipo_publicacion=Publicaciones.Perdida_mascota
+    ).annotate(
+        month=TruncMonth('fecha')
+    ).values(
+        'month', 'tipo_mascota'
+    ).order_by(
+        'month'
+    ).annotate(
+        count=Count('id')
+    )
+    
+    # Inicializar conteos
+    dog_counts = [0] * 12
+    cat_counts = [0] * 12
+
+    # Poblar conteos
+    for entry in counts_per_month:
+        month_index = entry['month'].month - 1  # Obtener el índice del mes (0 para Enero, 1 para Febrero, etc.)
+        if entry['tipo_mascota'] == Publicaciones.Gato:
+            cat_counts[month_index] = entry['count']
+        elif entry['tipo_mascota'] == Publicaciones.Perro:
+            dog_counts[month_index] = entry['count']
+    
+    return dog_counts, cat_counts
