@@ -83,26 +83,32 @@ def perfil(request):
 def dashboard(request):
     template_name = "dashboard.html"
     
-    # Count the number of lost dog posts
     num_perros_perdidos = Publicaciones.objects.filter(
         tipo_mascota=Publicaciones.Perro,
         tipo_publicacion=Publicaciones.Perdida_mascota
     ).count()
 
-    # Count the number of lost cat posts
     num_gatos_perdidos = Publicaciones.objects.filter(
         tipo_mascota=Publicaciones.Gato,
         tipo_publicacion=Publicaciones.Perdida_mascota
     ).count()
 
     dog_counts, cat_counts = get_counts_by_month()
-    # Calculate the percentage change for cats (you need to add the logic based on your data)
+
+    perdidas_por_comuna = Publicaciones.objects.filter(
+        tipo_publicacion=Publicaciones.Perdida_mascota
+    ).values('usuario__comuna').annotate(total=Count('id')).order_by('usuario__comuna')
+
+    comunas = [item['usuario__comuna'] for item in perdidas_por_comuna]
+    conteos = [item['total'] for item in perdidas_por_comuna]
 
     context = {
         'num_perros_perdidos': num_perros_perdidos,
         'num_gatos_perdidos': num_gatos_perdidos,
         'dog_counts': dog_counts,
         'cat_counts': cat_counts,
+        'comunas': comunas,
+        'conteos': conteos,
     }
 
     return render(request, template_name, context)
