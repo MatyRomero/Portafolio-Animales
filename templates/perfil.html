@@ -1522,7 +1522,7 @@
                     formData.append("descripcion", descripcion);
                     formData.append("foto_mascota", fotoMascota);
                     formData.append("tipo_publicacion", tipoPublicacion);
-
+                    console.log(formData.get("tipo_publicacion"));
                     axios.post("/api/create_publicacion/mi_mascota", formData)
                         .then((response) => {
                             console.log('Publicación creada con éxito');
