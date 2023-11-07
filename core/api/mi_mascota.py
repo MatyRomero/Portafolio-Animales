@@ -177,7 +177,7 @@ class CreatePublicacionesMiMascota(APIView):
         foto_mascota = request.FILES.get("foto_mascota")
         tipo_publicacion = request.data.get("tipo_publicacion")
         # Siempre estableceremos 'Busqueda de mascota' como el tipo de publicación
-        tipo_publicacion = Publicaciones.Busqueda_mascota
+        tipo_publicacion = Publicaciones.Perdida_mascota
         # Crear la publicación relacionando al usuario actual
         publicacion = Publicaciones(
             tipo_mascota=tipo_mascota,
