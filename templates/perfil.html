@@ -1498,46 +1498,53 @@
                 });
         },
         crearPublicacion: function () {
-            // Obtén la información de la mascota y otros datos necesarios
-            var tipoMascota = document.querySelector('#petType').value;
-            var descripcion = "Ayuda porfavor he perdido a mi mascota {{mascota.nombre}}";
-            var fotoMascota = this.petProfilePhotoUrl;// Reemplaza selectedPetPhotoFile con la variable que contiene la foto seleccionada
-            var tipoPublicacion = "Busqueda de mascota";
-            // Obtén el token CSRF de tu página HTML
-            var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Estás a punto de crear una nueva publicación para tu mascota perdida.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, crear publicación!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // El usuario confirmó, procede a realizar la solicitud a la API
+                    var tipoMascota = document.querySelector('#petType').value;
+                    var descripcion = "Ayuda porfavor he perdido a mi mascota {{mascota.nombre}}";
+                    var fotoMascota = this.petProfilePhotoUrl;
+                    var tipoPublicacion = "Busqueda de mascota";
+                    var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
-            // Agrega el token CSRF a las cabeceras de Axios
-            axios.defaults.headers.common['X-CSRFToken'] = csrfToken; // Tipo de publicación
-            // Crea un objeto FormData para enviar los datos al servidor
-            var formData = new FormData();
-            formData.append("tipo_mascota", tipoMascota);
-            formData.append("descripcion", descripcion);
-            formData.append("foto_mascota", fotoMascota);
-            formData.append("tipo_publicacion", tipoPublicacion);
+                    axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
 
-            // Realiza una solicitud POST a la API para crear la publicación
-            axios.post("/api/create_publicacion/mi_mascota", formData)
-                .then((response) => {
-                    // Publicación creada exitosamente
-                    console.log('Publicación creada con éxito');
-                    Swal.fire({
-                        title: 'Éxito!',
-                        text: 'La publicación fue creada con éxito!',
-                        icon: 'success',
-                    }).then(() => {
-                        location.reload(); // Puedes recargar la página o realizar otra acción después del éxito
-                    });
-                })
-                .catch((error) => {
-                    console.error(error);
-                    // Maneja los errores si es necesario
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Hubo un error al crear la publicación',
-                        icon: 'error',
-                    });
-                });
-        },
+                    var formData = new FormData();
+                    formData.append("tipo_mascota", tipoMascota);
+                    formData.append("descripcion", descripcion);
+                    formData.append("foto_mascota", fotoMascota);
+                    formData.append("tipo_publicacion", tipoPublicacion);
+
+                    axios.post("/api/create_publicacion/mi_mascota", formData)
+                        .then((response) => {
+                            console.log('Publicación creada con éxito');
+                            Swal.fire({
+                                title: 'Éxito!',
+                                text: 'La publicación fue creada con éxito!',
+                                icon: 'success',
+                            }).then(() => {
+                                location.reload();
+                            });
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Hubo un error al crear la publicación',
+                                icon: 'error',
+                            });
+                        });
+                }
+            });
+        }
         Getmascotas() {
             console.log('Llamando a Getmascotas');
             const userId = this.loggedUser.id;
