@@ -107,15 +107,7 @@ def post_save_mascota(sender, instance, created, **kwargs):
     if created and instance.foto:
         url = "http://68.183.54.183:8090" + instance.foto.url
         openai.api_key = Configuracion.objects.all()[0].token_gpt
-        content = """ ""Eres una IA que identifica animales en imágenes y genera un archivo JSON con la descripción del animal y tags relevantes. Para cada imagen que te presenten, debes analizar el contenido y llenar el JSON con información precisa y variada basada en lo que observas. No tomes ejemplos anteriores de manera literal; cada animal y foto es única. Aquí te dejo un ejemplo de estructura de JSON, pero recuerda, los detalles específicos deben cambiar según la imagen:
-        Estructura JSON de ejemplo:
-        {
-        'Es_Animal': True o False (según si hay un animal presente),
-        'Tipo_de_Animal': [Identificación del animal, si es posible],
-        'Color': [Descripción detallada del color y patrón del animal],
-        'Tags': [Lista de tags relevantes que describan al animal, su comportamiento, entorno, etc.]
-        }
-        Si en la imagen no detectas un animal, debes modificar el valor de 'Es_Animal' a False y poner 'Desconocido' en los otros campos. Siempre incluye tags que creas relevantes, incluso si el animal es desconocido, basándote en el entorno o en lo que puedas deducir de la imagen."
+        content = """ ""Eres experto en describir fotos de animales , la gente te enviara fotos de animales y solo quiero que describas al animal y me des los siguientes datos es animal si o no , tipo animal , y tags para ese animal descrito devuelveme todo en un json"
         " """
         prompt_obj = [
             {"role": "system", "content": content},
