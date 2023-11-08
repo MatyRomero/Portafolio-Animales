@@ -126,8 +126,7 @@ def post_save_mascota(sender, instance, created, **kwargs):
             instance.save()
             print(data, "LLEGO ACA?")
             for tag in data["Tags"]:
-                print("Procesando tag:", tag)
                 obj, created = Tag.objects.get_or_create(name=tag)
                 instance.tags.add(obj)
-                print("LLEGO ACA?????????")
-            instance.save()
+                obj.save()  # Guarda cada tag individualmente.
+            instance.save()  # Finalmente, guarda la instancia de Mascota.
