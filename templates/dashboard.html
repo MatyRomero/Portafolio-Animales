@@ -95,7 +95,6 @@
 <script type="text/javascript">
     var dogCounts = {{ dog_counts| safe }};
     var catCounts = {{ cat_counts| safe }};
-    // Nuevas variables para el gráfico de torta de comunas
     var comunasLabels = {{ comunas | safe }};
     var comunasSeries = {{ conteos | safe }};
 </script>
@@ -116,11 +115,11 @@
             },
             barSeries: [{
                 name: 'Perros',
-                data: dogCounts  // Usar la variable global
+                data: dogCounts
             },
             {
                 name: 'Gatos',
-                data: catCounts  // Usar la variable global
+                data: catCounts
             }],
             pieChartOptions: {
                 labels: comunasLabels,
@@ -133,7 +132,7 @@
                         plotOptions: {
                             pie: {
                                 donut: {
-                                    size: '65%', // Ajustar el tamaño del donut interno para cambiar el espacio
+                                    size: '65%',
                                 }
                             }
                         },

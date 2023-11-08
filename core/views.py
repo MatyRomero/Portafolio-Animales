@@ -79,6 +79,12 @@ def perfil(request):
     context = {}
     return render(request, template_name, context)
 
+@login_required(login_url='ficha_medica')
+def ficha(request):
+    template_name = "ficha_medica.html"
+    context = {}
+    return render(request,template_name,context)
+
 @login_required(login_url='login')
 def dashboard(request):
     template_name = "dashboard.html"

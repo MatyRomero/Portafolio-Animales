@@ -1081,20 +1081,21 @@
                             <tr>
                                 <th>Fecha de consulta</th>
                                 <th>Diagnóstico</th>
+                                <th>Acción</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="ficha_medica in ficha_medica" :key="ficha_medica.id">
                                 <td>[[ficha_medica.fecha_consulta]]</td>
                                 <td>[[ficha_medica.diagnostico]]</td>
+                                <td><button type="button" class="btn btn-primary w-100 btn-sm">
+                                        Descargar
+                                    </button></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">
-                        Descargar Ficha Medica
-                    </button>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#nueva_consulta">
                         Agregar Consulta
