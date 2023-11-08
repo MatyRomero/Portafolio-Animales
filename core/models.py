@@ -113,7 +113,7 @@ def post_save_mascota(sender, instance, created, **kwargs):
             {"role": "user", "content": "Esta es la foto " + url},
         ]
         response = openai.ChatCompletion.create(
-            model="gpt-4-1106-preview",
+            model="gpt-3.5-turbo-1106",
             messages=prompt_obj
         )
         message = response["choices"][0]["message"]
