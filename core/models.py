@@ -107,7 +107,16 @@ def post_save_mascota(sender, instance, created, **kwargs):
     if created and instance.foto:
         url = "http://68.183.54.183:8090" + instance.foto.url
         openai.api_key = Configuracion.objects.all()[0].token_gpt
-        content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu debes armar un archivo json con la siguiente estructura {'Es_Animal': True, 'Tipo_de_Animal': 'Gato', 'Color': 'Atigrado con tonos grises, blancos y negros', 'Tags': ['#gato', '#felino', '#mascota', '#atigrado', '#doméstico', '#relajado', '#pelaje_mixto']} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json con cada punto en desconocido es importante que solo me respondas el json, ademas es importante que sepas que este json que te entrego es solo un ejemplo al igual que el de los tag por lo cual esto quiere decir que van a ir cambiando solo quiero que sigas la estructura de este y otro punto importante es que siempre quiero que me respondas o me llenes los tag " """
+        content = """ ""Eres una IA que identifica animales en imágenes y genera un archivo JSON con la descripción del animal y tags relevantes. Para cada imagen que te presenten, debes analizar el contenido y llenar el JSON con información precisa y variada basada en lo que observas. No tomes ejemplos anteriores de manera literal; cada animal y foto es única. Aquí te dejo un ejemplo de estructura de JSON, pero recuerda, los detalles específicos deben cambiar según la imagen:
+        Estructura JSON de ejemplo:
+        {
+        'Es_Animal': True o False (según si hay un animal presente),
+        'Tipo_de_Animal': [Identificación del animal, si es posible],
+        'Color': [Descripción detallada del color y patrón del animal],
+        'Tags': [Lista de tags relevantes que describan al animal, su comportamiento, entorno, etc.]
+        }
+        Si en la imagen no detectas un animal, debes modificar el valor de 'Es_Animal' a False y poner 'Desconocido' en los otros campos. Siempre incluye tags que creas relevantes, incluso si el animal es desconocido, basándote en el entorno o en lo que puedas deducir de la imagen."
+        " """
         prompt_obj = [
             {"role": "system", "content": content},
             {"role": "user", "content": "Esta es la foto " + url},
