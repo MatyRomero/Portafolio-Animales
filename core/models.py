@@ -123,11 +123,13 @@ def post_save_mascota(sender, instance, created, **kwargs):
             instance.es_animal = data["Es_Animal"]
             instance.tipo_de_animal = data["Tipo_de_Animal"]
             instance.color = data["Color"]
-            print(data, "LLEGO ACA?")
-            tag_objects = []
-            for tag_name in data["Tags"]:
-                tag, created = Tag.objects.get_or_create(name=tag_name)
-                tag_objects.append(tag)
-
-            instance.tags.set(tag_objects)  # Reemplaza todos los tags existentes por los nuevos
             instance.save()
+            print(data, "LLEGO ACA?")
+            for tag in data["Tags"]:
+                print("Procesando tag:", tag)
+                obj, created = Tag.objects.get_or_create(name=tag)
+                instance.tags.add(obj)
+                print("LLEGO ACA?????????")
+                obj.save()
+            instance.save()
+            print(instance.tags.all()) 
