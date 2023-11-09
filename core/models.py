@@ -128,7 +128,6 @@ def post_save_mascota(sender, instance, created, **kwargs):
             for tag_name in data["Tags"]:  # Asegúrate de que esto es una lista de nombres de tags.
                 print("Procesando tag:", tag_name)
                 tag_obj, created = Tag.objects.get(name=tag_name)
-                print("pasa")
                 instance.tags.add(tag_obj)
                 print("IDs de Tags asociados a la instancia de Mascota:", instance.tags.values_list('id', flat=True))
             print("Tags asociados a la instancia de Mascota:", instance.tags.all())
