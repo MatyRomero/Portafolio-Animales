@@ -131,22 +131,23 @@ def post_save_mascota(sender, instance, created, **kwargs):
                 instance.tags.add(tag_obj)
                 print("IDs de Tags asociados a la instancia de Mascota:", instance.tags.values_list('id', flat=True))
 
-                instance.save()
 
             print("Tags asociados a la instancia de Mascota:", instance.tags.all())
-            mascota = Mascota.objects.get(id=99)
-    
-            print(f"ID: {mascota.id}")
-            print(f"Es Animal: {'Sí' if mascota.es_animal else 'No'}")
-            print(f"Tipo de Animal: {mascota.tipo_de_animal}")
-            print(f"Color: {mascota.color}")
+            instance.save()
+        instance.save()
+        mascota = Mascota.objects.get(id=106)
 
-            # Imprimir los Tags asociados a la instancia de Mascota
-            tags_asociados = mascota.tags.all()
-            print("Tags Asociados:")
-            for tag in tags_asociados:
-                print(f"- {tag.id}")
-                print(f"- {tag.name}")
+        print(f"ID: {mascota.id}")
+        print(f"Es Animal: {'Sí' if mascota.es_animal else 'No'}")
+        print(f"Tipo de Animal: {mascota.tipo_de_animal}")
+        print(f"Color: {mascota.color}")
+
+        # Imprimir los Tags asociados a la instancia de Mascota
+        tags_asociados = mascota.tags.all()
+        print("Tags Asociados:")
+        for tag in tags_asociados:
+            print(f"- {tag.id}")
+            print(f"- {tag.name}")
 
             
 
