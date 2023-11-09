@@ -146,6 +146,7 @@ def post_save_mascota(sender, instance, created, **kwargs):
             print("Tags Asociados:")
             for tag in tags_asociados:
                 print(f"- {tag.id}")
+                print(f"- {tag.name}")
 
             
 
