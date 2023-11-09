@@ -125,11 +125,8 @@ def post_save_mascota(sender, instance, created, **kwargs):
             instance.color = data["Color"]
             instance.save()
             print(data, "LLEGO ACA?")
-            for tag in data["Tags"]:
-                print("Procesando tag:", tag)
-                obj, created = Tag.objects.get_or_create(name=tag)
-                instance.tags.add(obj)
-                print("LLEGO ACA?????????")
-                obj.save()
-            instance.save()
-            print(instance.tags.all()) 
+            for tag_name in data["Tags"]:  # Asegúrate de que esto es una lista de nombres de tags.
+                print("Procesando tag:", tag_name)
+                tag_obj, created = Tag.objects.get_or_create(name=tag_name)
+                instance.tags.add(tag_obj)
+            print("Tags asociados a la instancia de Mascota:", instance.tags.all())
