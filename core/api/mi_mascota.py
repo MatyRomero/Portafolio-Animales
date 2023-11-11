@@ -23,6 +23,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import NotFound
+from django.shortcuts import get_object_or_404
+
 
 
 
@@ -143,7 +145,9 @@ class GetFichaMedica(APIView):
             response["ficha_medica"].append({
                 "fecha_consulta": ficha_medica.fecha_consulta,
                 "diagnostico": ficha_medica.diagnostico,
+                "id":ficha_medica.id
             })
+        print(response)
         return Response(response)
 
 class CreateConsulta(APIView):
@@ -234,3 +238,25 @@ class CreateMascota(APIView):
         )
         mascota.save()
         return Response(response, status=status.HTTP_201_CREATED)
+
+
+class DetalleFichaMedica(APIView):
+    def get(self, request, ficha_medica_id):
+        ficha = get_object_or_404(FichaMedica, pk=ficha_medica_id)
+        mascota = ficha.mascota
+        propietario = mascota.dueño if mascota.dueño else None
+
+        data = {
+            'Nombre Mascota': mascota.nombre,
+            'Tipo Animal': mascota.tipo_mascota,
+            'Propietario': propietario.user.username if propietario else '',
+            'Fecha': ficha.fecha_consulta.strftime('%Y-%m-%d %H:%M') if ficha.fecha_consulta else '',
+            'Edad': mascota.edad,
+            'Telefono': propietario.telefono if propietario else '',
+            'Diagnostico': ficha.diagnostico,
+        }
+        print(ficha)
+        print(mascota.nombre)
+        print(data)
+        print(request)
+        return Response(data, status=status.HTTP_200_OK)

@@ -38,5 +38,6 @@ urlpatterns = [
     path('api/create/fichamedica', CreateConsulta.as_view()),
     path('api/create_publicacion/mi_mascota', CreatePublicacionesMiMascota.as_view()),
     path('api/get_mascotas_by_dueño', GetMascotasPorDueno.as_view()),
-    path('api/create/mascota', CreateMascota.as_view())
+    path('api/create/mascota', CreateMascota.as_view()),
+    path('api/detalle_ficha_medica/<int:ficha_medica_id>/', DetalleFichaMedica.as_view(), name='detalle_ficha_medica'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

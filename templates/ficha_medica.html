@@ -71,32 +71,19 @@
         <table class="table table-bordered">
             <tbody>
                 <tr>
-                    <td>Nombre de la Mascota:</td>
+                    <td>Nombre de la Mascota: [[ fichaMedica['Nombre Mascota'] ]]</td>
                     <td></td>
-                    <td>Fecha:</td>
+                    <td>Fecha: [[ fichaMedica['Fecha'] ]]</td>
                 </tr>
                 <tr>
-                    <td>Tipo de Animal:</td>
+                    <td>Tipo de Animal: [[ fichaMedica['Tipo Animal'] ]]</td>
                     <td></td>
-                    <td>Edad:</td>
+                    <td>Edad: [[ fichaMedica['Edad'] ]]</td>
                 </tr>
                 <tr>
-                    <td>Propietario:</td>
+                    <td>Propietario: [[ fichaMedica['Propietario'] ]]</td>
                     <td></td>
-                    <td>Telefono:</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>HISTORIAL Y EXPLORACIÓN</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td></td>
+                    <td>Telefono: [[ fichaMedica['Telefono'] ]]</td>
                 </tr>
             </tbody>
         </table>
@@ -109,19 +96,10 @@
             </thead>
             <tbody>
                 <tr>
-                    <td></td>
+                    <td>[[ fichaMedica['Diagnostico'] ]]</td>
                 </tr>
             </tbody>
         </table>
-
-        <div class="footer">
-            <p>El profesional veterinario</p>
-            <div class="signature">
-                <p>Firma:</p>
-                <p>Fecha:</p>
-            </div>
-        </div>
-
     </div>
 </div>
 
@@ -130,5 +108,64 @@
 
 
 {% block js %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {
+            fichaId: null,
+            fichaMedica: {},
+            datosCargados: false
+        },
+        watch: {
+            datosCargados(newValue) {
+                if (newValue === true) {
+                    this.verificarSiImprime();
+                }
+            }
+        },
+        mounted() {
+            this.fichaId = this.obtenerFichaIdDesdeURL();
+            if (this.fichaId) {
+                this.cargarDatosFichaMedica();
+            }
+            console.log(this.fichaId)
+            this.verificarSiImprime();
+        },
+        methods: {
+            obtenerFichaIdDesdeURL() {
+                const queryParams = new URLSearchParams(window.location.search);
+                return queryParams.get('id');
+            },
+            cargarDatosFichaMedica() {
+                axios.get(`/api/detalle_ficha_medica/${this.fichaId}`)
+                    .then(response => {
+                        this.fichaMedica = response.data;
+                        this.datosCargados = true; // Actualizar estado
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar la ficha médica:', error);
+                    });
+            },
+            verificarSiImprime() {
+                const queryParams = new URLSearchParams(window.location.search);
+                const debeImprimir = queryParams.get('print');
+                if (debeImprimir === 'true' && this.datosCargados) {
+                    // Esperar un par de segundos para asegurar que todo está renderizado
+                    setTimeout(() => {
+                        window.print();
+                    }, 2000); // Esperar 2 segundos
+                }
+            }
+        }
+    });
+
+</script>
+
+
 
 {% endblock js %}

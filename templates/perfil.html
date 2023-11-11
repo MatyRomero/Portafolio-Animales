@@ -1088,7 +1088,8 @@
                             <tr v-for="ficha_medica in ficha_medica" :key="ficha_medica.id">
                                 <td>[[ficha_medica.fecha_consulta]]</td>
                                 <td>[[ficha_medica.diagnostico]]</td>
-                                <td><button type="button" class="btn btn-primary w-100 btn-sm">
+                                <td><button type="button" class="btn btn-primary w-100 btn-sm"
+                                        @click="descargarFicha(nueva_consulta.id)">
                                         Descargar
                                     </button></td>
                             </tr>
@@ -1282,6 +1283,7 @@
             nueva_consulta: {
                 fecha_consulta: "",
                 diagnostico: "",
+                id: "",
                 mascota: {
                     pet_id: "",
                 }
@@ -1423,8 +1425,10 @@
                         return {
                             fecha_consulta: this.formatearFecha(ficha.fecha_consulta),
                             diagnostico: ficha.diagnostico,
+                            id: ficha.id
                         };
                     });
+                    console.log(response.data)
                 })
                 .catch((error) => {
                     console.error(error);
@@ -1599,6 +1603,17 @@
                 this.url_preview = URL.createObjectURL(archivo);
             }
         },
+        descargarFicha() {
+            console.log("ID de la ficha médica:", this.ficha_medica[0].id);
+            axios.get(`/api/detalle_ficha_medica/${this.ficha_medica[0].id}`)
+                .then(response => {
+                    window.location.href = `/ficha_medica/?id=${this.ficha_medica[0].id}&print=true`;
+                })
+                .catch(error => {
+                    console.error("Hubo un error al obtener la ficha médica", error);
+                });
+        }
+
     },
     })
 
