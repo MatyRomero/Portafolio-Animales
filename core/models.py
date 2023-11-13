@@ -131,11 +131,17 @@ def post_save_mascota(sender, instance, created, **kwargs):
                     instance.color = data.get("Color", "")
                     instance.save()
 
+                    tag_objs = []  # Lista para recolectar objetos de Tag.
+
                     for tag_name in data.get("Tags", []):
                         print("Procesando tag:", tag_name)
-                        tag_obj, created = Tag.objects.get_or_create(name=tag_name)
-                        tag_obj.save()  # Guardar la instancia de Tag
-                        instance.tags.add(tag_obj)  # Asociar Tag con Mascota
+                        tag, is_created = Tag.objects.get_or_create(name=tag_name)  # Cambio del nombre de la variable para evitar conflicto.
+                        tag.save()
+                        tag_objs.append(tag)  # Añadimos el objeto de Tag a la lista.
+
+                    # Si estás seguro de que todos los tags deben ser asociados a la Mascota y que no hay más cambios pendientes:
+                    instance.tags.set(tag_objs)  # Establecemos todos los tags a la vez.
+                    instance.save()  # Guardamos nuevamente la instancia de Mascota.
 
                     print("Tags asociados a la instancia de Mascota:", instance.tags.all())
                     tags_created = True
