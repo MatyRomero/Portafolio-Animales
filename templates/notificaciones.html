@@ -33,16 +33,14 @@
         <div class="">
             <div class="email-list ps ps--active-y">
                 <a>
-                    <div class="d-md-flex align-items-center email-message px-3 py-1" v-for="similitud in similitudes"
-                        :key="similitud.mascota_id">
+                    <div class="d-md-flex align-items-center email-message px-3 py-1">
                         <div class="d-flex align-items-center email-actions">
                             <input class="form-check-input" type="checkbox" value=""> <i class="font-20 mx-2"></i>
                             <p class="mb-0"><b>Coincidencia</b>
                             </p>
                         </div>
                         <div class="">
-                            <p class="mb-0">Se encontró una coincidencia del {{ similitud.similitud }}% con la mascota
-                                ID {{ similitud.mascota_id }}</p>
+                            <p class="mb-0">Se encontro un coincidencia del ...</p>
                         </div>
                         <div class="ms-auto">
                             <p class="mb-0 email-time">5:56 PM</p>
@@ -68,13 +66,11 @@
         data() {
             return {
                 selectedFile: null,
-                similitudes: []
             }
         },
         mounted() {
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
-            this.cargarSimilitudes(mascotaId);
         },
         methods: {
             onFileChange(e) {
@@ -93,23 +89,12 @@
                     .then(response => {
                         console.log(response.data);
                         alert("Imagen procesada correctamente.");
-                        const mascotaId = response.data.mascota_id;
-                        this.cargarSimilitudes(mascotaId);
                     })
                     .catch(error => {
                         console.error("Error al procesar la imagen:", error);
                         alert("Error al procesar la imagen.");
                     });
             },
-            cargarSimilitudes(mascotaId) {
-                axios.get(`/api/similitudes/${mascotaId}/`)
-                    .then(response => {
-                        this.similitudes = response.data.similitudes;
-                    })
-                    .catch(error => {
-                        console.error("Error al cargar similitudes:", error);
-                    });
-            }
         }
     });
 </script>

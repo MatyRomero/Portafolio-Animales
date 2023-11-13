@@ -97,21 +97,3 @@ class ReconocerMascota(APIView):
             "tags": [tag.name for tag in mascota.tags.all()],
             "similitudes": similitudes
         })
-    
-class SimilitudesMascotaView(APIView):
-    def get(self, request, mascota_id, *args, **kwargs):
-        try:
-            mascota = Mascota.objects.get(id=mascota_id)
-        except Mascota.DoesNotExist:
-            return Response({"error": "Mascota no encontrada."}, status=404)
-
-        tags_nueva_mascota = set([tag.name for tag in mascota.tags.all()])
-        similitudes = []
-
-        for mascota_existente in Mascota.objects.exclude(id=mascota.id):
-            tags_mascota_existente = set([tag.name for tag in mascota_existente.tags.all()])
-            porcentaje_similitud = calcular_coincidencia_tags(tags_nueva_mascota, tags_mascota_existente)
-            if porcentaje_similitud >= 55:
-                similitudes.append({'mascota_id': mascota_existente.id, 'similitud': porcentaje_similitud})
-
-        return Response({"similitudes": similitudes})
