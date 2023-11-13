@@ -17,6 +17,7 @@ urlpatterns = [
     path('perfil/', core_views.perfil, name='perfil'),
     path('dashboard/', core_views.dashboard, name='dashboard'),
     path('ficha_medica/', core_views.ficha, name='ficha_medica'),
+    path('notificaciones/', core_views.notificaciones, name='notificaciones'),
     ## API Usuarios
     path("api/create/usuarios", CreateUsuarios.as_view()),
     path("api/edit/usuarios", EditarUsuarios.as_view()),

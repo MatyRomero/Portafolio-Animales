@@ -86,6 +86,12 @@ def ficha(request):
     return render(request,template_name,context)
 
 @login_required(login_url='login')
+def notificaciones(request):
+    template_name = "notificaciones.html"
+    context = {}
+    return render(request, template_name, context)
+
+@login_required(login_url='login')
 def dashboard(request):
     template_name = "dashboard.html"
     
