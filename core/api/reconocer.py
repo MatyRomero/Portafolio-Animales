@@ -33,6 +33,7 @@ import openai
 class ReconocerMascota(APIView):
     def post(self, request, *args, **kwargs):
         # Obtener la URL de la foto
+        print(request.data)
         url = "http://68.183.54.183:8090" + request.data.get('foto_url')
         openai.api_key = Configuracion.objects.all()[0].token_gpt
 
