@@ -5,8 +5,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 import json
 from django.db import transaction
-from django.db import connection
-from django.db import transaction
 
 TipoUsuarios = (
     ("0",'Administrador'),
@@ -106,45 +104,48 @@ class Servicios(models.Model):
     tipo = models.CharField(max_length=255, choices=tipo_servicio, blank=True, null=True)
 
 
-@receiver(post_save, sender=Mascota)
-def post_save_mascota(sender, instance, created, **kwargs):
-    if created and instance.foto:
-        url = "http://68.183.54.183:8090" + instance.foto.url
-        openai.api_key = Configuracion.objects.all()[0].token_gpt
-        content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu debes armar un archivo json con la siguiente estructura {'Es_Animal': True, 'Tipo_de_Animal': 'Gato', 'Color': 'Atigrado con tonos grises, blancos y negros', 'Tags': ['#gato', '#felino', '#mascota', '#atigrado', '#domÃ©stico', '#relajado', '#pelaje_mixto']} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json con cada punto en desconocido es importante que solo me respondas el json, ademas es importante que sepas que este json que te entrego es solo un ejemplo al igual que el de los tag por lo cual esto quiere decir que van a ir cambiando solo quiero que sigas la estructura de este y otro punto importante es que siempre quiero que me respondas o me llenes los tag " """
-        prompt_obj = [
-            {"role": "system", "content": content},
-            {"role": "user", "content": "Esta es la foto " + url},
-        ]
+# @receiver(post_save, sender=Mascota)
+# def post_save_mascota(sender, instance, created, **kwargs):
+#     if created and instance.foto:
+#         url = "http://68.183.54.183:8090" + instance.foto.url
+#         openai.api_key = Configuracion.objects.all()[0].token_gpt
+#         content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu debes armar un archivo json con la siguiente estructura {'Es_Animal': True, 'Tipo_de_Animal': 'Gato', 'Color': 'Atigrado con tonos grises, blancos y negros', 'Tags': ['#gato', '#felino', '#mascota', '#atigrado', '#domÃ©stico', '#relajado', '#pelaje_mixto']} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json con cada punto en desconocido es importante que solo me respondas el json, ademas es importante que sepas que este json que te entrego es solo un ejemplo al igual que el de los tag por lo cual esto quiere decir que van a ir cambiando solo quiero que sigas la estructura de este y otro punto importante es que siempre quiero que me respondas o me llenes los tag " """
+#         prompt_obj = [
+#             {"role": "system", "content": content},
+#             {"role": "user", "content": "Esta es la foto " + url},
+#         ]
 
-        tags_created = False
+#         tags_created = False
 
-        while not tags_created:
-            try:
-                response = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo-1106",
-                    messages=prompt_obj
-                )
-                message = response["choices"][0]["message"]
-                data = json.loads(message["content"].replace("'", '"'))
+#         while not tags_created:
+#             try:
+#                 response = openai.ChatCompletion.create(
+#                     model="gpt-3.5-turbo-1106",
+#                     messages=prompt_obj
+#                 )
+#                 message = response["choices"][0]["message"]
+#                 data = json.loads(message["content"].replace("'", '"'))
 
-                if data and len(data) != 0:
-                    for tag_name in data.get("Tags", []):
-                        print("Procesando tag:", tag_name)
-                        tag_obj, created = Tag.objects.get_or_create(name=tag_name)
-                        instance.tags.add(tag_obj)
-                    print("Tags asociados a la instancia de Mascota:", instance.tags.all())
-                    tags_created = True
-                    instance.es_animal = data.get("Es_Animal", False)
-                    instance.tipo_de_animal = data.get("Tipo_de_Animal", "")
-                    instance.color = data.get("Color", "")
+#                 if data and len(data) != 0:
+#                     mi_mascota = Mascota.objects.get(id=instance.id)
+#                     for tag_name in data.get("Tags", []):
+#                         print("Procesando tag:", tag_name)
+#                         tag_obj, created = Tag.objects.get_or_create(name=tag_name)
+#                         mi_mascota.tags.add(tag_obj)
+#                     mi_mascota.save()
+#                     print("Tags asociados a la instancia de Mascota:", instance.tags.all())
+#                     tags_created = True
+#                     instance.es_animal = data.get("Es_Animal", False)
+#                     instance.tipo_de_animal = data.get("Tipo_de_Animal", "")
+#                     instance.color = data.get("Color", "")
 
 
-            except json.JSONDecodeError:
-                print("Error al decodificar JSON. Reintentando...")
-            except Exception as e:
-                print(f"Error inesperado: {e}. Reintentando...")
-        instance.save()
-        print("FINAL FINAL FINAL" , instance.tags.all())
+#             except json.JSONDecodeError:
+#                 print("Error al decodificar JSON. Reintentando...")
+#             except Exception as e:
+#                 print(f"Error inesperado: {e}. Reintentando...")
+
+#         instance.save()
+#         print("FINAL FINAL FINAL" , instance.tags.all())
             
 
