@@ -109,7 +109,7 @@ def post_save_mascota(sender, instance, created, **kwargs):
     if created and instance.foto:
         url = "http://68.183.54.183:8090" + instance.foto.url
         openai.api_key = Configuracion.objects.all()[0].token_gpt
-        content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu debes armar un archivo json con la siguiente estructura {'Es_Animal': True, 'Tipo_de_Animal': 'Gato', 'Color': 'Atigrado con tonos grises, blancos y negros', 'Tags': ['#gato', '#felino', '#mascota', '#atigrado', '#doméstico', '#relajado', '#pelaje_mixto']} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json con cada punto en desconocido es importante que solo me respondas el json, ademas es importante que sepas que este json que te entrego es solo un ejemplo al igual que el de los tag por lo cual esto quiere decir que van a ir cambiando solo quiero que sigas la estructura de este y otro punto importante es que siempre quiero que me respondas o me llenes los tag " """
+        content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu debes armar un archivo json con la siguiente estructura {'Es_Animal': True, 'Tipo_de_Animal': 'Gato', 'Color': 'Atigrado con tonos grises, blancos y negros', 'Tags': ['#gato', '#felino', '#mascota', '#atigrado', '#domÃ©stico', '#relajado', '#pelaje_mixto']} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json con cada punto en desconocido es importante que solo me respondas el json, ademas es importante que sepas que este json que te entrego es solo un ejemplo al igual que el de los tag por lo cual esto quiere decir que van a ir cambiando solo quiero que sigas la estructura de este y otro punto importante es que siempre quiero que me respondas o me llenes los tag " """
         prompt_obj = [
             {"role": "system", "content": content},
             {"role": "user", "content": "Esta es la foto " + url},
@@ -127,20 +127,17 @@ def post_save_mascota(sender, instance, created, **kwargs):
                 data = json.loads(message["content"].replace("'", '"'))
 
                 if data and len(data) != 0:
-                    with transaction.atomic():
-                        instance.es_animal = data.get("Es_Animal", False)
-                        instance.tipo_de_animal = data.get("Tipo_de_Animal", "")
-                        instance.color = data.get("Color", "")
-                        instance.save()
+                    instance.es_animal = data.get("Es_Animal", False)
+                    instance.tipo_de_animal = data.get("Tipo_de_Animal", "")
+                    instance.color = data.get("Color", "")
+                    instance.save()
 
-                        tag_ids = []
-                        for tag_name in data.get("Tags", []):
-                            tag, _ = Tag.objects.get_or_create(name=tag_name)
-                            tag_ids.append(tag.id)
-
-                        # Asociar todos los tags a la vez después de haberlos creado.
-                        instance.tags.set(tag_ids)
-
+                    for tag_name in data.get("Tags", []):
+                        print("Procesando tag:", tag_name)
+                        tag_obj, created = Tag.objects.get_or_create(name=tag_name)
+                        tag_obj.save()  # Guardar la instancia de Tag
+                        instance.tags.add(tag_obj)  # Asociar Tag con Mascota
+                    instance.save()
                     print("Tags asociados a la instancia de Mascota:", instance.tags.all())
                     tags_created = True
 
@@ -150,6 +147,5 @@ def post_save_mascota(sender, instance, created, **kwargs):
                 print(f"Error inesperado: {e}. Reintentando...")
 
         instance.save()
-
             
 
