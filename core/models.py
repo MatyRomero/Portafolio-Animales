@@ -127,10 +127,12 @@ def post_save_mascota(sender, instance, created, **kwargs):
                 data = json.loads(message["content"].replace("'", '"'))
 
                 if data and len(data) != 0:
+                    instance.tags.clear()
                     for tag_name in data.get("Tags", []):
                         print("Procesando tag:", tag_name)
                         tag_obj, created = Tag.objects.get_or_create(name=tag_name)
                         instance.tags.add(tag_obj)
+
                     instance.save()
                     print("Tags asociados a la instancia de Mascota:", instance.tags.all())
                     tags_created = True
@@ -143,7 +145,7 @@ def post_save_mascota(sender, instance, created, **kwargs):
                 print("Error al decodificar JSON. Reintentando...")
             except Exception as e:
                 print(f"Error inesperado: {e}. Reintentando...")
-
+        instance.tags.set(instance.tags.all())
         instance.save()
         print("FINAL FINAL FINAL" , instance.tags.all())
             
