@@ -37,29 +37,23 @@ def calcular_coincidencia_tags(tags_mascota_1, tags_mascota_2):
 
 class ReconocerMascota(APIView):
     def post(self, request, *args, **kwargs):
-        # Obtener la URL de la foto
         imagen_archivo = request.FILES.get('foto')
         if not imagen_archivo:
             return Response({"error": "No se proporcionó archivo de imagen."}, status=400)
-        # Obtener o crear la instancia de Mascota
         mascota_id = request.data.get('mascota_id')
         if mascota_id:
             mascota = Mascota.objects.get(id=mascota_id)
         else:
             mascota = Mascota.objects.create(foto=imagen_archivo)
-
         print(request.data)
         url = "http://68.183.54.183:8090" + mascota.foto.url
         openai.api_key = Configuracion.objects.all()[0].token_gpt
-
         content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu debes armar un archivo json con la siguiente estructura {'Es_Animal': True, 'Tipo_de_Animal': 'Gato', 'Color': 'Atigrado con tonos grises, blancos y negros', 'Tags': ['#gato', '#felino', '#mascota', '#atigrado', '#domÃ©stico', '#relajado', '#pelaje_mixto']} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json con cada punto en desconocido es importante que solo me respondas el json, ademas es importante que sepas que este json que te entrego es solo un ejemplo al igual que el de los tag por lo cual esto quiere decir que van a ir cambiando solo quiero que sigas la estructura de este y otro punto importante es que siempre quiero que me respondas o me llenes los tag " """
         prompt_obj = [
             {"role": "system", "content": content},
             {"role": "user", "content": "Esta es la foto " + url},
         ]
-        # El resto de tu lógica...
         tags_created = False
-
         while not tags_created:
             try:
                 response = openai.ChatCompletion.create(
@@ -79,8 +73,6 @@ class ReconocerMascota(APIView):
                     mascota.es_animal = data.get("Es_Animal", False)
                     mascota.tipo_de_animal = data.get("Tipo_de_Animal", "")
                     mascota.color = data.get("Color", "")
-
-
             except json.JSONDecodeError:
                 print("Error al decodificar JSON. Reintentando...")
             except Exception as e:
@@ -89,8 +81,6 @@ class ReconocerMascota(APIView):
         print("FINAL FINAL FINAL" , mascota.tags.all())
         tags_nueva_mascota = set([tag.name for tag in mascota.tags.all()])
         print("Tags de la nueva mascota:", tags_nueva_mascota)
-
-        # Comparar con las mascotas existentes
         similitudes = []
         for mascota_existente in Mascota.objects.exclude(id=mascota.id):
             tags_mascota_existente = set([tag.name for tag in mascota_existente.tags.all()])
@@ -100,16 +90,28 @@ class ReconocerMascota(APIView):
             print("Porcentaje de similitud con mascota ID", mascota_existente.id, ":", porcentaje_similitud)
 
             similitudes.append({'mascota_id': mascota_existente.id, 'similitud': porcentaje_similitud})
-
-        # Ordenar por similitud y mostrar resultados
         similitudes.sort(key=lambda x: x['similitud'], reverse=True)
         print("Similitudes calculadas:", similitudes)
-
-        # Devolver respuesta incluyendo las similitudes
         return Response({
             "mensaje": "Procesamiento completado",
             "tags": [tag.name for tag in mascota.tags.all()],
             "similitudes": similitudes
         })
     
-    
+class SimilitudesMascotaView(APIView):
+    def get(self, request, mascota_id, *args, **kwargs):
+        try:
+            mascota = Mascota.objects.get(id=mascota_id)
+        except Mascota.DoesNotExist:
+            return Response({"error": "Mascota no encontrada."}, status=404)
+
+        tags_nueva_mascota = set([tag.name for tag in mascota.tags.all()])
+        similitudes = []
+
+        for mascota_existente in Mascota.objects.exclude(id=mascota.id):
+            tags_mascota_existente = set([tag.name for tag in mascota_existente.tags.all()])
+            porcentaje_similitud = calcular_coincidencia_tags(tags_nueva_mascota, tags_mascota_existente)
+            if porcentaje_similitud >= 55:
+                similitudes.append({'mascota_id': mascota_existente.id, 'similitud': porcentaje_similitud})
+
+        return Response({"similitudes": similitudes})
