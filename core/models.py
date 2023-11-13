@@ -144,7 +144,7 @@ def post_save_mascota(sender, instance, created, **kwargs):
                 print("Error al decodificar JSON. Reintentando...")
             except Exception as e:
                 print(f"Error inesperado: {e}. Reintentando...")
-    instance.save()
-    print("FINAL FINAL FINAL" , instance.tags.all())
+        instance.save()
+        print("FINAL FINAL FINAL" , instance.tags.all())
             
 
