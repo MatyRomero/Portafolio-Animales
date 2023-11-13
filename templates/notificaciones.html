@@ -131,7 +131,7 @@
                 const formData = new FormData();
                 formData.append('foto', this.selectedFile);
 
-                axios.post('http://tu-dominio.com/api/reconocer', formData)
+                axios.post('/api/reconocer', formData)
                     .then(response => {
                         console.log(response.data);
                         alert("Imagen procesada correctamente.");
