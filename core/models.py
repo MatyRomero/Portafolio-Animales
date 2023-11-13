@@ -130,12 +130,10 @@ def post_save_mascota(sender, instance, created, **kwargs):
                     instance.es_animal = data.get("Es_Animal", False)
                     instance.tipo_de_animal = data.get("Tipo_de_Animal", "")
                     instance.color = data.get("Color", "")
-                    instance.save()
 
                     for tag_name in data.get("Tags", []):
                         print("Procesando tag:", tag_name)
                         tag_obj, created = Tag.objects.get_or_create(name=tag_name)
-                        tag_obj.save()  # Guardar la instancia de Tag
                         instance.tags.add(tag_obj)  # Asociar Tag con Mascota
                     instance.save()
                     print("Tags asociados a la instancia de Mascota:", instance.tags.all())
