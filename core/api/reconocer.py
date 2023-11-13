@@ -88,16 +88,22 @@ class ReconocerMascota(APIView):
         mascota.save()
         print("FINAL FINAL FINAL" , mascota.tags.all())
         tags_nueva_mascota = set([tag.name for tag in mascota.tags.all()])
+        print("Tags de la nueva mascota:", tags_nueva_mascota)
 
         # Comparar con las mascotas existentes
         similitudes = []
         for mascota_existente in Mascota.objects.exclude(id=mascota.id):
             tags_mascota_existente = set([tag.name for tag in mascota_existente.tags.all()])
+            print("Comparando con mascota ID:", mascota_existente.id, "| Tags:", tags_mascota_existente)
+            
             porcentaje_similitud = calcular_coincidencia_tags(tags_nueva_mascota, tags_mascota_existente)
+            print("Porcentaje de similitud con mascota ID", mascota_existente.id, ":", porcentaje_similitud)
+
             similitudes.append({'mascota_id': mascota_existente.id, 'similitud': porcentaje_similitud})
 
-        # Ordenar por similitud
+        # Ordenar por similitud y mostrar resultados
         similitudes.sort(key=lambda x: x['similitud'], reverse=True)
+        print("Similitudes calculadas:", similitudes)
 
         # Devolver respuesta incluyendo las similitudes
         return Response({
