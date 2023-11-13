@@ -133,15 +133,14 @@ def post_save_mascota(sender, instance, created, **kwargs):
                     tag_objs = []  # Lista para recolectar objetos de Tag.
 
                     for tag_name in data.get("Tags", []):
+                        print("Procesando tag:", tag_name)
                         tag, is_created = Tag.objects.get_or_create(name=tag_name)
+                        tag.save()
                         tag_objs.append(tag)  # Añadimos el objeto de Tag a la lista.
 
-                    # Establecemos todos los tags a la vez.
-                    instance.tags.set(tag_objs, clear=True)  # El argumento `clear=True` elimina todos los tags anteriores y los reemplaza por los nuevos.
+                    # Si estás seguro de que todos los tags deben ser asociados a la Mascota y que no hay más cambios pendientes:
+                    instance.tags.set(tag_objs)  # Establecemos todos los tags a la vez.
                     instance.save()  # Guardamos nuevamente la instancia de Mascota.
-
-                    # Ahora, forzamos la actualización de la relación ManyToMany de forma explícita.
-                    instance.save_m2m()
 
                     print("Tags asociados a la instancia de Mascota:", instance.tags.all())
                     tags_created = True
