@@ -102,6 +102,7 @@ class Servicios(models.Model):
     longitud = models.CharField(max_length=255, blank=True, null=True)
     tipo = models.CharField(max_length=255, choices=tipo_servicio, blank=True, null=True)
 
+
 @receiver(post_save, sender=Mascota)
 def post_save_mascota(sender, instance, created, **kwargs):
     if created and instance.foto:
@@ -112,42 +113,52 @@ def post_save_mascota(sender, instance, created, **kwargs):
             {"role": "system", "content": content},
             {"role": "user", "content": "Esta es la foto " + url},
         ]
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-1106",
-            messages=prompt_obj
-        )
-        message = response["choices"][0]["message"]
-        data = json.loads(message["content"].replace("'", '"'))
-        print(data, "esta es la data")
-        if len(data) != 0:
-            instance.es_animal = data["Es_Animal"]
-            instance.tipo_de_animal = data["Tipo_de_Animal"]
-            instance.color = data["Color"]
-            instance.save()
-            print(data, "LLEGO ACA?")
-            for tag_name in data["Tags"]:  # Asegúrate de que esto es una lista de nombres de tags.
-                print("Procesando tag:", tag_name)
-                tag_obj, created = Tag.objects.get_or_create(name=tag_name)
-                instance.tags.add(tag_obj)
-                print("IDs de Tags asociados a la instancia de Mascota:", instance.tags.values_list('id', flat=True))
 
+        tags_created = False
 
-            print("Tags asociados a la instancia de Mascota:", instance.tags.all())
-            instance.save()
+        while not tags_created:
+            try:
+                response = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo-1106",
+                    messages=prompt_obj
+                )
+                message = response["choices"][0]["message"]
+                data = json.loads(message["content"].replace("'", '"'))
+
+                if data and len(data) != 0:
+                    instance.es_animal = data.get("Es_Animal", False)
+                    instance.tipo_de_animal = data.get("Tipo_de_Animal", "")
+                    instance.color = data.get("Color", "")
+                    instance.save()
+
+                    for tag_name in data.get("Tags", []):
+                        print("Procesando tag:", tag_name)
+                        tag_obj, created = Tag.objects.get_or_create(name=tag_name)
+                        instance.tags.add(tag_obj)
+
+                    print("Tags asociados a la instancia de Mascota:", instance.tags.all())
+                    tags_created = True
+
+            except json.JSONDecodeError:
+                print("Error al decodificar JSON. Reintentando...")
+            except Exception as e:
+                print(f"Error inesperado: {e}. Reintentando...")
+
         instance.save()
-        mascota = Mascota.objects.get(id=106)
 
-        print(f"ID: {mascota.id}")
-        print(f"Es Animal: {'Sí' if mascota.es_animal else 'No'}")
-        print(f"Tipo de Animal: {mascota.tipo_de_animal}")
-        print(f"Color: {mascota.color}")
+        # mascota = Mascota.objects.get
 
-        # Imprimir los Tags asociados a la instancia de Mascota
-        tags_asociados = mascota.tags.all()
-        print("Tags Asociados:")
-        for tag in tags_asociados:
-            print(f"- {tag.id}")
-            print(f"- {tag.name}")
+        # print(f"ID: {mascota.id}")
+        # print(f"Es Animal: {'Sí' if mascota.es_animal else 'No'}")
+        # print(f"Tipo de Animal: {mascota.tipo_de_animal}")
+        # print(f"Color: {mascota.color}")
+
+        # # Imprimir los Tags asociados a la instancia de Mascota
+        # tags_asociados = mascota.tags.all()
+        # print("Tags Asociados:")
+        # for tag in tags_asociados:
+        #     print(f"- {tag.id}")
+        #     print(f"- {tag.name}")
 
             
 
