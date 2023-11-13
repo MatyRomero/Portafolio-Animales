@@ -4,6 +4,7 @@ import openai
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import json
+from django.db import transaction
 
 TipoUsuarios = (
     ("0",'Administrador'),
@@ -126,17 +127,19 @@ def post_save_mascota(sender, instance, created, **kwargs):
                 data = json.loads(message["content"].replace("'", '"'))
 
                 if data and len(data) != 0:
-                    instance.es_animal = data.get("Es_Animal", False)
-                    instance.tipo_de_animal = data.get("Tipo_de_Animal", "")
-                    instance.color = data.get("Color", "")
+                    with transaction.atomic():
+                        instance.es_animal = data.get("Es_Animal", False)
+                        instance.tipo_de_animal = data.get("Tipo_de_Animal", "")
+                        instance.color = data.get("Color", "")
+                        instance.save()
 
-                    tag_ids = []
-                    for tag_name in data.get("Tags", []):
-                        tag, _ = Tag.objects.get_or_create(name=tag_name)
-                        tag_ids.append(tag.id)
+                        tag_ids = []
+                        for tag_name in data.get("Tags", []):
+                            tag, _ = Tag.objects.get_or_create(name=tag_name)
+                            tag_ids.append(tag.id)
 
                         # Asociar todos los tags a la vez después de haberlos creado.
-                        instance.tags.set(tag_ids) # Guardamos nuevamente la instancia de Mascota.
+                        instance.tags.set(tag_ids)
 
                     print("Tags asociados a la instancia de Mascota:", instance.tags.all())
                     tags_created = True
