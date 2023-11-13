@@ -129,13 +129,12 @@ def post_save_mascota(sender, instance, created, **kwargs):
                     instance.es_animal = data.get("Es_Animal", False)
                     instance.tipo_de_animal = data.get("Tipo_de_Animal", "")
                     instance.color = data.get("Color", "")
-                    instance.save()
 
                     tag_objs = []  # Lista para recolectar objetos de Tag.
 
                     for tag_name in data.get("Tags", []):
                         print("Procesando tag:", tag_name)
-                        tag, is_created = Tag.objects.get_or_create(name=tag_name)  # Cambio del nombre de la variable para evitar conflicto.
+                        tag, is_created = Tag.objects.get_or_create(name=tag_name)
                         tag.save()
                         tag_objs.append(tag)  # Añadimos el objeto de Tag a la lista.
 
