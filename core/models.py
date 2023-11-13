@@ -37,6 +37,7 @@ class Mi_Mascota(models.Model):
     dueño = models.ForeignKey(Usuario, on_delete=models.CASCADE, blank=True , null=True)
     foto = models.ImageField(null=True, blank=True, upload_to="media/mi_mascota")
     vacunas = models.ManyToManyField(Vacuna, blank=True)
+    tags = models.ManyToManyField("Tag",blank=True, null=True)
 
 class FichaMedica(models.Model):
     mascota = models.ForeignKey(Mi_Mascota, on_delete=models.CASCADE)
@@ -83,6 +84,7 @@ class Publicaciones(models.Model):
     tipo_publicacion = models.CharField(max_length=255, choices=tipo_publicaciones, default=Busqueda_mascota)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, blank=True)
     fecha = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    tags = models.ManyToManyField(Tag, blank=True)
 
 class Comentarios(models.Model):
     publicacion = models.ForeignKey(Publicaciones, on_delete=models.CASCADE)
