@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 import json
 from django.db import transaction
+from django.db import connection
 
 TipoUsuarios = (
     ("0",'Administrador'),
@@ -134,6 +135,7 @@ def post_save_mascota(sender, instance, created, **kwargs):
                         instance.tags.add(tag_obj)
 
                     instance.save()
+                    print(connection.queries[-1])  # Imprimir la última consulta realizada
                     print("Tags asociados a la instancia de Mascota:", instance.tags.all())
                     tags_created = True
                     instance.es_animal = data.get("Es_Animal", False)
