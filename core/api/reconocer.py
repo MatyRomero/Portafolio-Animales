@@ -27,7 +27,12 @@ from django.shortcuts import get_object_or_404
 import openai
 
 
-
+def calcular_coincidencia_tags(tags_mascota_1, tags_mascota_2):
+    coincidencias = set(tags_mascota_1).intersection(tags_mascota_2)
+    total_tags = len(set(tags_mascota_1).union(tags_mascota_2))
+    if total_tags == 0:
+        return 0
+    return len(coincidencias) / total_tags * 100
 
 
 class ReconocerMascota(APIView):
@@ -42,7 +47,7 @@ class ReconocerMascota(APIView):
             mascota = Mascota.objects.get(id=mascota_id)
         else:
             mascota = Mascota.objects.create(foto=imagen_archivo)
-            
+
         print(request.data)
         url = "http://68.183.54.183:8090" + mascota.foto.url
         openai.api_key = Configuracion.objects.all()[0].token_gpt
@@ -82,6 +87,23 @@ class ReconocerMascota(APIView):
                 print(f"Error inesperado: {e}. Reintentando...")
         mascota.save()
         print("FINAL FINAL FINAL" , mascota.tags.all())
+        tags_nueva_mascota = set([tag.name for tag in mascota.tags.all()])
 
-        # Devolver una respuesta
-        return Response({"mensaje": "Procesamiento completado", "tags": [tag.name for tag in mascota.tags.all()]})
+        # Comparar con las mascotas existentes
+        similitudes = []
+        for mascota_existente in Mascota.objects.exclude(id=mascota.id):
+            tags_mascota_existente = set([tag.name for tag in mascota_existente.tags.all()])
+            porcentaje_similitud = calcular_coincidencia_tags(tags_nueva_mascota, tags_mascota_existente)
+            similitudes.append({'mascota_id': mascota_existente.id, 'similitud': porcentaje_similitud})
+
+        # Ordenar por similitud
+        similitudes.sort(key=lambda x: x['similitud'], reverse=True)
+
+        # Devolver respuesta incluyendo las similitudes
+        return Response({
+            "mensaje": "Procesamiento completado",
+            "tags": [tag.name for tag in mascota.tags.all()],
+            "similitudes": similitudes
+        })
+    
+    
