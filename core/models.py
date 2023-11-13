@@ -6,6 +6,7 @@ from django.dispatch import receiver
 import json
 from django.db import transaction
 from django.db import connection
+from django.db import transaction
 
 TipoUsuarios = (
     ("0",'Administrador'),
@@ -147,8 +148,8 @@ def post_save_mascota(sender, instance, created, **kwargs):
                 print("Error al decodificar JSON. Reintentando...")
             except Exception as e:
                 print(f"Error inesperado: {e}. Reintentando...")
-        instance.tags.set(instance.tags.all())
         instance.save()
+        transaction.commit()
         print("FINAL FINAL FINAL" , instance.tags.all())
             
 
