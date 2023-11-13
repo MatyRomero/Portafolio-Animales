@@ -135,7 +135,6 @@ def post_save_mascota(sender, instance, created, **kwargs):
                         print("Procesando tag:", tag_name)
                         tag_obj, created = Tag.objects.get_or_create(name=tag_name)
                         instance.tags.add(tag_obj)
-                        instance.save()
 
                     print("Tags asociados a la instancia de Mascota:", instance.tags.all())
                     tags_created = True
@@ -145,21 +144,7 @@ def post_save_mascota(sender, instance, created, **kwargs):
             except Exception as e:
                 print(f"Error inesperado: {e}. Reintentando...")
 
-        instance.save()
-
-        # mascota = Mascota.objects.get
-
-        # print(f"ID: {mascota.id}")
-        # print(f"Es Animal: {'Sí' if mascota.es_animal else 'No'}")
-        # print(f"Tipo de Animal: {mascota.tipo_de_animal}")
-        # print(f"Color: {mascota.color}")
-
-        # # Imprimir los Tags asociados a la instancia de Mascota
-        # tags_asociados = mascota.tags.all()
-        # print("Tags Asociados:")
-        # for tag in tags_asociados:
-        #     print(f"- {tag.id}")
-        #     print(f"- {tag.name}")
+                instance.save()
 
             
 
