@@ -36,7 +36,13 @@ class ReconocerMascota(APIView):
         imagen_archivo = request.FILES.get('foto')
         if not imagen_archivo:
             return Response({"error": "No se proporcionó archivo de imagen."}, status=400)
-
+        # Obtener o crear la instancia de Mascota
+        mascota_id = request.data.get('mascota_id')
+        if mascota_id:
+            mascota = Mascota.objects.get(id=mascota_id)
+        else:
+            mascota = Mascota.objects.create(foto=imagen_archivo)
+            
         print(request.data)
         url = "http://68.183.54.183:8090" + mascota.foto.url
         openai.api_key = Configuracion.objects.all()[0].token_gpt
@@ -46,15 +52,6 @@ class ReconocerMascota(APIView):
             {"role": "system", "content": content},
             {"role": "user", "content": "Esta es la foto " + url},
         ]
-
-        # Aquí, obtén o crea la instancia de Mascota
-        mascota_id = request.data.get('mascota_id')
-        if mascota_id:
-            mascota = Mascota.objects.get(id=mascota_id)
-        else:
-            # Aquí puedes crear una nueva instancia si es necesario
-            mascota = Mascota.objects.create(foto=request.data.get('foto'))
-
         # El resto de tu lógica...
         tags_created = False
 
