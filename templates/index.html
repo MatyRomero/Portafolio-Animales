@@ -430,7 +430,7 @@
                 axios.post("/api/create/publicaciones", data, { headers: header_data })
                     .then((response) => {
                         const publicacionId = response.data.publicacion_id;
-                        print(response.data.publicacion_id)
+                        console.log(response.data.publicacion_id)
                         this.submitImageForTags(publicacionId);
                         window.location.reload();
                     })
