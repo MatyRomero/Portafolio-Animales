@@ -451,15 +451,20 @@
                 // Asegúrate de que publicacion_id se pase en la solicitud
                 data.append("publicacion_id", publicacion_id);
 
-                axios.post(`/api/create/comentarios/${publicacion_id}/`, data, { headers: header_data })
+                axios.post("/api/create/publicaciones", data, { headers: header_data })
                     .then((response) => {
-                        console.log(this.nuevo_comentario.comentario);
-                        this.Getpublicacionesall()
+                        // Asegúrate de que esta línea obtiene correctamente el ID
+                        const publicacionId = response.data.publicacion_id;
+                        console.log("ID de la publicación:", publicacionId);
+                        if (publicacionId) {
+                            this.submitImageForTags(publicacionId);
+                        } else {
+                            console.error("ID de la publicación no recibido.");
+                        }
+                        // window.location.reload(); // Considera si realmente necesitas recargar la página aquí
                     })
                     .catch((error) => {
                         console.error("Error en la solicitud:", error);
-                        console.log(publicacion_id)
-                        console.log(this.nuevo_comentario.comentario);
                     });
             },
             PreviewPhotoCrear(event) {
