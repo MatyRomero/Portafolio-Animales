@@ -237,7 +237,7 @@ class CreateMascota(APIView):
             dueño=usuario
         )
         mascota.save()
-        return Response(response, status=status.HTTP_201_CREATED)
+        return Response({'mascota_id': mascota.id}, status=status.HTTP_201_CREATED)
 
 
 class DetalleFichaMedica(APIView):

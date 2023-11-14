@@ -42,5 +42,6 @@ urlpatterns = [
     path('api/create/mascota', CreateMascota.as_view()),
     path('api/detalle_ficha_medica/<int:ficha_medica_id>/', DetalleFichaMedica.as_view(), name='detalle_ficha_medica'),
     ## API OPENIA
-    path('api/reconocer', ReconocerMascota.as_view()),
+    path('api/reconocer', ReconocerMascotaPublicacion.as_view()),
+    path('api/reconocer/mascota', ReconocerMascota.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

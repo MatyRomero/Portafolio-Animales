@@ -35,7 +35,7 @@ def calcular_coincidencia_tags(tags_mascota_1, tags_mascota_2):
     return len(coincidencias) / total_tags * 100
 
 
-class ReconocerMascota(APIView):
+class ReconocerMascotaPublicacion(APIView):
     def post(self, request, *args, **kwargs):
         imagen_archivo = request.FILES.get('foto')
         if not imagen_archivo:
@@ -101,4 +101,57 @@ class ReconocerMascota(APIView):
             "mensaje": "Procesamiento completado",
             "tags": [tag.name for tag in publicacion.tags.all()],
             "similitudes": similitudes
+        })
+    
+class ReconocerMascota(APIView):
+    def post(self, request, *args, **kwargs):
+        imagen_archivo = request.FILES.get('foto')
+        if not imagen_archivo:
+            return Response({"error": "No se proporcionó archivo de imagen."}, status=400)
+
+        mi_mascota_id = request.data.get('mi_mascota_id')
+        if not mi_mascota_id:
+            return Response({"error": "No se proporcionó ID de mi mascota."}, status=400)
+
+        try:
+            mi_mascota = Mi_Mascota.objects.get(id=mi_mascota_id)
+        except Mi_Mascota.DoesNotExist:
+            return Response({"error": "Mi mascota no encontrada."}, status=404)
+
+        mi_mascota.foto = imagen_archivo
+        mi_mascota.save()
+
+        url = "http://68.183.54.183:8090" + mi_mascota.foto.url
+        openai.api_key = Configuracion.objects.all()[0].token_gpt
+        content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu debes armar un archivo json con la siguiente estructura 'Tags': ['#gato', '#felino', '#mascota', '#atigrado', '#doméstico', '#relajado', '#pelaje_mixto']} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json con cada punto en desconocido es importante que solo me respondas el json, ademas es importante que sepas que este json que te entrego es solo un ejemplo al igual que el de los tag por lo cual esto quiere decir que van a ir cambiando solo quiero que sigas la estructura de este y otro punto importante es que siempre quiero que me respondas o me llenes los tag " """
+        prompt_obj = [
+            {"role": "system", "content": content},
+            {"role": "user", "content": "Esta es la foto " + url},
+        ]
+        tags_created = False
+        while not tags_created:
+            try:
+                response = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo-1106",
+                    messages=prompt_obj
+                )
+                message = response["choices"][0]["message"]
+                data = json.loads(message["content"].replace("'", '"'))
+
+                if data and len(data) != 0:
+                    for tag_name in data.get("Tags", []):
+                        tag_obj, created = Tag.objects.get_or_create(name=tag_name)
+                        mi_mascota.tags.add(tag_obj)
+                    tags_created = True
+            except json.JSONDecodeError:
+                print("Error al decodificar JSON. Reintentando...")
+            except Exception as e:
+                print(f"Error inesperado: {e}. Reintentando...")
+        mi_mascota.save()
+        tags_nueva_mascota = [tag.name for tag in mi_mascota.tags.all()]
+        print("Tags de la nueva mascota:", tags_nueva_mascota)
+
+        return Response({
+            "mensaje": "Procesamiento completado",
+            "tags": tags_nueva_mascota
         })

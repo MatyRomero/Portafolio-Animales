@@ -1587,14 +1587,39 @@
 
             axios.post("/api/create/mascota", data, { headers: header_data })
                 .then((response) => {
-                    console.log("Mascota creada con éxito:", response.data);
-                    window.location.reload();
-                    // Aquí puedes añadir lógica adicional si es necesario
+                    const mascotaId = response.data.mascota_id;
+                    console.log("Mascota creada con ID:", mascotaId);
+                    if (mascotaId) {
+                        this.submitImageForTags(mascotaId, this.nueva_mascota.foto);
+                        window.location.reload();
+                    } else {
+                        console.error("ID de la mascota no recibido.");
+                    }
+                    // Considera si realmente necesitas recargar la página aquí
                 })
                 .catch((error) => {
                     console.error("Error creando la mascota:", error);
                 });
         },
+        submitImageForTags(mascotaId, foto) {
+            if (!foto) {
+                alert("Foto de la mascota no disponible.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('foto', foto);
+            formData.append('mi_mascota_id', mascotaId);
+
+            axios.post('/api/reconocer/mascota', formData)
+                .then(response => {
+                    console.log("Tags procesados para la mascota:", response.data);
+                })
+                .catch(error => {
+                    console.error("Error al procesar la imagen:", error);
+                });
+        },
+
         PreviewPhotoCrear(event) {
             console.log(event.target.files);
             if (event.target.files && event.target.files.length > 0) {
