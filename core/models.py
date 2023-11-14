@@ -105,6 +105,10 @@ class Servicios(models.Model):
     longitud = models.CharField(max_length=255, blank=True, null=True)
     tipo = models.CharField(max_length=255, choices=tipo_servicio, blank=True, null=True)
 
+class Similitud(models.Model):
+    publicacion = models.ForeignKey(Publicaciones, on_delete=models.CASCADE)
+    similitud = models.FloatField()
+
 
 # @receiver(post_save, sender=Mascota)
 # def post_save_mascota(sender, instance, created, **kwargs):
