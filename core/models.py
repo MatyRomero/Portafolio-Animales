@@ -110,7 +110,7 @@ class Servicios(models.Model):
 class Similitud(models.Model):
     publicacion = models.ForeignKey(Publicaciones, on_delete=models.CASCADE)
     similitud = models.FloatField()
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,blank=True, null=True)
 
 
 # @receiver(post_save, sender=Mascota)
