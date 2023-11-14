@@ -431,6 +431,7 @@
                     .then((response) => {
                         window.location.reload();
                         const publicacionId = response.data.publicacion_id;
+                        print(response.data.publicacion_id)
                         this.submitImageForTags(publicacionId);
                     })
                     .catch((error) => {
