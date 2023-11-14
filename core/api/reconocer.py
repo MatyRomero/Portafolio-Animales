@@ -40,15 +40,22 @@ class ReconocerMascota(APIView):
         imagen_archivo = request.FILES.get('foto')
         if not imagen_archivo:
             return Response({"error": "No se proporcionó archivo de imagen."}, status=400)
-        mascota_id = request.data.get('mascota_id')
-        if mascota_id:
-            mascota = Mascota.objects.get(id=mascota_id)
-        else:
-            mascota = Mascota.objects.create(foto=imagen_archivo)
+
+        publicacion_id = request.data.get('publicacion_id')
+        if not publicacion_id:
+            return Response({"error": "No se proporcionó ID de publicación."}, status=400)
+
+        try:
+            publicacion = Publicaciones.objects.get(id=publicacion_id)
+        except Publicaciones.DoesNotExist:
+            return Response({"error": "Publicación no encontrada."}, status=404)
+
+        publicacion.foto_mascota = imagen_archivo
+        publicacion.save()
         print(request.data)
-        url = "http://68.183.54.183:8090" + mascota.foto.url
+        url = "http://68.183.54.183:8090" + publicacion.foto_mascota.url
         openai.api_key = Configuracion.objects.all()[0].token_gpt
-        content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu debes armar un archivo json con la siguiente estructura {'Es_Animal': True, 'Tipo_de_Animal': 'Gato', 'Color': 'Atigrado con tonos grises, blancos y negros', 'Tags': ['#gato', '#felino', '#mascota', '#atigrado', '#domÃ©stico', '#relajado', '#pelaje_mixto']} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json con cada punto en desconocido es importante que solo me respondas el json, ademas es importante que sepas que este json que te entrego es solo un ejemplo al igual que el de los tag por lo cual esto quiere decir que van a ir cambiando solo quiero que sigas la estructura de este y otro punto importante es que siempre quiero que me respondas o me llenes los tag " """
+        content = """ "Eres experto en identificar animales en fotos, la gente te enviara fotos y tu debes armar un archivo json con la siguiente estructura 'Tags': ['#gato', '#felino', '#mascota', '#atigrado', '#domÃ©stico', '#relajado', '#pelaje_mixto']} enfocate solo en los animales de la foto y si la foto no contiene un animal dame el json con cada punto en desconocido es importante que solo me respondas el json, ademas es importante que sepas que este json que te entrego es solo un ejemplo al igual que el de los tag por lo cual esto quiere decir que van a ir cambiando solo quiero que sigas la estructura de este y otro punto importante es que siempre quiero que me respondas o me llenes los tag " """
         prompt_obj = [
             {"role": "system", "content": content},
             {"role": "user", "content": "Esta es la foto " + url},
@@ -67,33 +74,31 @@ class ReconocerMascota(APIView):
                     for tag_name in data.get("Tags", []):
                         print("Procesando tag:", tag_name)
                         tag_obj, created = Tag.objects.get_or_create(name=tag_name)
-                        mascota.tags.add(tag_obj)
-                    print("Tags asociados a la instancia de Mascota:", mascota.tags.all())
+                        publicacion.tags.add(tag_obj)
+                    print("Tags asociados a la instancia de Mascota:", publicacion.tags.all())
                     tags_created = True
-                    mascota.es_animal = data.get("Es_Animal", False)
-                    mascota.tipo_de_animal = data.get("Tipo_de_Animal", "")
-                    mascota.color = data.get("Color", "")
             except json.JSONDecodeError:
                 print("Error al decodificar JSON. Reintentando...")
             except Exception as e:
                 print(f"Error inesperado: {e}. Reintentando...")
-        mascota.save()
-        print("FINAL FINAL FINAL" , mascota.tags.all())
-        tags_nueva_mascota = set([tag.name for tag in mascota.tags.all()])
-        print("Tags de la nueva mascota:", tags_nueva_mascota)
+        publicacion.save()
+        print("FINAL FINAL FINAL" , publicacion.tags.all())
+        tags_nueva_publicacion = set([tag.name for tag in publicacion.tags.all()])
+        print("Tags de la nueva mascota:", tags_nueva_publicacion)
         similitudes = []
-        for mascota_existente in Mascota.objects.exclude(id=mascota.id):
-            tags_mascota_existente = set([tag.name for tag in mascota_existente.tags.all()])
-            print("Comparando con mascota ID:", mascota_existente.id, "| Tags:", tags_mascota_existente)
+        for publicacion_existente in Publicaciones.objects.exclude(id=publicacion.id):
+            tags_publicacion_existente = set([tag.name for tag in publicacion_existente.tags.all()])
+            print("Comparando con publicación ID:", publicacion_existente.id, "| Tags:", tags_publicacion_existente)
             
-            porcentaje_similitud = calcular_coincidencia_tags(tags_nueva_mascota, tags_mascota_existente)
-            print("Porcentaje de similitud con mascota ID", mascota_existente.id, ":", porcentaje_similitud)
+            porcentaje_similitud = calcular_coincidencia_tags(tags_nueva_publicacion, tags_publicacion_existente)
+            print("Porcentaje de similitud con publicación ID", publicacion_existente.id, ":", porcentaje_similitud)
 
-            similitudes.append({'mascota_id': mascota_existente.id, 'similitud': porcentaje_similitud})
+            similitudes.append({'publicacion_id': publicacion_existente.id, 'similitud': porcentaje_similitud})
         similitudes.sort(key=lambda x: x['similitud'], reverse=True)
         print("Similitudes calculadas:", similitudes)
+
         return Response({
             "mensaje": "Procesamiento completado",
-            "tags": [tag.name for tag in mascota.tags.all()],
+            "tags": [tag.name for tag in publicacion.tags.all()],
             "similitudes": similitudes
         })
