@@ -91,7 +91,6 @@ class Publicaciones(models.Model):
 class Comentarios(models.Model):
     publicacion = models.ForeignKey(Publicaciones, on_delete=models.CASCADE)
     comentario = models.CharField(max_length=255, blank=True, null=True)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, blank=True)
 
 class Servicios(models.Model):
 

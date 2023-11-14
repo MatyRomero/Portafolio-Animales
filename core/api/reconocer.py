@@ -108,7 +108,6 @@ class ReconocerMascotaPublicacion(APIView):
             # Filtrar las similitudes que involucran al usuario autenticado
             similitudes = Similitud.objects.filter(usuario=request.user)
             similitudes_data = []
-            
             # Aquí recorremos las similitudes encontradas
             for s in similitudes:
                 # Obtenemos el nombre de usuario del dueño de la publicación asociada a la similitud
