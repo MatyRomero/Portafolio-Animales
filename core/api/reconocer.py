@@ -114,7 +114,7 @@ class ReconocerMascotaPublicacion(APIView):
                 # Obtenemos el nombre de usuario del dueño de la publicación asociada a la similitud
                 # Asumimos que s.publicacion es una instancia del modelo Publicaciones
                 # y que Publicaciones.usuario es el dueño/creador de la publicación.
-                nombre_usuario_dueño_publicacion = s.publicacion.usuario.username  # Aquí usamos directamente el nombre de usuario del modelo Usuario asociado con la publicación
+                nombre_usuario_dueño_publicacion = s.publicacion.usuario.user.username  # Aquí usamos directamente el nombre de usuario del modelo Usuario asociado con la publicación
 
                 similitudes_data.append({
                     "publicacion_id": s.publicacion.id,
