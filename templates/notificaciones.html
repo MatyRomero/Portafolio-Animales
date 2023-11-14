@@ -33,11 +33,11 @@
                         <div class="d-flex align-items-center email-actions">
                             <input class="form-check-input" type="checkbox" :value="index">
                             <i class="font-20 mx-2"></i>
-                            <p class="mb-0"><b>Coincidencia: {{ similitud.similitud }}%</b></p>
+                            <p class="mb-0"><b>Coincidencia: [[similitud.similitud ]]%</b></p>
                         </div>
                         <div class="">
-                            <p class="mb-0">Se encontró una coincidencia del {{ similitud.similitud }}% con la
-                                publicación ID {{ similitud.publicacion_id }}</p>
+                            <p class="mb-0">Se encontró una coincidencia del [[similitud.similitud]]% con la
+                                publicación ID [[similitud.publicacion_id]]</p>
                         </div>
                         <div class="ms-auto">
                             <p class="mb-0 email-time">5:56 PM</p>
@@ -61,6 +61,7 @@
 <script>
     new Vue({
         el: '#app',
+        delimiters: ['[[', ']]'],
         data() {
             return {
                 similitudes: [],
