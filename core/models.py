@@ -91,6 +91,7 @@ class Publicaciones(models.Model):
 class Comentarios(models.Model):
     publicacion = models.ForeignKey(Publicaciones, on_delete=models.CASCADE)
     comentario = models.CharField(max_length=255, blank=True, null=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, blank=True)
 
 class Servicios(models.Model):
 
@@ -109,7 +110,6 @@ class Servicios(models.Model):
 class Similitud(models.Model):
     publicacion = models.ForeignKey(Publicaciones, on_delete=models.CASCADE)
     similitud = models.FloatField()
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,blank=True, null=True)
 
 
 # @receiver(post_save, sender=Mascota)
