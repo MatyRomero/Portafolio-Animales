@@ -63,11 +63,22 @@
         el: '#app',
         data() {
             return {
+                similitudes: [],
             }
         },
         mounted() {
+            this.obtenerSimilitudes();
         },
         methods: {
+            obtenerSimilitudes() {
+                axios.get('/api/reconocer')
+                    .then(response => {
+                        this.similitudes = response.data.similitudes;
+                    })
+                    .catch(error => {
+                        console.error("Error al obtener similitudes:", error);
+                    });
+            },
         }
     });
 </script>
