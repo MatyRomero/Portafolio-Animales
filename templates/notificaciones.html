@@ -18,10 +18,6 @@
                 <button type="button" class="btn btn-white ms-2"><i class="bx bx-refresh me-0"></i>
                 </button>
             </div>
-            <div>
-                <input type="file" @change="onFileChange">
-                <button @click="submitImage">Subir Imagen</button>
-            </div>
         </div>
         <div class="flex-grow-1 mx-xl-2 my-2 my-xl-0">
             <div class="input-group"> <span class="input-group-text bg-transparent"><i class="bx bx-search"></i></span>
@@ -65,36 +61,11 @@
         el: '#app',
         data() {
             return {
-                selectedFile: null,
             }
         },
         mounted() {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
         },
         methods: {
-            onFileChange(e) {
-                this.selectedFile = e.target.files[0];
-            },
-            submitImage() {
-                if (!this.selectedFile) {
-                    alert("Por favor, selecciona una imagen.");
-                    return;
-                }
-
-                const formData = new FormData();
-                formData.append('foto', this.selectedFile);
-
-                axios.post('/api/reconocer', formData)
-                    .then(response => {
-                        console.log(response.data);
-                        alert("Imagen procesada correctamente.");
-                    })
-                    .catch(error => {
-                        console.error("Error al procesar la imagen:", error);
-                        alert("Error al procesar la imagen.");
-                    });
-            },
         }
     });
 </script>
