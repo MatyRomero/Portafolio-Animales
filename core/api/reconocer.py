@@ -108,13 +108,14 @@ class ReconocerMascotaPublicacion(APIView):
             similitudes = Similitud.objects.filter(usuario=request.user)
             similitudes_data = []
             for s in similitudes:
-                usuario_publicacion = s.publicacion.usuario
-                usuario_username = usuario_publicacion.user.username 
+                publicacion = s.publicacion
+                usuario_publicacion = publicacion.usuario
+                nombre_usuario_publicacion = usuario_publicacion.user.username
 
                 similitudes_data.append({
-                    "publicacion_id": s.publicacion.id,
+                    "publicacion_id": publicacion.id,
                     "similitud": s.similitud,
-                    "usuario": usuario_username
+                    "usuario": nombre_usuario_publicacion
                 })
             return Response({"similitudes": similitudes_data})
         else:
