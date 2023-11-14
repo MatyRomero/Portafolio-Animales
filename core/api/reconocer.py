@@ -96,12 +96,26 @@ class ReconocerMascotaPublicacion(APIView):
             similitudes.append({'publicacion_id': publicacion_existente.id, 'similitud': porcentaje_similitud})
         similitudes.sort(key=lambda x: x['similitud'], reverse=True)
         print("Similitudes calculadas:", similitudes)
-
+        self.similitudes_en_memoria[publicacion.id] = similitudes
         return Response({
             "mensaje": "Procesamiento completado",
             "tags": [tag.name for tag in publicacion.tags.all()],
             "similitudes": similitudes
         })
+    def get(self, request, *args, **kwargs):
+        # Recuperar el ID de la publicación para la que se quieren las similitudes
+        publicacion_id = request.query_params.get('publicacion_id')
+
+        if publicacion_id and int(publicacion_id) in self.similitudes_en_memoria:
+            # Devuelve las similitudes para la publicación específica
+            similitudes = self.similitudes_en_memoria[int(publicacion_id)]
+            return Response({
+                "similitudes": similitudes
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({
+                "error": "Similitudes no encontradas o ID de publicación no proporcionado."
+            }, status=status.HTTP_404_NOT_FOUND)
     
 class ReconocerMascota(APIView):
     def post(self, request, *args, **kwargs):
