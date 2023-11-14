@@ -429,10 +429,10 @@
 
                 axios.post("/api/create/publicaciones", data, { headers: header_data })
                     .then((response) => {
-                        window.location.reload();
                         const publicacionId = response.data.publicacion_id;
                         print(response.data.publicacion_id)
                         this.submitImageForTags(publicacionId);
+                        window.location.reload();
                     })
                     .catch((error) => {
                         console.error("Error en la solicitud:", error);
