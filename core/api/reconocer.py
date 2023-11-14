@@ -97,7 +97,7 @@ class ReconocerMascotaPublicacion(APIView):
         similitudes.sort(key=lambda x: x['similitud'], reverse=True)
         print("Similitudes calculadas:", similitudes)
         for s in similitudes:
-            Similitud.objects.create(publicacion=publicacion, usuario=request.user, similitud=s['similitud'])
+            Similitud.objects.create(publicacion=publicacion, similitud=s['similitud'])
         return Response({
             "mensaje": "Procesamiento completado",
             "tags": [tag.name for tag in publicacion.tags.all()],
@@ -105,22 +105,23 @@ class ReconocerMascotaPublicacion(APIView):
         })
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            # Filtrar las similitudes que involucran al usuario autenticado
-            similitudes = Similitud.objects.filter(usuario=request.user)
+            # Obtener todas las publicaciones creadas por el usuario autenticado
+            publicaciones_usuario = Publicaciones.objects.filter(usuario__user=request.user)
+
+            # Filtrar las similitudes basadas en esas publicaciones
+            similitudes = Similitud.objects.filter(publicacion__in=publicaciones_usuario)
             similitudes_data = []
             
-            # Aquí recorremos las similitudes encontradas
             for s in similitudes:
-                # Obtenemos el nombre de usuario del dueño de la publicación asociada a la similitud
-                # Asumimos que s.publicacion es una instancia del modelo Publicaciones
-                # y que Publicaciones.usuario es el dueño/creador de la publicación.
-                nombre_usuario_dueño_publicacion = s.publicacion.usuario.user.username  # Aquí usamos directamente el nombre de usuario del modelo Usuario asociado con la publicación
+                # Aquí obtenemos el nombre del usuario que creó la publicación asociada con la similitud
+                nombre_usuario_dueño_publicacion = s.publicacion.usuario.user.username
 
                 similitudes_data.append({
                     "publicacion_id": s.publicacion.id,
                     "similitud": s.similitud,
-                    "usuario": nombre_usuario_dueño_publicacion  # Aquí debería ir el nombre de usuario del dueño de la publicación
+                    "usuario": nombre_usuario_dueño_publicacion
                 })
+
             return Response({"similitudes": similitudes_data})
         else:
             return Response({"error": "Usuario no autenticado."}, status=status.HTTP_403_FORBIDDEN)
