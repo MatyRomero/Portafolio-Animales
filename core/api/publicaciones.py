@@ -43,7 +43,7 @@ class CreatePublicaciones(APIView):
             usuario=usuario  # Relaciona la publicación con el usuario actual
         )
         publicacion.save()
-        return Response(response, status=status.HTTP_201_CREATED)
+        return Response({'publicacion_id': publicacion.id}, status=status.HTTP_201_CREATED)
 
     
 class GetAllPublicaciones(APIView):
