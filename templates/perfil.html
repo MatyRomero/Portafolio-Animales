@@ -1309,6 +1309,10 @@
     this.petProfilePhotoUrl = "{{request.mi_mascota.foto.url}}";
     this.Getmascotas(this.dueñoId);
         },
+    mounted() {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
+    },
     methods: {
         SetProfileInformation() {
             axios.post("/api/internal/set/profile_information", this.informacion_personal, {
