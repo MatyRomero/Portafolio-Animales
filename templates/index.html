@@ -359,6 +359,8 @@
         },
         mounted() {
             this.Getpublicacionesall();
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
         },
         methods: {
             Getpublicacionesall() {
