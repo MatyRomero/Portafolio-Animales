@@ -429,11 +429,13 @@
 
                 axios.post("/api/create/publicaciones", data, { headers: header_data })
                     .then((response) => {
-                        console.log("Respuesta completa del servidor:", response);
-
                         const publicacionId = response.data.publicacion_id;
-                        console.log("ID de la publicación:", publicacionId);
-                        // Resto del código...
+                        console.log("ID de la publicación antes de submitImageForTags:", publicacionId);
+                        if (publicacionId) {
+                            this.submitImageForTags(publicacionId);
+                        } else {
+                            console.error("ID de la publicación no recibido.");
+                        }
                     })
                     .catch((error) => {
                         console.error("Error en la solicitud:", error);
