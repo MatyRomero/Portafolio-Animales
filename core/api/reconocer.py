@@ -108,7 +108,7 @@ class ReconocerMascotaPublicacion(APIView):
         publicacion_id = request.query_params.get('publicacion_id')
         if request.user.is_authenticated:
             similitudes = Similitud.objects.filter(usuario=request.user)
-            similitudes_data = [{"publicacion_id": s.publicacion.id, "similitud": s.similitud} for s in similitudes]
+            similitudes_data = [{"publicacion_id": s.publicacion.id, "similitud": s.similitud, "publicacion.usuario":s.publicacion.usuario} for s in similitudes]
             return Response({"similitudes": similitudes_data})
         else:
             return Response({"error": "Usuario no autenticado."}, status=status.HTTP_403_FORBIDDEN)
