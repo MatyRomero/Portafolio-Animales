@@ -108,15 +108,15 @@ class ReconocerMascotaPublicacion(APIView):
             similitudes = Similitud.objects.filter(usuario=request.user)
             similitudes_data = []
             for s in similitudes:
-                publicacion = s.publicacion
-                usuario_publicacion = publicacion.usuario
-                nombre_usuario_publicacion = usuario_publicacion.user.username
+                # Obtenemos el nombre de usuario del usuario asociado con la publicación original
+                nombre_usuario_publicacion = s.publicacion.usuario.user.username  # Suponiendo que 'usuario' es una instancia de tu modelo personalizado 'Usuario' y 'user' es una instancia del modelo User de Django
 
                 similitudes_data.append({
-                    "publicacion_id": publicacion.id,
+                    "publicacion_id": s.publicacion.id,
                     "similitud": s.similitud,
-                    "usuario": nombre_usuario_publicacion
+                    "usuario": nombre_usuario_publicacion  # Nombre de usuario del dueño de la publicación con la que se compara
                 })
+
             return Response({"similitudes": similitudes_data})
         else:
             return Response({"error": "Usuario no autenticado."}, status=status.HTTP_403_FORBIDDEN)
