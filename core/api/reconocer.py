@@ -97,7 +97,7 @@ class ReconocerMascotaPublicacion(APIView):
         similitudes.sort(key=lambda x: x['similitud'], reverse=True)
         print("Similitudes calculadas:", similitudes)
         for s in similitudes:
-            Similitud.objects.create(publicacion=publicacion, similitud=s['similitud'])
+            Similitud.objects.create(publicacion=publicacion, usuario=request.user, similitud=s['similitud'])
         return Response({
             "mensaje": "Procesamiento completado",
             "tags": [tag.name for tag in publicacion.tags.all()],
@@ -106,14 +106,12 @@ class ReconocerMascotaPublicacion(APIView):
     def get(self, request, *args, **kwargs):
         # Recuperar el ID de la publicación para la que se quieren las similitudes
         publicacion_id = request.query_params.get('publicacion_id')
-        if publicacion_id:
-            similitudes = Similitud.objects.filter(publicacion_id=publicacion_id)
+        if request.user.is_authenticated:
+            similitudes = Similitud.objects.filter(usuario=request.user)
             similitudes_data = [{"publicacion_id": s.publicacion.id, "similitud": s.similitud} for s in similitudes]
             return Response({"similitudes": similitudes_data})
         else:
-            return Response({
-                "error": "Similitudes no encontradas o ID de publicación no proporcionado."
-            }, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Usuario no autenticado."}, status=status.HTTP_403_FORBIDDEN)
     
 class ReconocerMascota(APIView):
     def post(self, request, *args, **kwargs):

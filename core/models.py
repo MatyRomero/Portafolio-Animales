@@ -5,6 +5,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 import json
 from django.db import transaction
+from django.conf import settings  # Importa esta si aún no lo has hecho
+
 
 TipoUsuarios = (
     ("0",'Administrador'),
@@ -108,6 +110,7 @@ class Servicios(models.Model):
 class Similitud(models.Model):
     publicacion = models.ForeignKey(Publicaciones, on_delete=models.CASCADE)
     similitud = models.FloatField()
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
 # @receiver(post_save, sender=Mascota)
