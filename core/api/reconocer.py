@@ -105,15 +105,11 @@ class ReconocerMascotaPublicacion(APIView):
         })
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            # Obtener todas las publicaciones creadas por el usuario autenticado
             publicaciones_usuario = Publicaciones.objects.filter(usuario__user=request.user)
-
-            # Filtrar las similitudes basadas en esas publicaciones
             similitudes = Similitud.objects.filter(publicacion__in=publicaciones_usuario)
             similitudes_data = []
             
             for s in similitudes:
-                # Aquí obtenemos el nombre del usuario que creó la publicación asociada con la similitud
                 nombre_usuario_dueño_publicacion = s.publicacion.usuario.user.username
 
                 similitudes_data.append({

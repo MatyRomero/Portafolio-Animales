@@ -52,24 +52,11 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-class Mascota(models.Model):
-    ES_ANIMAL_CHOICES = [
-        (True, 'Sí'),
-        (False, 'No'),
-    ]
-
-    es_animal = models.BooleanField(null=True, blank=True, choices=ES_ANIMAL_CHOICES, default=True)
-    tipo_de_animal = models.CharField(null=True, blank=True, max_length=255)
-    color = models.TextField(null=True, blank=True, )
-    tags = models.ManyToManyField(Tag, blank=True)
-    foto = models.ImageField(null=True, blank=True, upload_to="media/mascotas")
-
 
 class Publicaciones(models.Model):
     Gato = 'Gato'
     Perro = 'Perro'
     Perdida_mascota = 'Perdida de mascota'
-    Busqueda_mascota = 'Busqueda de mascota'
     tipo_mascotas = (
         (Gato, 'Gato'),
         (Perro, 'Perro')
@@ -77,13 +64,12 @@ class Publicaciones(models.Model):
 
     tipo_publicaciones = (
         (Perdida_mascota, 'Perdida de mascota'),
-        (Busqueda_mascota, 'Busqueda de mascota'),
     )
 
     tipo_mascota = models.CharField(max_length=255, choices=tipo_mascotas, default=Perro)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     foto_mascota = models.ImageField(null=True, blank=True, upload_to="media/")
-    tipo_publicacion = models.CharField(max_length=255, choices=tipo_publicaciones, default=Busqueda_mascota)
+    tipo_publicacion = models.CharField(max_length=255, choices=tipo_publicaciones, default=Perdida_mascota)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, blank=True)
     fecha = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     tags = models.ManyToManyField(Tag, blank=True)

@@ -113,6 +113,7 @@
                                     <h6 class="fw-bold mb-0">[[publicacion.usuario.first_name]]
                                         [[publicacion.usuario.last_name]]</h6>
                                     <p class="text-muted mb-0">[[publicacion.usuario.comuna]]</p>
+                                    <p class="text-muted mb-0">[[formatearFecha(publicacion.fecha)]]</p>
                                 </div>
                             </div>
                             <hr>
@@ -122,9 +123,8 @@
                                         alt="Imagen de la publicación" style="max-width: 400px; max-height: 400px;">
                                 </a>
                             </div>
-                            <p class="text-muted mb-0">2 hours ago</p>
-                            <p class="fw-normal text-muted mb-2">[[publicacion.descripcion]]<a
-                                    class="fw-bold text-primary ms-2">ver mas</a></p>
+                            <hr>
+                            <p class="fw-normal text-muted mb-2">[[publicacion.descripcion]]</p>
                             <div class="comments">
                                 <div class="comment" v-for="comentario in publicacion.comentarios" :key="comentario.id">
                                     [[comentario.usuario.first_name]]
@@ -202,39 +202,6 @@
                             <div class="col-md-12 mb-2">
                                 <div class="form-group">
                                     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-                                    <label for="" class="control-label">¿Perdida o Busqueda de mascota?</label>
-                                    <div class="row">
-                                        <div class="col" id="Perdida de mascota">
-                                            <div class="card radius-15 mb-0 shadow-none custom-border"
-                                                @click="CambiarTipoPublicacion('Perdida de mascota')"
-                                                :class="{ 'selectedDiv': selectedDiv === 'Perdida de mascota' }">
-                                                <div class="card-body text-center">
-                                                    <div
-                                                        class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
-                                                        ⁉️
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col" id="Busqueda de mascota">
-                                            <div class="card radius-15 mb-0 shadow-none custom-border"
-                                                @click="CambiarTipoPublicacion('Busqueda de mascota')"
-                                                :class="{ 'selectedDiv': selectedDiv === 'Busqueda de mascota' }">
-                                                <div class="card-body text-center">
-                                                    <div
-                                                        class="widgets-icons mx-auto rounded-circle bg-login-color text-white">
-                                                        🔎
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div v-if="currentStep === 2">
-                            <div class="col-md-12 mb-2">
-                                <div class="form-group">
                                     <label for="" class="control-label">¿Perro o Gato?</label>
                                     <div class="row">
                                         <div class="col" id="Perro">
@@ -265,7 +232,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-if="currentStep === 3">
+                        <div v-if="currentStep === 2">
                             <div class="col-md-12 mb-2">
                                 <div class="form-group">
                                     <label for="" class="control-label">Descripción: </label>
@@ -292,9 +259,9 @@
                     <button type="button" class="btn btn-primary" @click="prevStep"
                         v-if="currentStep > 1">Anterior</button>
                     <button type="button" class="btn btn-primary" @click="nextStep"
-                        v-if="currentStep < 3">Siguiente</button>
+                        v-if="currentStep < 2">Siguiente</button>
                     <button type="button" @click="CrearPublicaciones" data-bs-target="#nuevo_usuario"
-                        class="btn btn-primary" v-if="currentStep === 3">Crear</button>
+                        class="btn btn-primary" v-if="currentStep === 2">Crear</button>
                 </div>
 
             </div>
@@ -350,7 +317,6 @@
                 comentario: "",
             },
             currentStep: 1, // Pista de qué paso está activo
-            selectedPublicacion: null, // Aquí se almacenará 'Perdida de mascota' o 'Busqueda de mascota'
             selectedMascota: null, // Aquí se almacenará 'Perro' o 'Gato'
             nueva_publicacion: {
                 descripcion: '',
@@ -394,21 +360,6 @@
                 this.nueva_publicacion.tipo_mascota = id;
                 console.log(this.nueva_publicacion.tipo_mascota)
             },
-            CambiarTipoPublicacion(id) {
-                // Resetea la clase de la div previamente seleccionada
-                if (this.selectedDiv) {
-                    const divAnterior = document.getElementById(this.selectedDiv);
-                    divAnterior.classList.remove('selectedDiv');
-                }
-
-                // Cambia la clase de la nueva div seleccionada
-                const divCambiarColor = document.getElementById(id);
-                divCambiarColor.classList.add('selectedDiv');
-                this.selectedDiv = id; // Actualiza la variable selectedDiv con el nuevo ID
-
-                this.nueva_publicacion.tipo_publicacion = id;
-                console.log(this.nueva_publicacion.tipo_publicacion)
-            },
             CrearPublicaciones() {
                 let data = new FormData();
                 const header_data = {
@@ -427,7 +378,6 @@
                 data.append("tipo_mascota", this.nueva_publicacion.tipo_mascota);
                 data.append("descripcion", this.nueva_publicacion.descripcion);
                 data.append("foto_mascota", this.nueva_publicacion.foto_mascota);
-                data.append("tipo_publicacion", this.nueva_publicacion.tipo_publicacion);
 
                 axios.post("/api/create/publicaciones", data, { headers: header_data })
                     .then((response) => {
@@ -435,7 +385,17 @@
                         console.log("ID de la publicación antes de submitImageForTags:", publicacionId);
                         if (publicacionId) {
                             this.submitImageForTags(publicacionId);
-                            window.location.reload();
+                            // SweetAlert para mostrar el mensaje de éxito
+                            Swal.fire({
+                                title: '¡Éxito!',
+                                text: 'Tu publicación fue creada exitosamente.',
+                                icon: 'success',
+                                confirmButtonText: 'Ok'
+                            }).then((result) => {
+                                if (result.value) {
+                                    window.location.reload();
+                                }
+                            });
                         } else {
                             console.error("ID de la publicación no recibido.");
                         }
@@ -499,6 +459,14 @@
                     .catch(error => {
                         console.error("Error al procesar la imagen:", error);
                     });
+            },
+            formatearFecha(fecha) {
+                const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                let fechaObj = new Date(fecha);
+                let mes = meses[fechaObj.getMonth()];
+                let dia = fechaObj.getDate();
+                let año = fechaObj.getFullYear();
+                return `${mes} ${dia}, ${año}`;
             }
         },
     })

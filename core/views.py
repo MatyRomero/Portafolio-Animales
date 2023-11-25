@@ -12,12 +12,13 @@ from core.models import *
 from django.contrib.auth import login as login_f
 from django.db.models.functions import TruncMonth
 from django.db.models import Count
+from django.contrib import messages
 # Create your views here.
 
 def login(request):
     template_name = "login.html"
     context = {}
-    if request.POST:
+    if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         # Obtener el valor de la opción "Recuérdame"
@@ -31,8 +32,11 @@ def login(request):
             login_f(request, user)
             return redirect("index")
         else:
+            # Agregar mensaje de error
+            messages.error(request, 'Email o contraseña errónea')
             logout(request)
-    context['remember_me'] = request.POST.get('remember_me')
+
+    context['remember_me'] = request.POST.get('remember_me', False)
     return render(request, template_name, context)
 
 @login_required(login_url='login')

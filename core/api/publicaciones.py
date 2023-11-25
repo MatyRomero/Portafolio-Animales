@@ -32,14 +32,12 @@ class CreatePublicaciones(APIView):
         tipo_mascota = request.data.get("tipo_mascota")
         descripcion = request.data.get("descripcion")
         foto_mascota = request.FILES.get("foto_mascota")
-        tipo_publicacion = request.data.get("tipo_publicacion")
 
         # Crea la publicación relacionando al usuario actual
         publicacion = Publicaciones.objects.create(
             tipo_mascota=tipo_mascota,
             descripcion=descripcion,
             foto_mascota=foto_mascota,
-            tipo_publicacion=tipo_publicacion,
             usuario=usuario  # Relaciona la publicación con el usuario actual
         )
         publicacion.save()
@@ -71,8 +69,8 @@ class GetAllPublicaciones(APIView):
             serialized_publicacion = {
                 "tipo_mascota": publicacion.tipo_mascota,
                 "descripcion": publicacion.descripcion,
-                "tipo_publicacion": publicacion.tipo_publicacion,
                 "foto_mascota": publicacion.foto_mascota.url if publicacion.foto_mascota else None,
+                "fecha": publicacion.fecha,
                 "usuario": {
                     "id": publicacion.usuario.user.id if publicacion.usuario else None,
                     "username": publicacion.usuario.user.username if publicacion.usuario else None,

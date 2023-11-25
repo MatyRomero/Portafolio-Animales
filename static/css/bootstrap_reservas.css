@@ -11300,6 +11300,7 @@ a.badge-conch.focus {
   color: #801021;
   background-color: #fdd2d9;
   border-color: #fdc0c9;
+  width: 50px;
 }
 
 .alert-danger hr {

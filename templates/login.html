@@ -45,6 +45,13 @@
 										<div class="form-body">
 											<form action="{% url 'login' %}" method="POST" class="row g-3">
 												{% csrf_token %}
+												{% if messages %}
+												<div class="alert alert-danger" role="alert">
+													{% for message in messages %}
+													<p>{{ message }}</p>
+													{% endfor %}
+												</div>
+												{% endif %}
 												<div class="col-12">
 													<label for="inputEmailAddress" class="form-label">Email</label>
 													<input type="text" class="form-control" name="username"
@@ -59,15 +66,6 @@
 															value="" placeholder="Ingresar Contraseña"> <a
 															href="javascript:;" class="input-group-text bg-transparent"
 															onclick="showpsw()"><i class="bx bx-hide"></i></a>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-check form-switch">
-														<input class="form-check-input" type="checkbox"
-															id="remember_me">
-														<!-- <input class="form-check-input"type="checkbox" name="remember_me" id="remember_me"> -->
-														<label class="form-check-label"
-															for="remember_me">Recuérdame</label>
 													</div>
 												</div>
 												<div class="col-12">
