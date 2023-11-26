@@ -95,7 +95,8 @@ class Servicios(models.Model):
 
 class Similitud(models.Model):
     publicacion = models.ForeignKey(Publicaciones, on_delete=models.CASCADE)
-    similitud = models.FloatField()
+    similitud = models.FloatField(blank=True, null=True)
+    fecha = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
 
 # @receiver(post_save, sender=Mascota)

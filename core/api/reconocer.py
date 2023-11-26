@@ -115,12 +115,23 @@ class ReconocerMascotaPublicacion(APIView):
                 similitudes_data.append({
                     "publicacion_id": s.publicacion.id,
                     "similitud": s.similitud,
+                    "fecha": s.fecha,
                     "usuario": nombre_usuario_dueño_publicacion
                 })
 
             return Response({"similitudes": similitudes_data})
         else:
             return Response({"error": "Usuario no autenticado."}, status=status.HTTP_403_FORBIDDEN)
+    print("LLEGO AQUI ????")
+    def get_publicacion_detalle(self, publicacion_id):
+        print("LLEGO AQUI ????")
+        publicacion = get_object_or_404(Publicaciones, id=publicacion_id)
+        publicacion_data = {
+            "id": publicacion.id,
+            "usuario": publicacion.usuario.user.username,
+        }
+        print(publicacion_data)
+        return Response(publicacion_data)
     
 class ReconocerMascota(APIView):
     def post(self, request, *args, **kwargs):
