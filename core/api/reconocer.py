@@ -124,7 +124,7 @@ class ReconocerMascotaPublicacion(APIView):
             return Response({"error": "Usuario no autenticado."}, status=status.HTTP_403_FORBIDDEN)
     print("LLEGO AQUI ????")
     def get_publicacion_detalle(self, publicacion_id):
-        print("LLEGO AQUI ????")
+        print("LLEGO AQUI SEGUNDA PARTE ????")
         publicacion = get_object_or_404(Publicaciones, id=publicacion_id)
         publicacion_data = {
             "id": publicacion.id,
