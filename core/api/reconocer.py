@@ -118,20 +118,9 @@ class ReconocerMascotaPublicacion(APIView):
                     "fecha": s.fecha,
                     "usuario": nombre_usuario_dueño_publicacion
                 })
-
             return Response({"similitudes": similitudes_data})
         else:
             return Response({"error": "Usuario no autenticado."}, status=status.HTTP_403_FORBIDDEN)
-    print("LLEGO AQUI ????")
-    def get_publicacion_detalle(self, publicacion_id):
-        print("LLEGO AQUI SEGUNDA PARTE ????")
-        publicacion = get_object_or_404(Publicaciones, id=publicacion_id)
-        publicacion_data = {
-            "id": publicacion.id,
-            "usuario": publicacion.usuario.user.username,
-        }
-        print(publicacion_data)
-        return Response(publicacion_data)
     
 class ReconocerMascota(APIView):
     def post(self, request, *args, **kwargs):
@@ -185,3 +174,37 @@ class ReconocerMascota(APIView):
             "mensaje": "Procesamiento completado",
             "tags": tags_nueva_mascota
         })
+    
+class PublicacionDetalleView(APIView):
+    def get(self, request, publicacion_id):
+        publicacion = get_object_or_404(Publicaciones, id=publicacion_id)
+        
+        usuario_info = {
+            "first_name": publicacion.usuario.user.first_name,
+            "last_name": publicacion.usuario.user.last_name,
+            "comuna": publicacion.usuario.comuna,
+        }
+
+        publicacion_data = {
+            "id": publicacion.id,
+            "usuario": usuario_info,
+            "descripcion": publicacion.descripcion,
+            "foto_mascota": request.build_absolute_uri(settings.MEDIA_URL + str(publicacion.foto_mascota)) if publicacion.foto_mascota else None,
+            "fecha": publicacion.fecha,
+        }
+
+        return Response(publicacion_data)
+    
+class ComentariosPublicacionView(APIView):
+    def get(self, request, publicacion_id):
+        comentarios = Comentarios.objects.filter(publicacion_id=publicacion_id).select_related('usuario')
+        comentarios_data = [{
+            "id": comentario.id,
+            "comentario": comentario.comentario,
+            "usuario": {
+                "first_name": comentario.usuario.user.first_name,
+                "last_name": comentario.usuario.user.last_name,
+            }
+        } for comentario in comentarios]
+
+        return Response(comentarios_data)
