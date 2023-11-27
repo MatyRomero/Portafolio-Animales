@@ -175,14 +175,17 @@ class ReconocerMascota(APIView):
             "tags": tags_nueva_mascota
         })
     
-class PublicacionDetalleView(APIView):
+class PublicacionConComentariosView(APIView):
     def get(self, request, publicacion_id):
+        # Obtener la publicación
         publicacion = get_object_or_404(Publicaciones, id=publicacion_id)
         
         usuario_info = {
             "first_name": publicacion.usuario.user.first_name,
             "last_name": publicacion.usuario.user.last_name,
             "comuna": publicacion.usuario.comuna,
+            "direccion": publicacion.usuario.direccion,
+            "telefono": publicacion.usuario.telefono,
         }
 
         publicacion_data = {
@@ -193,10 +196,7 @@ class PublicacionDetalleView(APIView):
             "fecha": publicacion.fecha,
         }
 
-        return Response(publicacion_data)
-    
-class ComentariosPublicacionView(APIView):
-    def get(self, request, publicacion_id):
+        # Obtener los comentarios de la publicación
         comentarios = Comentarios.objects.filter(publicacion_id=publicacion_id).select_related('usuario')
         comentarios_data = [{
             "id": comentario.id,
@@ -207,4 +207,10 @@ class ComentariosPublicacionView(APIView):
             }
         } for comentario in comentarios]
 
-        return Response(comentarios_data)
+        # Combinar los datos de la publicación con los comentarios
+        response_data = {
+            "publicacion": publicacion_data,
+            "comentarios": comentarios_data
+        }
+
+        return Response(response_data)

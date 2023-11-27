@@ -44,6 +44,5 @@ urlpatterns = [
     ## API OPENIA
     path('api/reconocer', ReconocerMascotaPublicacion.as_view()),
     path('api/reconocer/mascota', ReconocerMascota.as_view()),
-    path('api/publicacion/<int:publicacion_id>/', PublicacionDetalleView.as_view(), name='publicacion_detalle'),
-    path('api/comentarios/notificaciones/<int:publicacion_id>/', ComentariosPublicacionView.as_view()),
+    path('api/publicacion/<int:publicacion_id>/', PublicacionConComentariosView.as_view(), name='publicacion_detalle'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

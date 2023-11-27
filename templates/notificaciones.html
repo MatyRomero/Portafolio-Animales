@@ -68,48 +68,80 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Crea una nueva publicación</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="card-container">
-                        <div class="d-flex justify-content-center">
-                            <div class="card shadow-sm radius-15 border rounded-3 mb-3" v-if="publicacionSeleccionada"
-                                style="max-width: 600px;">
-                                <div class=" card-body p-3">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{% static 'images/icons/user.png' %}" alt="image"
-                                            class="rounded-circle me-3" style="width: 40px;">
-                                        <div>
-                                            <h6 class="fw-bold mb-0">[[publicacionSeleccionada.usuario.first_name]]
-                                                [[publicacionSeleccionada.usuario.last_name]]</h6>
-                                            <p class="text-muted mb-0">[[publicacionSeleccionada.usuario.comuna]]</p>
-                                            <p class="text-muted mb-0">[[formatearFecha(publicacionSeleccionada.fecha)]]
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="mb-3">
-                                        <a>
-                                            <img :src="publicacionSeleccionada.foto_mascota" class="card-img-top"
-                                                alt="Imagen de la publicación"
-                                                style="max-width: 400px; max-height: 400px;">
-                                        </a>
-                                    </div>
-                                    <hr>
-                                    <p class="fw-normal text-muted mb-2">[[publicacionSeleccionada.descripcion]]</p>
-                                    <div
-                                        v-if="publicacionSeleccionada.comentarios && publicacionSeleccionada.comentarios.length > 0">
-                                        <div class="comments">
-                                            <div class="comment"
-                                                v-for="comentario in publicacionSeleccionada.comentarios"
-                                                :key="comentario.id">
-                                                [[comentario.usuario.first_name]] [[comentario.usuario.last_name]]:
-                                                [[comentario.comentario]]
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="d-flex">
+                                    <div class="card shadow-sm radius-15 border rounded-3 mb-3"
+                                        v-if="publicacionSeleccionada" style="max-width: 600px;">
+                                        <div class=" card-body p-3">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{% static 'images/icons/user.png' %}" alt="image"
+                                                    class="rounded-circle me-3" style="width: 40px;">
+                                                <div>
+                                                    <h6 class="fw-bold mb-0">
+                                                        [[publicacionSeleccionada.usuario.first_name]]
+                                                        [[publicacionSeleccionada.usuario.last_name]]</h6>
+                                                    <p class="text-muted mb-0">
+                                                        [[publicacionSeleccionada.usuario.comuna]]
+                                                    </p>
+                                                    <p class="text-muted mb-0">
+                                                        [[formatearFecha(publicacionSeleccionada.fecha)]]
+                                                    </p>
+                                                </div>
                                             </div>
+                                            <hr>
+                                            <div class="mb-3">
+                                                <a>
+                                                    <img :src="publicacionSeleccionada.foto_mascota"
+                                                        class="card-img-top" alt="Imagen de la publicación"
+                                                        style="max-width: 400px; max-height: 400px;">
+                                                </a>
+                                            </div>
+                                            <hr>
+                                            <p class="fw-normal text-muted mb-2">[[publicacionSeleccionada.descripcion]]
+                                            </p>
+                                            <div>
+                                                <div class="comments">
+                                                    <div class="comment"
+                                                        v-for="comentario in publicacionSeleccionada.comentarios"
+                                                        :key="comentario.id">
+                                                        [[comentario.usuario.first_name]]
+                                                        [[comentario.usuario.last_name]]: [[comentario.comentario]]
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
-
+                                </div>
+                            </div>
+                            <div class="col-4" style="padding-top: 170px; padding-left: 15px;">
+                                <div class="card shadow-sm radius-15" v-if="publicacionSeleccionada">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Datos de Publicación</h5>
+                                        <p class="card-text">
+                                            <strong>Nombre:</strong>
+                                            <span>[[publicacionSeleccionada.usuario.first_name]]
+                                                [[publicacionSeleccionada.usuario.last_name]]
+                                            </span>
+                                        </p>
+                                        <p class="card-text">
+                                            <strong>Comuna:</strong>
+                                            <span>[[publicacionSeleccionada.usuario.comuna]]</span>
+                                        </p>
+                                        <p class="card-text">
+                                            <strong>Dirección:</strong>
+                                            <span>[[publicacionSeleccionada.usuario.direccion]]</span>
+                                        </p>
+                                        <p class="card-text">
+                                            <strong>Teléfono:</strong>
+                                            <span>[[publicacionSeleccionada.usuario.telefono]]</span>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +173,7 @@
                     descripcion: '',
                     fecha: '',
                     foto_mascota: '',
-                    comentarios: []
+                    comentarios: [{ "id": 1, "comentario": "aaaa", "usuario": { "first_name": "Matías", "last_name": "davis" } }]
                 },
                 nuevo_comentario: {
                     comentario: ''
@@ -177,17 +209,14 @@
             abrirModal(publicacionId) {
                 axios.get('/api/publicacion/' + publicacionId)
                     .then(response => {
-                        this.publicacionSeleccionada = response.data;
-                        return axios.get('/api/comentarios/notificaciones/' + publicacionId);
-                    })
-                    .then(responseComentarios => {
-                        console.log(responseComentarios.data); // Deberías ver tu array de comentarios aquí
-                        this.publicacionSeleccionada.comentarios = responseComentarios.data;
+                        this.publicacionSeleccionada = response.data.publicacion;
+                        this.publicacionSeleccionada.comentarios = response.data.comentarios;
+
                         var myModal = new bootstrap.Modal(document.getElementById('ver_publicacion'));
                         myModal.show();
                     })
                     .catch(error => {
-                        console.error("Error al obtener la publicación o los comentarios:", error);
+                        console.error("Error al obtener la publicación y los comentarios:", error);
                     });
             }
         }
