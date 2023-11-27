@@ -95,13 +95,13 @@
         top: 100px;
     }
 
-    .texto-limite {
-        max-width: 500px;
-        /* Ajusta este valor según sea necesario */
-        margin-right: auto;
-        /* Esto mantendrá el texto alineado a la izquierda y con margen a la derecha */
-        margin-left: auto;
-        /* Esto es para centrar el texto si es necesario */
+    .card-container .card .card-body {
+        max-width: 540px;
+        /* Ajustar a tus necesidades */
+    }
+
+    .card-container .card .card-body p {
+        word-wrap: break-word;
     }
 </style>
 {% endblock css %}
@@ -129,7 +129,7 @@
                             <div class="mb-3">
                                 <a>
                                     <img :src="publicacion.foto_mascota" class="card-img-top"
-                                        alt="Imagen de la publicación" style="max-width: 400px; max-height: 400px;">
+                                        alt="Imagen de la publicación" style="width: 100%; height: auto;">
                                 </a>
                             </div>
                             <hr>
