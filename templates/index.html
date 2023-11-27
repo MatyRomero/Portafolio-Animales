@@ -94,6 +94,15 @@
         position: sticky;
         top: 100px;
     }
+
+    .texto-limite {
+        max-width: 500px;
+        /* Ajusta este valor según sea necesario */
+        margin-right: auto;
+        /* Esto mantendrá el texto alineado a la izquierda y con margen a la derecha */
+        margin-left: auto;
+        /* Esto es para centrar el texto si es necesario */
+    }
 </style>
 {% endblock css %}
 {% block content %}
@@ -124,7 +133,7 @@
                                 </a>
                             </div>
                             <hr>
-                            <p class="fw-normal text-muted mb-2">[[publicacion.descripcion]]</p>
+                            <p class="fw-normal text-muted mb-2 texto-limite">[[publicacion.descripcion]]</p>
                             <div class="comments">
                                 <div class="comment" v-for="comentario in publicacion.comentarios" :key="comentario.id">
                                     [[comentario.usuario.first_name]]
@@ -429,8 +438,22 @@
                     });
             },
             PreviewPhotoCrear(event) {
-                this.url_preview = URL.createObjectURL(event.target.files[0])
-                this.nueva_publicacion.foto_mascota = event.target.files[0]
+                // Obtener el archivo seleccionado
+                const file = event.target.files[0];
+
+                // Verificar si el archivo es una imagen (JPG o PNG)
+                if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
+                    // Si el archivo es válido, crear una URL de previsualización y asignar el archivo
+                    this.url_preview = URL.createObjectURL(file);
+                    this.nueva_publicacion.foto_mascota = file;
+                } else {
+                    // Si el archivo no es una imagen JPG o PNG, mostrar un mensaje de error
+                    alert("Por favor selecciona una imagen en formato JPG o PNG.");
+                    // Resetear el valor del input file y limpiar la previsualización si hay una
+                    event.target.value = "";
+                    this.url_preview = '';
+                    this.nueva_publicacion.foto_mascota = null;
+                }
             },
             nextStep() {
                 if (this.currentStep < 3) {

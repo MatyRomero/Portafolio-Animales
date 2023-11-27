@@ -14,10 +14,7 @@
 <div id="app">
     <div class="row">
         <div class="col-12 col-lg-8 col-md-12">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.039707144202!2d-70.7064937!3d-33.60427419999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662d94841c7667b%3A0xb4fa4b39deaca84e!2sMaestranza%2C%20San%20Bernardo%2C%20Regi%C3%B3n%20Metropolitana!5e0!3m2!1ses!2scl!4v1695429591629!5m2!1ses!2scl"
-                width="750" height="550" style="border:0;" allowfullscreen="" loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div id="map" style="height: 550px; width: 750px;"></div>
         </div>
         <div class="col-12 col-lg-4 col-md-12">
             <div class="card radius-15" id="suggestions">
@@ -97,5 +94,79 @@
 
 
 {% block js %}
+
+<!-- <script>
+    function initMap() {
+        // Usa la geolocalización para obtener la ubicación del usuario
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                // Crea un nuevo mapa y lo centra en la ubicación del usuario
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 12,
+                    center: userLocation
+                });
+
+                // Coloca un marcador en la ubicación del usuario
+                new google.maps.Marker({
+                    position: userLocation,
+                    map: map,
+                    title: 'Tu ubicación'
+                });
+
+                // Aquí agregarías los marcadores de las veterinarias
+                // usando un bucle y la información de tu backend
+            }, function () {
+                handleLocationError(true, map.getCenter());
+            });
+        } else {
+            // El navegador no soporta la geolocalización
+            handleLocationError(false, map.getCenter());
+        }
+    }
+
+    function handleLocationError(browserHasGeolocation, pos) {
+        // Maneja los errores aquí
+    }
+</script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            ubicacionUsuario: null,
+            veterinarias: []
+        },
+        created() {
+            this.obtenerUbicacionUsuario();
+        },
+        methods: {
+            obtenerUbicacionUsuario() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(this.obtenerVeterinariasCercanas);
+                } else {
+                    alert("La geolocalización no es soportada por este navegador.");
+                }
+            },
+            obtenerVeterinariasCercanas(position) {
+                this.ubicacionUsuario = position.coords;
+                // Suponiendo que tienes una función que hace solicitudes HTTP:
+                http.get(`/api/veterinarias-cercanas/?lat=${this.ubicacionUsuario.latitude}&lng=${this.ubicacionUsuario.longitude}`)
+                    .then(response => {
+                        this.veterinarias = response.data;
+                        // Aquí inicializarías el mapa con la ubicación actual y agregarías marcadores, por ejemplo.
+                    })
+                    .catch(error => {
+                        console.error("Error al obtener las veterinarias cercanas:", error);
+                    });
+            }
+        }
+    });
+
+</script> -->
 
 {% endblock js %}

@@ -45,4 +45,6 @@ urlpatterns = [
     path('api/reconocer', ReconocerMascotaPublicacion.as_view()),
     path('api/reconocer/mascota', ReconocerMascota.as_view()),
     path('api/publicacion/<int:publicacion_id>/', PublicacionConComentariosView.as_view(), name='publicacion_detalle'),
+    ## API Google Maps
+    path('api/veterinarias-cercanas/', VeterinariasCercanasAPIView.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
