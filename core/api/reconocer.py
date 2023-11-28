@@ -87,6 +87,7 @@ class ReconocerMascotaPublicacion(APIView):
         print("Tags de la nueva mascota:", tags_nueva_publicacion)
         similitudes = []
         for publicacion_existente in Publicaciones.objects.exclude(id=publicacion.id):
+            print("ID de la publicación actual:", publicacion.id)
             tags_publicacion_existente = set([tag.name for tag in publicacion_existente.tags.all()])
             print("Comparando con publicación ID:", publicacion_existente.id, "| Tags:", tags_publicacion_existente)
             
@@ -106,17 +107,22 @@ class ReconocerMascotaPublicacion(APIView):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             publicaciones_usuario = Publicaciones.objects.filter(usuario__user=request.user)
-            similitudes = Similitud.objects.filter(publicacion__in=publicaciones_usuario)
+            similitudes = Similitud.objects.filter(publicacion_usuario__in=publicaciones_usuario)
+            similitudes = Similitud.objects.filter(
+                publicacion_usuario__in=publicaciones_usuario,
+                similitud__gt=51.0
+            )
             similitudes_data = []
-            
+
             for s in similitudes:
-                nombre_usuario_dueño_publicacion = s.publicacion.usuario.user.username
+                nombre_usuario_dueño_publicacion_comparada = s.publicacion_comparada.usuario.user.username
 
                 similitudes_data.append({
-                    "publicacion_id": s.publicacion.id,
+                    "publicacion_usuario_id": s.publicacion_usuario.id,
+                    "publicacion_comparada_id": s.publicacion_comparada.id,
                     "similitud": s.similitud,
                     "fecha": s.fecha,
-                    "usuario": nombre_usuario_dueño_publicacion
+                    "usuario_comparado": nombre_usuario_dueño_publicacion_comparada
                 })
             return Response({"similitudes": similitudes_data})
         else:

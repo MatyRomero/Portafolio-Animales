@@ -94,9 +94,11 @@ class Servicios(models.Model):
     tipo = models.CharField(max_length=255, choices=tipo_servicio, blank=True, null=True)
 
 class Similitud(models.Model):
-    publicacion = models.ForeignKey(Publicaciones, on_delete=models.CASCADE)
+    publicacion_usuario = models.ForeignKey(Publicaciones, on_delete=models.CASCADE,blank=True, null=True, related_name='similitudes_usuario')
+    publicacion_comparada = models.ForeignKey(Publicaciones, on_delete=models.CASCADE,blank=True, null=True, related_name='similitudes_comparadas')
     similitud = models.FloatField(blank=True, null=True)
     fecha = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
 
 
 

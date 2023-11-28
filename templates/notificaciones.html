@@ -42,7 +42,8 @@
     <div class="email-content">
         <div class="">
             <div class="email-list ps ps--active-y">
-                <a v-for="(similitud, index) in similitudes" :key="index" @click="abrirModal(similitud.publicacion_id)">
+                <a v-for="(similitud, index) in similitudes" :key="index"
+                    @click="abrirModal(similitud.publicacion_comparada_id)">
                     <div class="d-md-flex align-items-center email-message px-3 py-1">
                         <div class="d-flex align-items-center email-actions">
                             <input class="form-check-input" type="checkbox" :value="index">
@@ -51,8 +52,7 @@
                         </div>
                         <div class="">
                             <p class="mb-0">Se encontró una coincidencia del [[ similitud.similitud.toFixed(2) ]]% con
-                                la
-                                publicación subida por : [[similitud.usuario]]</p>
+                                la publicación subida por : [[ similitud.usuario_comparado ]]</p>
                         </div>
                         <div class="ms-auto">
                             <p class="mb-0 email-time">[[formatearFecha(similitud.fecha)]]</p>
@@ -68,6 +68,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Coincidencia</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -114,7 +115,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -173,7 +173,7 @@
                     descripcion: '',
                     fecha: '',
                     foto_mascota: '',
-                    comentarios: [{ "id": 1, "comentario": "aaaa", "usuario": { "first_name": "Matías", "last_name": "davis" } }]
+                    comentarios: "",
                 },
                 nuevo_comentario: {
                     comentario: ''
@@ -189,7 +189,9 @@
                     .then(response => {
                         this.similitudes = response.data.similitudes;
                         if (this.similitudes.length > 0) {
-                            console.log("Publicacion ID:", this.similitudes[0].publicacion_id);
+                            // Actualiza el campo según lo que devuelve tu API
+                            console.log("Publicacion Usuario ID:", this.similitudes[0].publicacion_usuario_id);
+                            console.log("Publicacion Comparada ID:", this.similitudes[0].publicacion_comparada_id);
                         } else {
                             console.log("No hay similitudes para mostrar");
                         }
@@ -206,8 +208,8 @@
                 let año = fechaObj.getFullYear();
                 return `${mes} ${dia}, ${año}`;
             },
-            abrirModal(publicacionId) {
-                axios.get('/api/publicacion/' + publicacionId)
+            abrirModal(publicacionComparadaId) {
+                axios.get('/api/publicacion/' + publicacionComparadaId)
                     .then(response => {
                         this.publicacionSeleccionada = response.data.publicacion;
                         this.publicacionSeleccionada.comentarios = response.data.comentarios;
@@ -218,7 +220,7 @@
                     .catch(error => {
                         console.error("Error al obtener la publicación y los comentarios:", error);
                     });
-            }
+            },
         }
     });
 </script>
