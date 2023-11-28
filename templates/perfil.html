@@ -973,7 +973,8 @@
                                     </label>
                                     <input type="hidden" v-model="mascota.id">
                                     <button class="btn btn-primary" @click="uploadPetPhoto">Guardar</button>
-                                    <button class="btn btn-outline-danger">Eliminar</button>
+                                    <button class="btn btn-outline-danger"
+                                        v-on:click="eliminarMascota(mascota.pet_id)">Eliminar Mascota</button>
                                 </div>
                                 <p class="mb-0"></p>
                             </div>
@@ -1641,8 +1642,44 @@
                 .catch(error => {
                     console.error("Hubo un error al obtener la ficha médica", error);
                 });
-        }
-
+        },
+        eliminarMascota(mascotaId) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let formData = new FormData();
+                    formData.append('id', mascotaId);
+                    axios.post('/api/delete/mascota', formData)
+                        .then(response => {
+                            Swal.fire({
+                                title: 'Eliminado!',
+                                text: 'La Mascota ha sido eliminada.',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.value) {
+                                    window.location.reload();
+                                }
+                            });
+                        })
+                        .catch(error => {
+                            Swal.fire(
+                                'Error!',
+                                'No se pudo eliminar la Mascota.',
+                                'error'
+                            );
+                        });
+                }
+            });
+        },
     },
     })
 

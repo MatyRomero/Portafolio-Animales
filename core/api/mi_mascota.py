@@ -260,3 +260,20 @@ class DetalleFichaMedica(APIView):
         print(data)
         print(request)
         return Response(data, status=status.HTTP_200_OK)
+    
+class EliminarMimascota(APIView):
+
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self, request):
+        try:
+            mascota_id = request.data.get("id")
+            mascota = Mi_Mascota.objects.get(pk=mascota_id)
+            mascota.delete()
+            return Response({'mensaje': 'mascota eliminada correctamente'}, status=status.HTTP_200_OK)
+        except Publicaciones.DoesNotExist:
+            return Response({'mensaje': 'mascota no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'mensaje': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+

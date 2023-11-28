@@ -44,6 +44,7 @@ urlpatterns = [
     path('api/get_mascotas_by_dueño', GetMascotasPorDueno.as_view()),
     path('api/create/mascota', CreateMascota.as_view()),
     path('api/detalle_ficha_medica/<int:ficha_medica_id>/', DetalleFichaMedica.as_view(), name='detalle_ficha_medica'),
+    path('api/delete/mascota', EliminarMimascota.as_view()),
     ## API OPENIA
     path('api/reconocer', ReconocerMascotaPublicacion.as_view()),
     path('api/reconocer/mascota', ReconocerMascota.as_view()),
