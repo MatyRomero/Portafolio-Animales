@@ -70,12 +70,21 @@
     }
 
     function handleLocationError(browserHasGeolocation) {
-        if (browserHasGeolocation) {
-            console.error("Error de geolocalización");
+        var errorMessage;
+        if (!browserHasGeolocation) {
+            errorMessage = "Tu navegador no soporta la geolocalización.";
         } else {
-            console.error("El navegador no soporta la geolocalización");
+            errorMessage = "No se pudo obtener la ubicación.";
+        }
+        console.error(errorMessage);
+
+        // Mostrar el mensaje de error en la página web
+        var errorElement = document.getElementById('error-message');
+        if (errorElement) {
+            errorElement.textContent = errorMessage;
         }
     }
+
 </script>
 
 <script>
