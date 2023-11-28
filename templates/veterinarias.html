@@ -39,25 +39,48 @@
 {% block js %}
 
 <script>
+    // Definir 'map' en un ámbito superior
+    var map;
+
     function initMap() {
-        // Inicializa el mapa en el ámbito global o en un ámbito que sea accesible
-        // donde necesitas usarlo.
-        window.map = new google.maps.Map(document.getElementById('map'), {
+        // Crea un mapa con un centro predeterminado
+        map = new google.maps.Map(document.getElementById('map'), {
             zoom: 12,
-            center: { lat: -34.397, lng: 150.644 }, // Un centro predeterminado por si acaso
+            center: { lat: -34.397, lng: 150.644 },
         });
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                map.setCenter(userLocation);
+                new google.maps.Marker({
+                    position: userLocation,
+                    map: map,
+                    title: 'Tu ubicación'
+                });
+            }, function () {
+                handleLocationError(true);
+            });
+        } else {
+            handleLocationError(false);
+        }
     }
 
-    function handleLocationError(browserHasGeolocation, pos) {
-        // Asegúrate de que 'map' es una instancia de Google Maps.
-        if (window.map && window.map.getCenter) {
-            // Usa 'map.getCenter()' aquí
-            const center = window.map.getCenter();
-            // Manejar el error, tal vez estableciendo un marcador en 'center', etc.
-        } else {
-            // Manejar el caso en que 'map' no está disponible
-            console.error('Map is not initialized.');
+    function handleLocationError(browserHasGeolocation) {
+        if (!map) {
+            initMap();
         }
+        var center = map.getCenter();
+        map.setZoom(5);
+        new google.maps.Marker({
+            position: center,
+            map: map,
+            title: browserHasGeolocation ?
+                'El servicio de Geolocalización falló.' :
+                'Error: Tu navegador no soporta geolocalización.'
+        });
     }
 </script>
 
