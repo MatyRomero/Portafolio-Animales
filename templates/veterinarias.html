@@ -39,15 +39,13 @@
 {% block js %}
 
 <script>
-    // Definir 'map' en un ámbito superior
     var map;
 
     function initMap() {
-        // Crea un mapa con un centro predeterminado
         map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 12,
-            center: { lat: -34.397, lng: 150.644 },
+            zoom: 12
         });
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 var userLocation = {
@@ -55,11 +53,13 @@
                     lng: position.coords.longitude
                 };
                 map.setCenter(userLocation);
+
                 new google.maps.Marker({
                     position: userLocation,
                     map: map,
                     title: 'Tu ubicación'
                 });
+
             }, function () {
                 handleLocationError(true);
             });
@@ -69,18 +69,10 @@
     }
 
     function handleLocationError(browserHasGeolocation) {
-        if (!map) {
-            initMap();
-        }
-        var center = map.getCenter();
-        map.setZoom(5);
-        new google.maps.Marker({
-            position: center,
-            map: map,
-            title: browserHasGeolocation ?
-                'El servicio de Geolocalización falló.' :
-                'Error: Tu navegador no soporta geolocalización.'
-        });
+        var errorMessage = browserHasGeolocation ?
+            'El servicio de Geolocalización falló.' :
+            'Error: Tu navegador no soporta geolocalización.';
+        alert(errorMessage);
     }
 </script>
 
