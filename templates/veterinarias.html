@@ -39,8 +39,9 @@
 {% block js %}
 
 <script>
+    var map;
+
     function initMap() {
-        // Usa la geolocalización para obtener la ubicación del usuario
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 var userLocation = {
@@ -48,32 +49,32 @@
                     lng: position.coords.longitude
                 };
 
-                // Crea un nuevo mapa y lo centra en la ubicación del usuario
-                var map = new google.maps.Map(document.getElementById('map'), {
+                map = new google.maps.Map(document.getElementById('map'), {
                     zoom: 12,
                     center: userLocation
                 });
 
-                // Coloca un marcador en la ubicación del usuario
                 new google.maps.Marker({
                     position: userLocation,
                     map: map,
                     title: 'Tu ubicación'
                 });
 
-                // Aquí agregarías los marcadores de las veterinarias
-                // usando un bucle y la información de tu backend
+                // Agregar marcadores de veterinarias aquí
             }, function () {
-                handleLocationError(true, map.getCenter());
+                handleLocationError(true);
             });
         } else {
-            // El navegador no soporta la geolocalización
-            handleLocationError(false, map.getCenter());
+            handleLocationError(false);
         }
     }
 
-    function handleLocationError(browserHasGeolocation, pos) {
-        // Maneja los errores aquí
+    function handleLocationError(browserHasGeolocation) {
+        if (browserHasGeolocation) {
+            console.error("Error de geolocalización");
+        } else {
+            console.error("El navegador no soporta la geolocalización");
+        }
     }
 </script>
 
