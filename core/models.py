@@ -15,6 +15,7 @@ TipoUsuarios = (
 
 class Configuracion(models.Model):
     token_gpt = models.TextField(null=True, blank=True)
+    token_google_maps = models.TextField(null=True,blank=True)
 
 class Usuario(models.Model):
     tipo_usuario = models.CharField(max_length=1, choices=TipoUsuarios, default=1)

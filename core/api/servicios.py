@@ -52,7 +52,8 @@ class VeterinariasCercanasAPIView(APIView):
     def get(self, request, *args, **kwargs):
         user_lat = request.GET.get('lat', None)
         user_lng = request.GET.get('lng', None)
-        api_key = "AIzaSyA0Jbkg892s0MYoUV1nb99FPcuzfgL1O8g"
+        # api_key = "AIzaSyA0Jbkg892s0MYoUV1nb99FPcuzfgL1O8g"
+        api_key = Configuracion.objects.all()[0].token_google_maps
 
         if user_lat and user_lng:
             resultados = obtener_veterinarias_cercanas(user_lat, user_lng, api_key)
