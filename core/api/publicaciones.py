@@ -20,6 +20,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+import base64
+import uuid
 
 class CreatePublicaciones(APIView):
     def post(self, request):
@@ -96,3 +98,46 @@ class GetPublicaciones(APIView):
         publicaciones = Publicaciones.objects.all()
         response["publicaciones"] = publicaciones
         return Response(response)
+
+
+class EliminarPublicacion(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self, request):
+        try:
+            publicacion_id = request.data.get("id")
+            publicacion = Publicaciones.objects.get(pk=publicacion_id)
+            publicacion.delete()
+            return Response({'mensaje': 'Publicación eliminada correctamente'}, status=status.HTTP_200_OK)
+        except Publicaciones.DoesNotExist:
+            return Response({'mensaje': 'Publicación no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'mensaje': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+class EditarPublicacion(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self, request, *args, **kwargs):
+        publicacion_id = request.data.get('publicacionId')
+        descripcion = request.data.get('descripcion')
+        foto_mascota = request.FILES.get('foto_mascota') 
+
+        try:
+            publicacion = Publicaciones.objects.get(pk=publicacion_id)
+            if descripcion:
+                publicacion.descripcion = descripcion
+            
+            if foto_mascota:
+                nombre_foto = f'{uuid.uuid4()}.{foto_mascota.name.split(".")[-1]}'
+                publicacion.foto_mascota.save(nombre_foto, foto_mascota, save=True)
+
+            return Response({'mensaje': 'Publicación actualizada correctamente'}, status=status.HTTP_200_OK)
+
+        except Publicaciones.DoesNotExist:
+            return Response({'mensaje': 'Publicación no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'mensaje': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    

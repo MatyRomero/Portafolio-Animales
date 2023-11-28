@@ -156,3 +156,9 @@ def get_counts_by_month():
             dog_counts[month_index] = entry['count']
     
     return dog_counts, cat_counts
+
+@login_required
+def obtener_usuario_actual(request):
+    return JsonResponse({
+        'id': request.user.id,
+    })

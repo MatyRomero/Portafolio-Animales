@@ -24,9 +24,12 @@ urlpatterns = [
     path("api/delete/usuarios", DeleteUsuarios.as_view()),
     path("api/internal/set/profile_information", SetProfileInformation.as_view()),
     path('api/actualizar_img/user', UploadProfilePhoto.as_view(), name='upload-profile-photo'),
+    path('api/usuario/actual', core_views.obtener_usuario_actual, name='obtener_usuario_actual'),
+    path('api/editar/publicacion', EditarPublicacion.as_view(), name='editar_publicacion'),
     ## API Publicaciones
     path("api/create/publicaciones", CreatePublicaciones.as_view()),
     path('api/get_allpublicaciones', GetAllPublicaciones.as_view()),
+    path('api/delete/publicaciones', EliminarPublicacion.as_view()),
     ## API Comentarios
     path('api/get_allcomentarios', GetAllComentarios.as_view()),
     path('api/create/comentarios/<int:publicacion_id>/', CreateComentario.as_view()),
