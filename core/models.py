@@ -79,25 +79,13 @@ class Comentarios(models.Model):
     comentario = models.CharField(max_length=255, blank=True, null=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, blank=True)
 
-class Servicios(models.Model):
-
-    tipo_servicio = (
-        ("Peluqueria", 'Peluqueria'),
-        ("Veterinaria", 'Veterinaria'),
-        ("Petshop", 'PetShop'),
-    )
-
-    nombre = models.CharField(max_length=255, blank=True, null=True)
-    direccion = models.CharField(max_length=255, blank=True, null=True)
-    latitud = models.CharField(max_length=255, blank=True, null=True)
-    longitud = models.CharField(max_length=255, blank=True, null=True)
-    tipo = models.CharField(max_length=255, choices=tipo_servicio, blank=True, null=True)
 
 class Similitud(models.Model):
     publicacion_usuario = models.ForeignKey(Publicaciones, on_delete=models.CASCADE,blank=True, null=True, related_name='similitudes_usuario')
     publicacion_comparada = models.ForeignKey(Publicaciones, on_delete=models.CASCADE,blank=True, null=True, related_name='similitudes_comparadas')
     similitud = models.FloatField(blank=True, null=True)
     fecha = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
 
 
 

@@ -21,27 +21,44 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.db.models import Avg
+from math import radians, cos, sin, asin, sqrt
+import requests
 
+
+
+def obtener_veterinarias_cercanas(lat, lng, api_key):
+    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+    params = {
+        "location": f"{lat},{lng}",
+        "radius": 10000,  # Radio en metros
+        "type": "veterinary_care",
+        "key": api_key
+    }
+    response = requests.get(url, params=params)
+    return response.json()
+
+def obtener_detalles_del_lugar(place_id, api_key):
+    url = "https://maps.googleapis.com/maps/api/place/details/json"
+    params = {
+        "place_id": place_id,
+        "key": api_key,
+        "fields": "name,rating,formatted_address"
+    }
+    response = requests.get(url, params=params)
+    return response.json()
+
+        
 class VeterinariasCercanasAPIView(APIView):
-
     def get(self, request, *args, **kwargs):
-        # Obtendrías la ubicación actual del usuario de alguna manera, aquí está simulado
         user_lat = request.GET.get('lat', None)
         user_lng = request.GET.get('lng', None)
+        api_key = "AIzaSyA0Jbkg892s0MYoUV1nb99FPcuzfgL1O8g"
 
         if user_lat and user_lng:
-            # Aquí harías la lógica para calcular la distancia y obtener las veterinarias más cercanas
-            # Por ahora, devolveremos todas las veterinarias ordenadas aleatoriamente como ejemplo
-            veterinarias = Servicios.objects.filter(tipo='Veterinaria').annotate(rating_avg=Avg('ratings__value')).order_by('-rating_avg')
-            veterinarias_data = [
-                {
-                    'nombre': veterinaria.nombre,
-                    'direccion': veterinaria.direccion,
-                    'latitud': veterinaria.latitud,
-                    'longitud': veterinaria.longitud,
-                    'valoracion_promedio': veterinaria.rating_avg
-                } for veterinaria in veterinarias
-            ]
-            return Response(veterinarias_data)
+            resultados = obtener_veterinarias_cercanas(user_lat, user_lng, api_key)
+            lugares = resultados.get('results', [])
+            detalles_completos = [obtener_detalles_del_lugar(lugar['place_id'], api_key) for lugar in lugares]
+            return Response(detalles_completos)
         else:
             return Response({"error": "Ubicación no proporcionada"}, status=400)
+

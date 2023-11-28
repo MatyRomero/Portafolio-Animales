@@ -132,6 +132,8 @@ class EditarPublicacion(APIView):
             if foto_mascota:
                 nombre_foto = f'{uuid.uuid4()}.{foto_mascota.name.split(".")[-1]}'
                 publicacion.foto_mascota.save(nombre_foto, foto_mascota, save=True)
+            else:
+                publicacion.save()
 
             return Response({'mensaje': 'Publicación actualizada correctamente'}, status=status.HTTP_200_OK)
 
