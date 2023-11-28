@@ -94,16 +94,16 @@ class ReconocerMascotaPublicacion(APIView):
             porcentaje_similitud = calcular_coincidencia_tags(tags_nueva_publicacion, tags_publicacion_existente)
             print("Porcentaje de similitud con publicación ID", publicacion_existente.id, ":", porcentaje_similitud)
 
-            similitudes.append({'publicacion_id': publicacion_existente.id, 'similitud': porcentaje_similitud})
+            if porcentaje_similitud >= 51:
+                Similitud.objects.create(
+                    publicacion_usuario=publicacion, 
+                    publicacion_comparada=publicacion_existente, 
+                    similitud=porcentaje_similitud
+                )
+                similitudes.append({'publicacion_comparada_id': publicacion_existente.id, 'similitud': porcentaje_similitud})
+
         similitudes.sort(key=lambda x: x['similitud'], reverse=True)
         print("Similitudes calculadas:", similitudes)
-        for s in similitudes:
-            Similitud.objects.create(publicacion=publicacion, similitud=s['similitud'])
-        return Response({
-            "mensaje": "Procesamiento completado",
-            "tags": [tag.name for tag in publicacion.tags.all()],
-            "similitudes": similitudes
-        })
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             publicaciones_usuario = Publicaciones.objects.filter(usuario__user=request.user)
