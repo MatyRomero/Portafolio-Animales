@@ -1,0 +1,31 @@
+{
+    "short_name": "PetSocial",
+        "name": "Pet Social: Conecta con Amantes de las Mascotas",
+            "icons": [
+                {
+                    "src": "icono-192x192.png",
+                    "type": "image/png",
+                    "sizes": "192x192"
+                },
+                {
+                    "src": "icono-256x256.png",
+                    "type": "image/png",
+                    "sizes": "256x256"
+                },
+                {
+                    "src": "icono-384x384.png",
+                    "type": "image/png",
+                    "sizes": "384x384"
+                },
+                {
+                    "src": "icono-512x512.png",
+                    "type": "image/png",
+                    "sizes": "512x512"
+                }
+            ],
+                "start_url": "/",
+                    "background_color": "#FFFFFF",
+                        "display": "standalone",
+                            "scope": "/",
+                                "theme_color": "#4568DC"
+}
