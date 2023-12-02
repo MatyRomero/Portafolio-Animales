@@ -25,7 +25,7 @@
     ],
     "start_url": "/",
     "background_color": "#FFFFFF",
-    "display": "standalone",
+    "display": "fullscreen",
     "scope": "/",
     "theme_color": "#4568DC"
 }
