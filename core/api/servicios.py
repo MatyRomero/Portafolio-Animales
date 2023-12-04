@@ -25,12 +25,35 @@ from math import radians, cos, sin, asin, sqrt
 import requests
 
 
+def obtener_peluquerias_animales(lat, lng, api_key):
+    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+    params = {
+        "location": f"{lat},{lng}",
+        "radius": 10000,  # Radio en metros
+        "keyword": "grooming",  # Palabra clave para peluquerías de animales
+        "key": api_key
+    }
+    response = requests.get(url, params=params)
+    return response.json()
+
+
+def obtener_petshops_cercanas(lat, lng, api_key):
+    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+    params = {
+        "location": f"{lat},{lng}",
+        "radius": 10000,
+        "type": "pet_store",
+        "key": api_key
+    }
+    response = requests.get(url, params=params)
+    return response.json()
+
 
 def obtener_veterinarias_cercanas(lat, lng, api_key):
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
     params = {
         "location": f"{lat},{lng}",
-        "radius": 10000,  # Radio en metros
+        "radius": 10000,
         "type": "veterinary_care",
         "key": api_key
     }
@@ -63,3 +86,34 @@ class VeterinariasCercanasAPIView(APIView):
         else:
             return Response({"error": "Ubicación no proporcionada"}, status=400)
 
+
+class PetShopCercanasAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        user_lat = request.GET.get('lat', None)
+        user_lng = request.GET.get('lng', None)
+        # api_key = "AIzaSyA0Jbkg892s0MYoUV1nb99FPcuzfgL1O8g"
+        api_key = Configuracion.objects.all()[0].token_google_maps
+
+        if user_lat and user_lng:
+            resultados = obtener_petshops_cercanas(user_lat, user_lng, api_key)
+            lugares = resultados.get('results', [])
+            detalles_completos = [obtener_detalles_del_lugar(lugar['place_id'], api_key) for lugar in lugares]
+            return Response(detalles_completos)
+        else:
+            return Response({"error": "Ubicación no proporcionada"}, status=400)
+        
+
+class PeluqueriasCercanasAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        user_lat = request.GET.get('lat', None)
+        user_lng = request.GET.get('lng', None)
+        # api_key = "AIzaSyA0Jbkg892s0MYoUV1nb99FPcuzfgL1O8g"
+        api_key = Configuracion.objects.all()[0].token_google_maps
+
+        if user_lat and user_lng:
+            resultados = obtener_peluquerias_animales(user_lat, user_lng, api_key)
+            lugares = resultados.get('results', [])
+            detalles_completos = [obtener_detalles_del_lugar(lugar['place_id'], api_key) for lugar in lugares]
+            return Response(detalles_completos)
+        else:
+            return Response({"error": "Ubicación no proporcionada"}, status=400)

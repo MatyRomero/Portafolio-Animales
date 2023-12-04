@@ -14,82 +14,22 @@
 <div id="app">
     <div class="row">
         <div class="col-12 col-lg-8 col-md-12">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.039707144202!2d-70.7064937!3d-33.60427419999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662d94841c7667b%3A0xb4fa4b39deaca84e!2sMaestranza%2C%20San%20Bernardo%2C%20Regi%C3%B3n%20Metropolitana!5e0!3m2!1ses!2scl!4v1695429591629!5m2!1ses!2scl"
-                width="750" height="550" style="border:0;" allowfullscreen="" loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div id="map" style="height: 550px; width: 750px;"></div>
         </div>
         <div class="col-12 col-lg-4 col-md-12">
-            <div class="card radius-15" id="suggestions">
+            <div class="card radius-15 bg-login-color" v-for="peluqueria in peluquerias" :key="peluqueria.place_id">
                 <div class="card-body">
-                    <!-- Contenido de sugerencias -->
-                    <h5>Peluquerias Populares</h5>
-                    <br>
-                    <div class="card radius-15 bg-login-color">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="">
-                                    <h5 class="mb-0">Peluqueria 1</h5>
-                                    <div class="list-inline contacts-social mt-2"> <a href="javascript:;"
-                                            class="list-inline-item text-facebook"><i class="bx bxl-facebook"></i></a>
-                                        <a href="javascript:;" class="list-inline-item"><i class="bx bxs-phone"></i></a>
-                                        <a href="javascript:;" class="list-inline-item text-instagram"><i
-                                                class="bx bxl-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card radius-15 bg-login-color">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="">
-                                    <h5 class="mb-0">Peluqueria 2</h5>
-                                    <div class="list-inline contacts-social mt-2"> <a href="javascript:;"
-                                            class="list-inline-item text-facebook"><i class="bx bxl-facebook"></i></a>
-                                        <a href="javascript:;" class="list-inline-item"><i class="bx bxs-phone"></i></a>
-                                        <a href="javascript:;" class="list-inline-item text-instagram"><i
-                                                class="bx bxl-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card radius-15 bg-login-color">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="">
-                                    <h5 class="mb-0">Peluqueria 3</h5>
-                                    <div class="list-inline contacts-social mt-2"> <a href="javascript:;"
-                                            class="list-inline-item text-facebook"><i class="bx bxl-facebook"></i></a>
-                                        <a href="javascript:;" class="list-inline-item"><i class="bx bxs-phone"></i></a>
-                                        <a href="javascript:;" class="list-inline-item text-instagram"><i
-                                                class="bx bxl-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card radius-15 bg-login-color">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="">
-                                    <h5 class="mb-0">Peluqueria 4</h5>
-                                    <div class="list-inline contacts-social mt-2"> <a href="javascript:;"
-                                            class="list-inline-item text-facebook"><i class="bx bxl-facebook"></i></a>
-                                        <a href="javascript:;" class="list-inline-item"><i class="bx bxs-phone"></i></a>
-                                        <a href="javascript:;" class="list-inline-item text-instagram"><i
-                                                class="bx bxl-instagram"></i></a>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="">
+                            <h5 class="mb-0">[[ peluqueria.name ]]</h5>
+                            <p>Calificación: [[ peluqueria.rating ]]</p>
+                            <p>Dirección: [[ peluqueria.formatted_address ]]</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 
@@ -97,5 +37,98 @@
 
 
 {% block js %}
+
+<script>
+    var map;
+
+    function initMap() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 12,
+                    center: userLocation
+                });
+
+                new google.maps.Marker({
+                    position: userLocation,
+                    map: map,
+                    title: 'Tu ubicación'
+                });
+
+                // Agregar marcadores de veterinarias aquí
+            }, function () {
+                handleLocationError(true);
+            });
+        } else {
+            handleLocationError(false);
+        }
+    }
+
+    function handleLocationError(browserHasGeolocation) {
+        var errorMessage;
+        if (!browserHasGeolocation) {
+            errorMessage = "Tu navegador no soporta la geolocalización.";
+        } else {
+            errorMessage = "No se pudo obtener la ubicación.";
+        }
+        console.error(errorMessage);
+
+        // Mostrar el mensaje de error en la página web
+        var errorElement = document.getElementById('error-message');
+        if (errorElement) {
+            errorElement.textContent = errorMessage;
+        }
+    }
+
+</script>
+
+<script>
+    new Vue({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {
+            ubicacionUsuario: null,
+            peluquerias: [],
+        },
+        created() {
+            this.obtenerUbicacionUsuario();
+        },
+        methods: {
+            obtenerUbicacionUsuario() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(this.obtenerVeterinariasCercanas);
+                } else {
+                    alert("La geolocalización no es soportada por este navegador.");
+                }
+            },
+            obtenerVeterinariasCercanas(position) {
+                this.ubicacionUsuario = position.coords;
+                axios.get(`/api/peluquerias-cercanas/?lat=${this.ubicacionUsuario.latitude}&lng=${this.ubicacionUsuario.longitude}`)
+                    .then(response => {
+                        // Filtra aquellos elementos que tienen una propiedad 'result' y un 'rating'
+                        const lugaresConResultados = response.data
+                            .filter(item => item.result && item.result.rating)
+                            .map(item => item.result);
+
+                        // Ordena los lugares por rating de mayor a menor
+                        lugaresConResultados.sort((a, b) => b.rating - a.rating);
+
+                        // Toma los primeros 3 lugares después de ordenarlos
+                        this.peluquerias = lugaresConResultados.slice(0, 3);
+                        console.log(this.peluquerias);
+                    })
+                    .catch(error => {
+                        console.error("Error al obtener las veterinarias cercanas:", error);
+                    });
+            }
+        }
+    });
+
+</script>
 
 {% endblock js %}
