@@ -1520,38 +1520,44 @@
                 if (result.isConfirmed) {
                     // El usuario confirmó, procede a realizar la solicitud a la API
                     var tipoMascota = document.querySelector('#petType').value;
-                    var descripcion = "Ayuda porfavor he perdido a mi mascota {{mascota.nombre}}";
-                    var fotoMascota = this.petProfilePhotoUrl;
+                    var descripcion = "Ayuda porfavor he perdido a mi mascota " + this.dataMascota[0].nombre + " tiene " + this.dataMascota[0].edad + "Porfavor si alguien la ve avisar";
+                    var fotoMascotaUrl = this.dataMascota[0].foto;
                     var tipoPublicacion = "Perdida de mascota";
                     var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-
+                    console.log(this.dataMascota[0].foto)
                     axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
+                    fetch(fotoMascotaUrl)
+                        .then(response => response.blob()) // Convertir la respuesta en Blob
+                        .then(blob => {
+                            // Crear un nuevo objeto File a partir del Blob
+                            var fotoMascotaFile = new File([blob], "nombre_imagen.jpg", { type: "image/jpeg" });
 
-                    var formData = new FormData();
-                    formData.append("tipo_mascota", tipoMascota);
-                    formData.append("descripcion", descripcion);
-                    formData.append("foto_mascota", fotoMascota);
-                    formData.append("tipo_publicacion", tipoPublicacion);
-                    console.log(formData.get("tipo_publicacion"));
-                    axios.post("/api/create_publicacion/mi_mascota", formData)
-                        .then((response) => {
-                            console.log('Publicación creada con éxito');
-                            Swal.fire({
-                                title: 'Éxito!',
-                                text: 'La publicación fue creada con éxito!',
-                                icon: 'success',
-                            }).then(() => {
-                                window.location.href = '/index/';
-                            });
+                            var formData = new FormData();
+                            formData.append("tipo_mascota", tipoMascota);
+                            formData.append("descripcion", descripcion);
+                            formData.append("foto_mascota", fotoMascotaFile); // Adjuntar el archivo en lugar de la URL
+                            formData.append("tipo_publicacion", tipoPublicacion);
+
+                            axios.post("/api/create_publicacion/mi_mascota", formData)
+                                .then((response) => {
+                                    console.log('Publicación creada con éxito');
+                                    Swal.fire({
+                                        title: 'Éxito!',
+                                        text: 'La publicación fue creada con éxito!',
+                                        icon: 'success',
+                                    }).then(() => {
+                                        // window.location.href = '/index/';
+                                    });
+                                })
+                                .catch((error) => {
+                                    console.error(error);
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'Hubo un error al crear la publicación',
+                                        icon: 'error',
+                                    });
+                                });
                         })
-                        .catch((error) => {
-                            console.error(error);
-                            Swal.fire({
-                                title: 'Error',
-                                text: 'Hubo un error al crear la publicación',
-                                icon: 'error',
-                            });
-                        });
                 }
             });
         },
