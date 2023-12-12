@@ -1520,7 +1520,7 @@
                 if (result.isConfirmed) {
                     // El usuario confirmó, procede a realizar la solicitud a la API
                     var tipoMascota = document.querySelector('#petType').value;
-                    var descripcion = "Ayuda porfavor he perdido a mi mascota " + this.dataMascota[0].nombre + " tiene " + this.dataMascota[0].edad + "Porfavor si alguien la ve avisar";
+                    var descripcion = "Ayuda porfavor he perdido a mi mascota " + this.dataMascota[0].nombre + " tiene " + this.dataMascota[0].edad + " Porfavor si alguien la ve avisar";
                     var fotoMascotaUrl = this.dataMascota[0].foto;
                     var tipoPublicacion = "Perdida de mascota";
                     var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
@@ -1546,7 +1546,7 @@
                                         text: 'La publicación fue creada con éxito!',
                                         icon: 'success',
                                     }).then(() => {
-                                        // window.location.href = '/index/';
+                                        window.location.href = '/index/';
                                     });
                                 })
                                 .catch((error) => {
